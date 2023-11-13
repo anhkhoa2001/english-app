@@ -1,24 +1,15 @@
-import { useEffect } from "react";
+import GitHubComponent from "./login/GitHubComponent";
+import GoogleComponent from "./login/GoogleComponent";
 
 const LoginComponent: React.FC = () => {
-    let token : string | null = null;
 
-    useEffect(() => {
-        fetch('http://localhost:9999/access/user')
-            .then(response => {
-                console.log(response);
-                if(response.status === 401) {
-                    //window.location.replace("http://localhost:9999/login");
-                } else {
-                    return response;
-                }
-            })
-            .then(json => console.log(json))
-    }, []);
-
-
-
-    return <h1></h1>
+    return <div>
+        <GitHubComponent></GitHubComponent>
+        <br></br>
+        <GoogleComponent></GoogleComponent>
+        <h1>hello</h1>
+    </div>
 }
+
 
 export default LoginComponent;
