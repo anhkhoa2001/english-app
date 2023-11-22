@@ -1,6 +1,10 @@
 import GitHubComponent from "./login/GitHubComponent";
 import GoogleComponent from "./login/GoogleComponent";
 
+
+//UseState
+//UseEffect
+//UseLayoutEffect
 const LoginComponent: React.FC = () => {
 
     return <div>

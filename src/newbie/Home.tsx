@@ -13,6 +13,7 @@ const Home: React.FC= () => {
                 <button  onClick={() => {
                     setContent(!content)
                 }}>Toggle</button>
+                <Home></Home>
             </div>
 }
 

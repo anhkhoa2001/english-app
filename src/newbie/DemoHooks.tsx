@@ -35,6 +35,15 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 //6. UseMemo
 //tránh thực hiện logic không cần thiết
 
+
+//7. UseReducer
+//mở rộng hơn useState
+//hay hơn
+
+
+//context && UseContextf
+//giúp truyền dữ liệu qua các component
+
 const DemoHooks: React.FC = () => {
     const [count, setCount] = useState(0);
     const [countdown, setCountDown] = useState(10);
