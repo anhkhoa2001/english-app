@@ -13,7 +13,7 @@ const GitHubComponent: React.FC = () => {
 
 
 
-    return <a href="http://localhost:9999/oauth2/authorization/github">Đăng nhập với tài khoản Github</a>
+    return <a href="http://localhost:9001/oauth2/authorization/github">Đăng nhập với tài khoản Github</a>
 }
 
 export default GitHubComponent;
