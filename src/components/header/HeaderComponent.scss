@@ -1,0 +1,23 @@
+
+
+.navbar {
+    display: flex;
+    width: 1400px;
+    padding: 0px;
+    justify-content: space-between;
+
+    .logo {
+        flex-basis: 50%;
+        max-width: 120px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    .navbar-collapse {
+        flex-basis: 300px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+}
