@@ -1,9 +1,10 @@
 import RedirectButton from "../event/redirect/RedirectButton";
 import ProfileComponent from "./profile/ProfileComponent";
 import './HeaderComponent.scss'
+import { useState } from "react";
 
 const HeaderComponent: React.FC = () => {
-
+    const [login, checkLogin] = useState(false);
 
     return <nav className="navbar">
         <img src="./public/logo.webp" className="logo" />
