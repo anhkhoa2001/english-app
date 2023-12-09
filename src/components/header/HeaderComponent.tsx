@@ -1,4 +1,4 @@
-import RedirectButton from "../event/RedirectButton";
+import RedirectButton from "../event/redirect/RedirectButton";
 import ProfileComponent from "./profile/ProfileComponent";
 import './HeaderComponent.scss'
 
@@ -14,7 +14,8 @@ const HeaderComponent: React.FC = () => {
             <RedirectButton content="Blogs"></RedirectButton>
             <ProfileComponent
                 avatar="https://avatars.githubusercontent.com/u/72397589?v=4"
-                type_login="https://fir-rollup.firebaseapp.com/twitter-logo.png"></ProfileComponent>
+                type_login="https://fir-rollup.firebaseapp.com/twitter-logo.png"
+                count_noti={10}></ProfileComponent>
         </ul>
     </nav>
 }
