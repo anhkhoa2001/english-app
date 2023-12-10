@@ -1,11 +1,13 @@
-import './RedirectButton.scss'
+import './RedirectButton.scss';
+import { Link } from 'react-router-dom';
 
-const RedirectButton: React.FC<{content: string}> = ({content}) => {
+const RedirectButton: React.FC<{ content: string, path: string }> = ({ content, path }) => {
 
-    return <li className="redirect-button">
+    return <Link to={path}>
+        <li className="redirect-button">
             {content}
             <span></span><span></span><span></span><span></span>
-        </li>
+        </li></Link>
 }
 
 export default RedirectButton;
