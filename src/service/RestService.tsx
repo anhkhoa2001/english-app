@@ -1,4 +1,5 @@
 import axios from 'axios';
+import MessageResponse from '../dto/response/MessageResponse';
 
 function objectToQueryString(obj: object) {
     const queryString = Object.keys(obj)
@@ -8,15 +9,30 @@ function objectToQueryString(obj: object) {
     return `?${queryString}`;
 }
 
-const RestService = {
-    post: function () {
-    },
+class RestService<T> {
+    post(path: string,
+        header: object,
+        body: object,
+        func: (status: number, data: MessageResponse<T> | null) => void) {
+        axios({
+            method: 'post',
+            url: path,
+            data: body,
+            headers: header,
+        })
+            .then(function (response) {
+                func(response.status, response.data);
+            })
+            .catch(function(error) {
+                func(error.response.status, null);
+            });
+    };
 
-    get: function (
+    get(
         path: string,
         header: object,
         param: object,
-        func: (status: number, data: object) => void) {
+        func: (status: number, data: MessageResponse<T> | null) => void) {
 
         axios({
             method: 'get',
@@ -24,10 +40,10 @@ const RestService = {
             headers: header
         })
             .then(function (response) {
-                //func(response);
+                func(response.status, response.data);
             })
             .catch(function(error) {
-                func(error.response.status, {});
+                func(error.response.status, null);
             });
     }
 };

@@ -20,7 +20,7 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
             <div className="notification-amount">
                 <span>{count_noti}</span>
 
-                <DropdownMenu menus={["list 1", "list 2", "list 1", "list 2"]}></DropdownMenu>
+                <DropdownMenu menus={["list 1", "list 2", "list 3", "list 4"]}></DropdownMenu>
             </div>
 
         </div>
@@ -39,7 +39,7 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
             <span onClick={() => setShow(!show)}>
                 <MdArrowDropDown />
             </span>
-            {show ? <DropdownMenu menus={["list 1", "list 2", "list 1", "list 2"]}></DropdownMenu> : <></>}
+            {show ? <DropdownMenu menus={["list 1", "list 2", "list 14", "list 24"]}></DropdownMenu> : <></>}
         </span>                                        
     </div>
 }

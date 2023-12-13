@@ -1,16 +1,14 @@
 import RedirectButton from "../event/redirect/RedirectButton";
-import ProfileComponent from "./profile/ProfileComponent";
 import './HeaderComponent.scss'
-import { useState } from "react";
-import LoginService from "../../service/LoginService";
+import TokenProvider, { useToken } from "../event/context/TokenProvider";
+import ProfileComponent from "./profile/ProfileComponent";
 
 const HeaderComponent: React.FC = () => {
-    //login nen ap dung context
-    const [isLogin, checkIsLogin] = useState(false);
 
-    if(!isLogin) {
-        LoginService.checkLogin();
-    }
+    const obj = useToken();
+
+    console.log('obj', obj);
+    console.log('header');
 
     return <nav className="navbar">
         <img src="./public/logo.webp" className="logo" />
@@ -19,7 +17,7 @@ const HeaderComponent: React.FC = () => {
             <RedirectButton content="Courses" path="#"></RedirectButton>
             <RedirectButton content="Examination" path="#"></RedirectButton>
             <RedirectButton content="Blogs" path="#"></RedirectButton>
-            {isLogin ? 
+            {obj != undefined && obj.isLogined ? 
                 <ProfileComponent
                 avatar="https://avatars.githubusercontent.com/u/72397589?v=4"
                 type_login="https://fir-rollup.firebaseapp.com/twitter-logo.png"

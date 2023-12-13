@@ -7,7 +7,7 @@ const DropdownMenu: React.FC<{ menus: string[] }> = ({ menus }) => {
             <li className="menu-item">
                 <ol className="sub-menu">
                     {menus.map((e) => {
-                        return <li className="menu-item"><a href="#0">{e}</a></li>
+                        return <li className="menu-item" key={e}><a href="#0">{e}</a></li>
                     })}
                 </ol>
             </li>
