@@ -2,11 +2,12 @@ import { useState } from 'react';
 import DropdownMenu from '../../event/drop/DropdownMenu';
 import './ProfileComponent.scss'
 import { MdArrowDropDown } from "react-icons/md";
+import { useToken } from '../../../context/TokenProvider';
 
 
-const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_noti: number }> = 
-                                        ({ avatar, type_login, count_noti }) => {
-
+const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_noti: number }> 
+                            = ({ avatar, type_login, count_noti }) => {
+    const obj = useToken();
     const [show, setShow] = useState(false);
 
     return <div className="profile ">
@@ -20,7 +21,7 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
             <div className="notification-amount">
                 <span>{count_noti}</span>
 
-                <DropdownMenu menus={["list 1", "list 2", "list 3", "list 4"]}></DropdownMenu>
+                <DropdownMenu menus={[]}></DropdownMenu>
             </div>
 
         </div>
@@ -39,7 +40,14 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
             <span onClick={() => setShow(!show)}>
                 <MdArrowDropDown />
             </span>
-            {show ? <DropdownMenu menus={["list 1", "list 2", "list 14", "list 24"]}></DropdownMenu> : <></>}
+            {show ? <DropdownMenu menus={[
+                {
+                    title: "Logout",
+                    action: () => {
+
+                    },
+                    path: "/login"
+                }]}></DropdownMenu> : <></>}
         </span>                                        
     </div>
 }

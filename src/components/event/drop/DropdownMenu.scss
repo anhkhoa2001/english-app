@@ -51,12 +51,12 @@ $white: #FFF;
             white-space: nowrap;
             text-overflow: ellipsis;
             display: block;
-            --c: goldenrod;
+            --c: black;
             color: var(--c);
             font-family: sans-serif;
             letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: bold;
+            text-transform: none;
+            font-weight: normal;
             font-size: 12px;
         }
 

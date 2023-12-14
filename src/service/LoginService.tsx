@@ -4,12 +4,10 @@ import RestService from './RestService';
 type LoginCallback = (response: MessageResponse<string> | null, isLogined: boolean) => void;
 
 const LoginService = {
-    checkLogin: function(token: string, 
+    checkToken: function(token: string, 
                 func: LoginCallback) {
-        console.log('token', token);
-
         new RestService<string>().get(
-            'http://localhost:9001/public/check-token',
+            (window as any).globalConfig.PATH_USER_SERVICE + '/public/check-token',
             {
                 'Authorization': token
             },
@@ -24,9 +22,24 @@ const LoginService = {
     },
     getToken: function(body: object, func: LoginCallback) {
         new RestService<string>().post(
-            'http://localhost:9001/public/generate-token',
+            (window as any).globalConfig.PATH_USER_SERVICE + '/public/generate-token',
             {},
             body,
+            (status: number, data: MessageResponse<string> | null) => {
+                if(status === 200) {
+                    func(data, true);
+                } else {
+                    func(null, false);
+                }
+            });
+    },
+    killToken: function(token: string, func: LoginCallback) {
+        new RestService<string>().get(
+            (window as any).globalConfig.PATH_USER_SERVICE + '/public/kill-token',
+            {
+                'Authorization': token
+            },
+            {},
             (status: number, data: MessageResponse<string> | null) => {
                 if(status === 200) {
                     func(data, true);
