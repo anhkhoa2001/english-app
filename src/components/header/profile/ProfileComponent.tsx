@@ -5,10 +5,11 @@ import { MdArrowDropDown } from "react-icons/md";
 import { useToken } from '../../../context/TokenProvider';
 
 
-const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_noti: number }> 
-                            = ({ avatar, type_login, count_noti }) => {
+const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname: string }> 
+                            = ({ avatar, count_noti, fullname }) => {
     const obj = useToken();
     const [show, setShow] = useState(false);
+    //
 
     return <div className="profile ">
         <div className="bell-icon active" >
@@ -27,13 +28,12 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
         </div>
         <figure className="fir-image-figure">
             <a className="fir-imageover" rel="noopener" target="_blank">
-                <img className="fir-author-image fir-clickcircle" src={avatar} alt="David East - Author" />
+                <img className="fir-author-image fir-clickcircle" src={avatar} alt={fullname} />
                 <div className="fir-imageover-color"></div>
-                <img className="fir-imageover-image fir-clickcircle" src={type_login} />
             </a>
 
             <figcaption>
-                <div className="fig-author-figure-title">David East</div>
+                <div className="fig-author-figure-title">{fullname}</div>
             </figcaption>
         </figure>
         <span>
@@ -43,10 +43,12 @@ const ProfileComponent: React.FC<{ avatar: string, type_login: string, count_not
             {show ? <DropdownMenu menus={[
                 {
                     title: "Logout",
+                    path: "/",
                     action: () => {
-
-                    },
-                    path: "/login"
+                        console.log('redirect');
+                        localStorage.removeItem('access_token');
+                        window.location.replace((window as any).globalConfig.PATH_FE);
+                    }
                 }]}></DropdownMenu> : <></>}
         </span>                                        
     </div>

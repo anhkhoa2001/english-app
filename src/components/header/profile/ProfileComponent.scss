@@ -63,13 +63,6 @@
     left: 0;
   }
 
-  .fir-imageover-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: fadeInFadeOut 2s infinite;
-  }
-
   @keyframes fadeInFadeOut {
     0% {
       opacity: 1;

@@ -3,6 +3,11 @@ import RestService from './RestService';
 
 type LoginCallback = (response: MessageResponse<string> | null, isLogined: boolean) => void;
 
+interface UserInfo {
+    avatar: string;
+    fullname: string;
+}
+
 const LoginService = {
     checkToken: function(token: string, 
                 func: LoginCallback) {
@@ -45,6 +50,21 @@ const LoginService = {
                     func(data, true);
                 } else {
                     func(null, false);
+                }
+            });
+    },
+    getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserInfo> | null) => void) {
+        new RestService<UserInfo>().get(
+            (window as any).globalConfig.PATH_USER_SERVICE + '/public/user-info',
+            {
+                'Authorization': token
+            },
+            {},
+            (status: number, data: MessageResponse<UserInfo> | null) => {
+                if(status === 200) {
+                    func(data);
+                } else {
+                    func(null);
                 }
             });
     }

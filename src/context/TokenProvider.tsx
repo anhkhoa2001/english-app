@@ -23,6 +23,7 @@ const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         if(response != null) {
           console.log('response', response);
           console.log('i', i);
+          console.log((window as any).globalConfig.PATH_USER_SERVICE);
           setSession(new TokenContextProps(response.data, i));
           localStorage.setItem("access_token", response.data);
         } else {
