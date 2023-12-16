@@ -8,7 +8,7 @@ function App() {
   return (
     <TokenProvider>
         <HeaderComponent></HeaderComponent>
-      <BodyComponent></BodyComponent>
+        <BodyComponent></BodyComponent>
     </TokenProvider>
   )
 }

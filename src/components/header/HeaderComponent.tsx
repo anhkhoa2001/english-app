@@ -20,17 +20,16 @@ class UserInfo {
 const HeaderComponent: React.FC = () => {
     const obj = useToken() || null;
     const [isLogin, checkIsLogin] = useState(false);
-    let info:UserInfo = new UserInfo('', '');
+    const [info, setInfo] = useState(new UserInfo('', ''));
 
     useEffect(() => {
         if (obj != undefined) {
             checkIsLogin(obj?.isLogined);
         }
-
-        if (isLogin) {
+        if (obj?.isLogined) {
             const token = localStorage.getItem('access_token');
             LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {
-                info = new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? '');
+                setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
             });
         }
     }, [obj?.isLogined]);
@@ -39,12 +38,12 @@ const HeaderComponent: React.FC = () => {
 
 
     return <nav className="navbar">
-        <img src="./public/logo.webp" className="logo" />
+        <img src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg" className="logo" />
         <ul className="navbar-collapse">
             <RedirectButton content="HomePage" path="/"></RedirectButton>
-            <RedirectButton content="Courses" path="#"></RedirectButton>
+            <RedirectButton content="Courses" path="/courses"></RedirectButton>
             <RedirectButton content="Examination" path="#"></RedirectButton>
-            <RedirectButton content="Blogs" path="#"></RedirectButton>
+            <RedirectButton content="Blogs" path="/blogs"></RedirectButton>
             {isLogin ?
                 <ProfileComponent
                     avatar={info.avatar}

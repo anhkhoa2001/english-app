@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import LoginService from '../service/LoginService';
 import MessageResponse from '../dto/response/MessageResponse';
+import { useNavigate } from 'react-router-dom';
 
 class TokenContextProps {
     token: string;
@@ -19,13 +20,15 @@ const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const tokenCurrent = localStorage.getItem("access_token");
     const [session, setSession] = useState<TokenContextProps>(prop);
 
+    const navigate = useNavigate();
+
     const afterCheckLogin: (response: MessageResponse<string> | null, i: boolean) => void = (response, i) => {
         if(response != null) {
-          console.log('response', response);
-          console.log('i', i);
-          console.log((window as any).globalConfig.PATH_USER_SERVICE);
+          console.log((window as any).globalConfig.PATH_FE);
           setSession(new TokenContextProps(response.data, i));
           localStorage.setItem("access_token", response.data);
+          //window.location.replace((window as any).globalConfig.PATH_FE);
+          navigate('/');
         } else {
           localStorage.removeItem("access_token");
           setSession(new TokenContextProps("", false));

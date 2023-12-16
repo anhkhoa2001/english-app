@@ -3,6 +3,7 @@ import DropdownMenu from '../../event/drop/DropdownMenu';
 import './ProfileComponent.scss'
 import { MdArrowDropDown } from "react-icons/md";
 import { useToken } from '../../../context/TokenProvider';
+import LoginService from '../../../service/LoginService';
 
 
 const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname: string }> 
@@ -10,6 +11,13 @@ const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname:
     const obj = useToken();
     const [show, setShow] = useState(false);
     //
+
+    const logout = () => {
+        var token = localStorage.getItem('access_token');
+        LoginService.killToken(token ?? '');
+        localStorage.removeItem('access_token');
+        window.location.replace((window as any).globalConfig.PATH_FE);
+    }
 
     return <div className="profile ">
         <div className="bell-icon active" >
@@ -28,7 +36,7 @@ const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname:
         </div>
         <figure className="fir-image-figure">
             <a className="fir-imageover" rel="noopener" target="_blank">
-                <img className="fir-author-image fir-clickcircle" src={avatar} alt={fullname} />
+                <img className="fir-author-image fir-clickcircle" src={avatar === '' ? '/avatar_default.png' : avatar} alt={fullname} />
                 <div className="fir-imageover-color"></div>
             </a>
 
@@ -44,11 +52,7 @@ const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname:
                 {
                     title: "Logout",
                     path: "/",
-                    action: () => {
-                        console.log('redirect');
-                        localStorage.removeItem('access_token');
-                        window.location.replace((window as any).globalConfig.PATH_FE);
-                    }
+                    action: logout
                 }]}></DropdownMenu> : <></>}
         </span>                                        
     </div>

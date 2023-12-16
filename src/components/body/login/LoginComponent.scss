@@ -1,5 +1,57 @@
+.modal-login {
 
-.login-block {
-    font-size: 20px;
-    color: black;
+    p {
+        white-space: pre-wrap;
+        margin: 16px 0px 10px 0px;
+        text-align: center;
+    }
+
+    .modal-box {
+        border-radius: 6px;
+        margin-top: 80px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 22%;
+        height: 32%;
+        background-color: white;
+        position: relative;
+        top: 25%;
+        left: 35%;
+        transform: translate(-50%, -50%);
+        animation-name: zoom;
+        animation-duration: 0.7s;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease;
+        border: 1px solid #b7b7b7;
+        border-radius: 4px;
+        box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+        padding: 40px 80px;
+        justify-content: center;
+
+
+        .close {
+            position: absolute;
+            right: 16px;
+            top: 5px;
+            font-size: 25px;
+            font-weight: bolder;
+            cursor: pointer
+        }
+    }
+
+    .modal-box .close:hover,
+    .modal-box .close:focus {
+        color: #c6c6c6
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
 }

@@ -38,7 +38,7 @@ const LoginService = {
                 }
             });
     },
-    killToken: function(token: string, func: LoginCallback) {
+    killToken: function(token: string) {
         new RestService<string>().get(
             (window as any).globalConfig.PATH_USER_SERVICE + '/public/kill-token',
             {
@@ -46,11 +46,7 @@ const LoginService = {
             },
             {},
             (status: number, data: MessageResponse<string> | null) => {
-                if(status === 200) {
-                    func(data, true);
-                } else {
-                    func(null, false);
-                }
+                console.log(status);
             });
     },
     getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserInfo> | null) => void) {
