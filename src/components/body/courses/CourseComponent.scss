@@ -1,0 +1,22 @@
+
+.course {
+    display: flex;
+
+    .left {
+        flex-basis: 30%;
+        margin: 4px;
+        padding: 8px;
+    }
+
+    .right {
+        padding: 8px;
+        flex-basis: 70%;
+
+
+        .paging {
+            font-size: 100%;
+            text-align: center;
+            margin-top: 24px;
+        }
+    }
+}
