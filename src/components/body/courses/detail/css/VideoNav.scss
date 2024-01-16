@@ -1,0 +1,26 @@
+
+.video-nav {
+    height: 60px;
+    background-color: #2d2f31;
+    display: flex;
+    flex-wrap: nowrap;
+    color: aliceblue;
+    cursor: pointer;
+
+
+    .back-to {
+        font-size: 150%;
+        margin-left: 12px;
+        margin-top: 15px;
+        margin-right: 20px;
+        color: aliceblue;
+
+        &hover {
+            color: #d1d7dc;
+        }
+    }
+    .title {
+        font-weight: 600;
+        font-size: 18px;
+    }
+}

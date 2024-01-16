@@ -3,9 +3,9 @@ import { CourseItemDTO } from "../../../dto/props/CourseItemDTO";
 import './CourseItemComponent.scss'
 
 
-const CourseItemComponent: React.FC<{data: CourseItemDTO}> = ({data}) => {
+const CourseItemComponent: React.FC<{data: CourseItemDTO, redirect_url: string}> = ({data, redirect_url}) => {
 
-    return <div className="course-item">
+    return <div className="course-item" onClick={() => {window.location.replace(redirect_url)}}>
         <img src={data.image} className="thumnail"/> 
         <div className="detail">
             <h2 className="title">

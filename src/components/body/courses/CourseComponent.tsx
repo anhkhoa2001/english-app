@@ -97,11 +97,10 @@ const CourseComponent: React.FC = () => {
         </div>
         <div className="right">
             {Array.from({ length: data.length }, (_, i) => 
-            (<Link to={`course/lesson/${data[i].code}`}>
-                <CourseItemComponent data={data[i]} key={data[i].code}/>
-            </Link>))}
-
-
+            (
+                <CourseItemComponent data={data[i]} key={data[i].code} 
+                redirect_url={`http://localhost:5173/learning?code=${data[i].code}&name=${data[i].title}`} />
+            ))}
             <div className='paging'>
                 <Pagination 
                     onChange={() => {console.log('123')}} 

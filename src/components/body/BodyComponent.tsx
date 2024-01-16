@@ -1,6 +1,6 @@
 import LoginComponent from "./login/LoginComponent";
 import {Routes, Route} from 'react-router-dom';
-import './BodyComponent.scss'
+import './BodyComponent.scss' 
 import CourseComponent from "./courses/CourseComponent";
 import TitleComponent from "./TitleComponent";
 
