@@ -1,5 +1,12 @@
 
 .video-play {
     flex-basis: 75%;
-    
+
+    .video-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        background-color: white;
+        color: black;
+        margin-left: 36px;
+    } 
 }

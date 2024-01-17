@@ -1,6 +1,8 @@
 
 .section-list {
+    overflow: scroll;
     flex-basis: 25%;
+    height: 100vw;
 
     .header-section {
         font-weight: 700;
@@ -41,7 +43,10 @@
             }
             .lessons {
                 flex-basis: 100%;
+                display: none;
+
                 &.active {
+                    display: block;
                 }
 
                 .item-lesson {

@@ -7,6 +7,7 @@ import LoginComponent from './components/body/login/LoginComponent.tsx';
 import TitleComponent from './components/body/TitleComponent.tsx';
 import CourseComponent from './components/body/courses/CourseComponent.tsx';
 import "../node_modules/video-react/dist/video-react.css";
+import SummaryTab from './components/body/courses/detail/SummaryTab.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
@@ -29,7 +30,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
             <Route path="/learning" element={
                 <VideoCourseComponent />
-            }></Route>
+            }>
+                <Route path="/learning/tab" element={
+                    <SummaryTab />
+                }></Route>
+            </Route>
         </Routes>
     </BrowserRouter>
 )

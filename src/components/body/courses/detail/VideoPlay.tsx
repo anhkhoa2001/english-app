@@ -1,14 +1,44 @@
 import './css/VideoPlay.scss'
 import { Player } from 'video-react';
+import { Tabs, TabsProps } from 'antd';
+import SummaryTab from './SummaryTab';
+import ReviewsTab from './ReviewsTab';
+import QATab from './Q&ATab';
 
-const VideoPlay: React.FC = () => {
+const VideoPlay: React.FC<{url_video: string, url_image: string}> = 
+            ({url_video, url_image}) => {
+
+    const onChange = (key: string) => {
+        console.log(key);
+      };
+      
+      const tabs: TabsProps['items'] = [
+        {
+          key: '1',
+          label: 'Summary',
+          children: <SummaryTab></SummaryTab>,
+        },
+        {
+          key: '2',
+          label: 'Q&A',
+          children: <QATab />,
+        },
+        {
+          key: '3',
+          label: 'Reviews',
+          children: <ReviewsTab />,
+        },
+      ];
+
     return <div className="video-play">
         <Player
             playsInline
-            poster="https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-            src="https://www.youtube.com/watch?v=_Xs1ZCMfa2Y"
+            poster={url_image}
+            src={url_video}
             />
-
+        <div className="video-nav">
+            <Tabs defaultActiveKey="1" items={tabs} onChange={onChange} />
+        </div>
     </div>
 }
 
