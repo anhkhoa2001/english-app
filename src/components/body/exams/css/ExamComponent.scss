@@ -1,0 +1,75 @@
+
+.exam {
+    display: flex;
+    flex-wrap: nowrap;
+
+    .ant-checkbox-wrapper {
+        width: 100%;
+        margin-bottom: 8px;
+        margin-left: 12px;
+    }
+
+
+    .anticon.anticon-right.ant-collapse-arrow {
+        font-size: 90%;
+    }
+
+    .ant-collapse-header-text {
+        font-size: 120%;
+    }
+
+    .left {
+        flex-basis: 25%;
+    }
+
+
+    .right {
+        flex-basis: 75%;
+
+        .exam-item {
+            cursor: pointer;
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+            padding: 12px 0x 12px 12px;
+            margin: 12px 0x 12px 12px;
+            background-color: rgb(243 244 246/0.6);;
+            display: flex;
+            flex-wrap: wrap;
+
+            .item-image {
+                flex-basis: 25%;
+                width: 200px;
+                height: auto;
+            }
+
+            .item-detail {
+                margin-left: 16px;
+                flex-basis: 65%;
+
+                h2 {
+                    font-size: 20px;
+                    margin: 8px 0px;
+                }
+            }
+            .ant-comment.css-dev-only-do-not-override-zl9ks2 {
+                background-color: rgb(243 244 246/0.6);;
+            }
+            .ant-comment-inner {
+                margin: 12px;
+                padding: 8px 0px;
+                border-radius: 20%;
+                cursor: pointer;
+
+
+                .ant-comment-content-author-name {
+                    margin-top: 8px;
+                }
+
+                &:hover {
+                    background-color: #edeff4;
+                }
+            }
+
+        }
+        
+    }
+}

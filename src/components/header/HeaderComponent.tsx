@@ -42,7 +42,7 @@ const HeaderComponent: React.FC = () => {
         <ul className="navbar-collapse">
             <RedirectButton content="HomePage" path="/"></RedirectButton>
             <RedirectButton content="Courses" path="/courses"></RedirectButton>
-            <RedirectButton content="Examination" path="#"></RedirectButton>
+            <RedirectButton content="Examination" path="/exams"></RedirectButton>
             <RedirectButton content="Blogs" path="/blogs"></RedirectButton>
             {isLogin ?
                 <ProfileComponent

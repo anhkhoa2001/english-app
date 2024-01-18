@@ -87,7 +87,7 @@ const LessonList: React.FC = () => {
             <div className='content-section'>
                 {
                     Array.from({ length: sections.length }, (_, i) => (
-                        <section className='item-section'>
+                        <section className='item-section' key={i}>
                             <div className='header-item-section' onClick={() => drop(i)}>
                                 <h3>Section {i + 1}: {sections[i].title}</h3>
                                 <span className='icon' key={i}>{appearLesson[i] ? <IoIosArrowDown /> : <IoIosArrowUp />}</span>
@@ -95,7 +95,7 @@ const LessonList: React.FC = () => {
                             </div>
                             <div className={appearLesson[i] ? "lessons active" : "lessons"} >
                                 {Array.from({ length: sections[i].lessons.length }, (_, j) => (
-                                    <div className='item-lesson' onClick={() => changeVideo(i, j)}>
+                                    <div className='item-lesson' key={j} onClick={() => changeVideo(i, j)}>
                                         <input type="checkbox" key={j} />
                                         <div className='right'>
                                             <p>{j + 1}. {sections[i].lessons[j].title}</p>

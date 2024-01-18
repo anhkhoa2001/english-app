@@ -1,15 +1,17 @@
+import { useParams } from "react-router-dom";
 import LessonList from "./LessonList";
 import VideoNav from "./VideoNav";
 import './css/VideoCourseComponent.scss'
+import { ignore } from "antd/es/theme/useToken";
 
 
 const VideoCourseComponent: React.FC = () => {
-    const queryParameters = new URLSearchParams(window.location.search);
+    const {code, name} = useParams();
 
-    const name = queryParameters.get('name') || "";
+    console.log(code);
 
     return <div className="video-course">
-        <VideoNav title={name}/>
+        <VideoNav title={name || ""}/>
         <div className="content">
             <LessonList />
         </div>

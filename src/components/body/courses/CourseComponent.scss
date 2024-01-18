@@ -2,6 +2,20 @@
 .course {
     display: flex;
 
+    .ant-checkbox-wrapper {
+        width: 100%;
+        margin-bottom: 8px;
+        margin-left: 12px;
+    }
+
+
+    .anticon.anticon-right.ant-collapse-arrow {
+        font-size: 90%;
+    }
+
+    .ant-collapse-header-text {
+        font-size: 120%;
+    }
     .left {
         flex-basis: 30%;
         margin: 4px;
