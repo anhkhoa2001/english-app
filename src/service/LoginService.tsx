@@ -1,4 +1,4 @@
-import MessageResponse from '../dto/response/MessageResponse';
+import MessageResponse from '../entity/response/MessageResponse';
 import RestService from './RestService';
 
 type LoginCallback = (response: MessageResponse<string> | null, isLogined: boolean) => void;

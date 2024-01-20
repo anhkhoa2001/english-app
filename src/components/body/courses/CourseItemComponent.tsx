@@ -1,5 +1,5 @@
 import { LuDot } from "react-icons/lu";
-import { CourseItemDTO } from "../../../dto/props/CourseItemDTO";
+import { CourseItemDTO } from "../../../entity/props/CourseItemDTO";
 import './CourseItemComponent.scss'
 
 

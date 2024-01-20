@@ -1,8 +1,11 @@
-import { Avatar, Checkbox, CheckboxProps, Collapse } from 'antd';
+import { Avatar, Checkbox, CheckboxProps, Collapse, Pagination } from 'antd';
 import TitleComponent from '../TitleComponent';
 import './css/ExamComponent.scss'
 import { CollapseProps } from 'antd/lib';
 import { Comment } from '@ant-design/compatible';
+import { ExamItemDTO } from '../../../entity/props/ExamItemDTO';
+import { Link } from 'react-router-dom';
+import { TypeExam } from '../../../entity/Contants';
 
 const ExamComponent: React.FC = () => {
 
@@ -47,6 +50,58 @@ const ExamComponent: React.FC = () => {
         }
     ];
 
+
+    const exams: ExamItemDTO[] = [
+        {
+            title: "TOEIC New Economy",
+            author: {
+                fullname: "Dam Tam Khoa",
+                role: "STUDENT",
+                avartar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            },
+            summary: "The latest TOEIC format standard test set comes with full answers and explanations. Practice TOEIC New Economy in detail step by step, handling all types of problems and important tips every student should memorize before taking the test",
+            code: "TOEIC001",
+            type: TypeExam.TOEIC,
+            image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
+        },
+        {
+            title: "TOEIC New Economy",
+            author: {
+                fullname: "Dam Tam Khoa",
+                role: "STUDENT",
+                avartar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            },
+            summary: "The latest TOEIC format standard test set comes with full answers and explanations. Practice TOEIC New Economy in detail step by step, handling all types of problems and important tips every student should memorize before taking the test",
+            code: "TOEIC003",
+            type: 0,
+            image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
+        },
+        {
+            title: "TOEIC New Economy",
+            author: {
+                fullname: "Dam Tam Khoa",
+                role: "STUDENT",
+                avartar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            },
+            summary: "The latest TOEIC format standard test set comes with full answers and explanations. Practice TOEIC New Economy in detail step by step, handling all types of problems and important tips every student should memorize before taking the test",
+            code: "TOEIC004",
+            type: 0,
+            image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
+        },
+        {
+            title: "TOEIC New Economy",
+            author: {
+                fullname: "Dam Tam Khoa",
+                role: "STUDENT",
+                avartar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            },
+            summary: "The latest TOEIC format standard test set comes with full answers and explanations. Practice TOEIC New Economy in detail step by step, handling all types of problems and important tips every student should memorize before taking the test",
+            code: "TOEIC005",
+            type: 0,
+            image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
+        }
+    ];
+
     return <>
         <TitleComponent type="All Examinations" count_results={100} />
         <div className="exam">
@@ -56,64 +111,32 @@ const ExamComponent: React.FC = () => {
                     defaultActiveKey={['1']} />
             </div>
             <div className="right">
-                <div className="exam-item">
-                    <img className="item-image" src="https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png" alt="" />
-                    <div className='item-detail'>
-                        <h2>TOEIC New Economy</h2>
-                        <p>Bộ đề chuẩn chỉnh format TOEIC mới nhất kèm đầy đủ, giải thích đáp án.
-                            Luyện đề TOEIC New Economy chi tiết theo từng bước, xử lý mọi dạng bài và các tips quan trọng mọi
-                            sĩ tử nên nằm lòng trước khi đi thi.</p>
-                    </div>
-                    <Comment
-                        author={<a>Han Solo</a>}
-                        avatar={
-                        <Avatar
-                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            alt="Han Solo"
-                        />
-                        }
-                        content={''
-                        }
-                    />
-                </div>
-                <div className="exam-item">
-                    <img className="item-image" src="https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png" alt="" />
-                    <div className='item-detail'>
-                        <h2>TOEIC New Economy</h2>
-                        <p>Bộ đề chuẩn chỉnh format TOEIC mới nhất kèm đầy đủ, giải thích đáp án.
-                            Luyện đề TOEIC New Economy chi tiết theo từng bước, xử lý mọi dạng bài và các tips quan trọng mọi
-                            sĩ tử nên nằm lòng trước khi đi thi.</p>
-                    </div>
-                    <Comment
-                        author={<a>Han Solo</a>}
-                        avatar={
-                        <Avatar
-                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            alt="Han Solo"
-                        />
-                        }
-                        content={''
-                        }
-                    />
-                </div>
-                <div className="exam-item">
-                    <img className="item-image" src="https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png" alt="" />
-                    <div className='item-detail'>
-                        <h2>TOEIC New Economy</h2>
-                        <p>Bộ đề chuẩn chỉnh format TOEIC mới nhất kèm đầy đủ, giải thích đáp án.
-                            Luyện đề TOEIC New Economy chi tiết theo từng bước, xử lý mọi dạng bài và các tips quan trọng mọi
-                            sĩ tử nên nằm lòng trước khi đi thi.</p>
-                    </div>
-                    <Comment
-                        author={<a>Han Solo</a>}
-                        avatar={
-                        <Avatar
-                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            alt="Han Solo"
-                        />
-                        }
-                        content={''
-                        }
+                {Array.from({ length: exams.length }, (_, i) =>
+                    <Link to={`/learning/exam/${exams[i].code}?type=${exams[i].type}`}>
+                        <div className="exam-item" key={i}>
+                            <img className="item-image" src={exams[i].image} alt="" />
+                            <div className='item-detail'>
+                                <h2>{exams[i].title}</h2>
+                                <p>{exams[i].summary}</p>
+                            </div>
+                            <Comment
+                                author={<a>Han Solo</a>}
+                                avatar={
+                                    <Avatar
+                                        src={exams[i].author.avartar}
+                                        alt={exams[i].author.fullname}
+                                    />
+                                }
+                                content={''}
+                            />
+                        </div>
+                    </Link>
+                )}
+                <div className='paging'>
+                    <Pagination
+                        onChange={() => { console.log('123') }}
+                        total={exams.length}
+                        pageSize={2}
                     />
                 </div>
             </div>

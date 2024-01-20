@@ -4,7 +4,7 @@ import TokenProvider, { useToken } from "../../context/TokenProvider";
 import ProfileComponent from "./profile/ProfileComponent";
 import { useEffect, useState } from "react";
 import LoginService from "../../service/LoginService";
-import MessageResponse from "../../dto/response/MessageResponse";
+import MessageResponse from "../../entity/response/MessageResponse";
 
 class UserInfo {
     avatar: string;

@@ -1,4 +1,4 @@
-import { CourseItemDTO } from '../../../dto/props/CourseItemDTO';
+import { CourseItemDTO } from '../../../entity/props/CourseItemDTO';
 import './CourseComponent.scss';
 import CourseItemComponent from './CourseItemComponent';
 import { Checkbox, Collapse, Pagination, Radio, Space } from 'antd';
@@ -188,7 +188,7 @@ const CourseComponent: React.FC = () => {
             <div className="right">
                 {Array.from({ length: data.length }, (_, i) =>
                 (
-                    <Link to={`/learning/${data[i].code}`} ><CourseItemComponent data={data[i]} key={data[i].code} /></Link>
+                    <Link to={`/learning/course/${data[i].code}?title=${data[i].title}`} ><CourseItemComponent data={data[i]} key={data[i].code} /></Link>
                 ))}
                 <div className='paging'>
                     <Pagination

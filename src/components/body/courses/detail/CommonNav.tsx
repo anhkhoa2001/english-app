@@ -2,13 +2,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import './css/VideoNav.scss';
 import { Link } from "react-router-dom";
 
-const VideoNav: React.FC<{title: string}> = ({title}) => {
+const CommonNav: React.FC<{title: string, url_back: string}> = ({title, url_back}) => {
 
     return <div className="video-nav">
-        <Link to="/" className="back-to"><IoIosArrowBack /></Link>
+        <Link to={url_back} className="back-to"><IoIosArrowBack /></Link>
         <p className="title">{title}</p>
     </div>
 }
 
 
-export default VideoNav;
+export default CommonNav;

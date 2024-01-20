@@ -1,4 +1,4 @@
-import { TitleProp } from '../../../dto/props/TitleProp';
+import { TitleProp } from '../../../entity/props/TitleProp';
 import './DropdownMenu.scss'
 
 const DropdownMenu: React.FC<{ menus: TitleProp[] }> = ({ menus }) => {

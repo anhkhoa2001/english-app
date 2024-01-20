@@ -3,6 +3,11 @@
     display: flex;
     flex-wrap: nowrap;
 
+    
+
+
+
+
     .ant-checkbox-wrapper {
         width: 100%;
         margin-bottom: 8px;
@@ -26,7 +31,12 @@
     .right {
         flex-basis: 75%;
 
+        .paging {
+            text-align: center;
+            margin-top: 20px;
+        }
         .exam-item {
+            color: black;
             cursor: pointer;
             box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
             padding: 12px 0x 12px 12px;

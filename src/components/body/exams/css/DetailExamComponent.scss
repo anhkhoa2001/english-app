@@ -1,0 +1,17 @@
+
+.detail-exam {
+    
+    .content-exam {
+        display: flex;
+        flex-wrap: nowrap;
+
+        .questions {
+            flex-basis: 80%;
+        
+            audio {
+                width: 100%;
+                margin: 12px;
+            }
+        }
+    }
+}

@@ -1,17 +1,17 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import LessonList from "./LessonList";
-import VideoNav from "./VideoNav";
 import './css/VideoCourseComponent.scss'
-import { ignore } from "antd/es/theme/useToken";
+import CommonNav from "./CommonNav";
 
 
 const VideoCourseComponent: React.FC = () => {
-    const {code, name} = useParams();
+    const {code} = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     console.log(code);
 
     return <div className="video-course">
-        <VideoNav title={name || ""}/>
+        <CommonNav title={searchParams.get('title') || ''} url_back="/courses"/>
         <div className="content">
             <LessonList />
         </div>

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import LoginService from '../service/LoginService';
-import MessageResponse from '../dto/response/MessageResponse';
+import MessageResponse from '../entity/response/MessageResponse';
 import { useNavigate } from 'react-router-dom';
 
 class TokenContextProps {
