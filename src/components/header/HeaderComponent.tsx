@@ -44,6 +44,7 @@ const HeaderComponent: React.FC = () => {
             <RedirectButton content="Courses" path="/courses"></RedirectButton>
             <RedirectButton content="Examination" path="/exams"></RedirectButton>
             <RedirectButton content="Blogs" path="/blogs"></RedirectButton>
+            <RedirectButton content="Library" path="/library"></RedirectButton>
             {isLogin ?
                 <ProfileComponent
                     avatar={info.avatar}

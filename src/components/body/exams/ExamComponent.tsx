@@ -65,15 +65,15 @@ const ExamComponent: React.FC = () => {
             image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
         },
         {
-            title: "TOEIC New Economy",
+            title: "[2022-2023] Cụm trường phía Nam Hưng Yên - Đề thi thử tốt nghiệp THPT môn Tiếng Anh năm 2022-2023",
             author: {
                 fullname: "Dam Tam Khoa",
                 role: "STUDENT",
                 avartar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             },
-            summary: "The latest TOEIC format standard test set comes with full answers and explanations. Practice TOEIC New Economy in detail step by step, handling all types of problems and important tips every student should memorize before taking the test",
-            code: "TOEIC003",
-            type: 0,
+            summary: "",
+            code: "THPT002",
+            type: 1,
             image: "https://res.cloudinary.com/dwqrocbjv/image/upload/v1705601402/r3nuc5zs1rxdvckabo4x.png"
         },
         {

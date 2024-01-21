@@ -4,8 +4,7 @@ export interface MultiChoiceProp {
     index: number;
     hint: string;
     answers: Answer[]; 
-    content: string;
-    containImage: boolean,
+    content: React.ReactNode;
     type: number,
     questionChilds?: MultiChoiceProp[]
 }

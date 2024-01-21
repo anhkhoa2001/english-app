@@ -5,16 +5,15 @@ import { MultiChoiceProp } from "../../../../entity/props/MultiChoiceProp";
 
 
 const MultiChoiceGroup: React.FC<{
-    content: string, containImage: boolean, questionChilds: MultiChoiceProp[]
+    content: React.ReactNode,  questionChilds: MultiChoiceProp[]
 }>
-    = ({ content, containImage, questionChilds }) => {
-        console.log(questionChilds);
+    = ({ content, questionChilds }) => {
         return <div className="question multi-choice-group">
             <Tooltip title={""}>
-                {containImage ? <img src={content || undefined} /> : <span>{content}</span>}
+                <span style={{margin: "15px", display: "block", fontWeight: "500", fontSize: "18px"}}>{content}</span>
             </Tooltip>
             {Array.from({ length: questionChilds.length }, (_, i) => (
-                <MultiChoice prop={questionChilds[i]} />
+                <MultiChoice prop={questionChilds[i]} key={i}/>
             ))}
         </div>
     }

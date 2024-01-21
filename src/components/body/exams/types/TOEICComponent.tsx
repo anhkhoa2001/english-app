@@ -11,103 +11,10 @@ const TypeQuestion = {
     GROUP: 1
 }
 
-
-const ToeicComponent: React.FC = () => {
-    const questions:{
-        type: number,
-        part: number,
-        data: MultiChoiceProp[]
-    }[] = [{
-        type: 0,
-        part: 1,
-        data : [
-            {
-                type: 1,
-                index: 1,
-                containImage: true,
-                content: "https://study4.com/media/ets2023/img/1/image15.png",
-                questionChilds: [
-                    {
-                        type: 0,
-                        index: 1,
-                        containImage: true,
-                        content: "",
-                        answers: [
-                            {
-                                key: "A",
-                                value: "locate"
-                            },
-                            {
-                                key: "B",
-                                value: "located"
-                            },
-                            {
-                                key: "C",
-                                value: "locating"
-                            }
-                        ],
-                        hint: "Mark the letter A, B, C, or D on your answer sheet to indicate the sentence that best combines each pair of sentences in the following questions"
-                    }
-                ],
-                answers: [],
-                hint: ""
-            },
-            {
-                type: 0,
-                index: 4,
-                containImage: false,
-                content: "As soon as James started working, he realized that his decision had not been a good one.",
-                answers: [
-                    {
-                        key: "A",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "B",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "C",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "D",
-                        value: "To request a ticket change"
-                    }
-                ],
-                questionChilds: [],
-                hint: "Mark the letter A, B, C, or D on your answer sheet to indicate the sentence that best combines each pair of sentences in the following questions",
-            }, 
-            {
-                type: 0,
-                index: 5,
-                containImage: true,
-                content: "https://study4.com/media/ets2023/img/1/image3.png",
-                answers: [
-                    {
-                        key: "A",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "B",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "C",
-                        value: "To request a ticket change"
-                    },
-                    {
-                        key: "D",
-                        value: "To request a ticket change"
-                    }
-                ],
-                questionChilds: [],
-                hint: "Mark the letter A, B, C, or D on your answer sheet to indicate the sentence that best combines each pair of sentences in the following questions",
-            }
-        ]
-    }];
-
-
+const ToeicComponent: React.FC<{questions: {
+    type: number,
+    data: MultiChoiceProp[]
+}[]}> = ({questions}) => {
 
     const onChange = (key: string) => {
         console.log(key);
@@ -116,16 +23,16 @@ const ToeicComponent: React.FC = () => {
     const items: TabsProps['items'] = questions.map((item, index) => {
         const result = {
             key: index + 1 + '',
-            label: `Part ${item.part}`,
+            label: `Part ${index + 1}`,
             children: <>
                 {Array.from({ length: item.data.length }, (_, i) => (
                      item.data[i].type == TypeQuestion.SINGLE ? 
-                     <MultiChoice prop={item.data[i]} /> 
+                     <MultiChoice prop={item.data[i]} key={i}/> 
                      : 
                      <MultiChoiceGroup 
                      content={item.data[i].content} 
                      questionChilds={item.data[i].questionChilds || []} 
-                     containImage={item.data[i].containImage}/>
+                     key={i} />
                 ))} 
             </>
         }  

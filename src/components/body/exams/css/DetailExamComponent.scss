@@ -4,14 +4,70 @@
     .content-exam {
         display: flex;
         flex-wrap: nowrap;
+        justify-content: space-between;
 
         .questions {
-            flex-basis: 80%;
+            flex-basis: 87%;
         
             audio {
                 width: 100%;
                 margin: 12px;
             }
         }
+
+        .overview {
+            flex-basis: 10%;
+            box-shadow: 0 4px 0 0 rgba(143,156,173,.2);
+            border: 1px solid #e0e0e0;
+            border-radius: 0.65rem;
+            background-color: #f8f9fa!important;
+            padding: 16px;
+            margin-top: 12px;
+
+            .submit {
+                margin-left: 30px;
+                margin-top: 12px;
+            }
+
+            b {
+                font-weight: bold;
+                color: #ffad3b;
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+
+            .question-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: left;
+
+                .item {
+                    display: inline-flex;
+                    border-radius: 3px;
+                    border-color: #f7faff;
+                    border: 1px solid;
+                    font-weight: 600;
+                    margin-right: 4px;
+                    margin-bottom: 8px;
+                    width: 28px;
+                    height: 25px;
+                    font-size: 11px;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #35509a!important;
+                        color: #fff;
+                        border-color: #35509a;
+                    }
+                }
+            }
+        }
     }
+
 }
