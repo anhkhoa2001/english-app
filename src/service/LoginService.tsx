@@ -1,18 +1,14 @@
+import { BASE_PATH, BEARER, UserInfo } from '../entity/Contants';
 import MessageResponse from '../entity/response/MessageResponse';
 import RestService from './RestService';
 
 type LoginCallback = (response: MessageResponse<string> | null, isLogined: boolean) => void;
 
-interface UserInfo {
-    avatar: string;
-    fullname: string;
-}
-
 const LoginService = {
     checkToken: function(token: string, 
                 func: LoginCallback) {
         new RestService<string>().get(
-            (window as any).globalConfig.PATH_USER_SERVICE + '/public/check-token',
+            BASE_PATH.PATH_PROXY + '/public/check-token',
             {
                 'Authorization': token
             },
@@ -27,7 +23,7 @@ const LoginService = {
     },
     getToken: function(body: object, func: LoginCallback) {
         new RestService<string>().post(
-            (window as any).globalConfig.PATH_USER_SERVICE + '/public/generate-token',
+            BASE_PATH.PATH_PROXY + '/public/generate-token',
             {},
             body,
             (status: number, data: MessageResponse<string> | null) => {
@@ -40,9 +36,9 @@ const LoginService = {
     },
     killToken: function(token: string) {
         new RestService<string>().get(
-            (window as any).globalConfig.PATH_USER_SERVICE + '/public/kill-token',
+            BASE_PATH.PATH_USER_SERVICE + '/public/kill-token',
             {
-                'Authorization': token
+                'Authorization': BEARER + token
             },
             {},
             (status: number, data: MessageResponse<string> | null) => {
@@ -51,9 +47,9 @@ const LoginService = {
     },
     getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserInfo> | null) => void) {
         new RestService<UserInfo>().get(
-            (window as any).globalConfig.PATH_USER_SERVICE + '/public/user-info',
+            BASE_PATH.PATH_PROXY + '/api/user/user-info',
             {
-                'Authorization': token
+                'Authorization': BEARER + token
             },
             {},
             (status: number, data: MessageResponse<UserInfo> | null) => {

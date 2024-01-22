@@ -42,8 +42,8 @@
 
             .item-image {
                 flex-basis: 25%;
-                width: 200px;
-                height: auto;
+                max-height: 150px;
+                width: auto;
             }
 
             .item-detail {

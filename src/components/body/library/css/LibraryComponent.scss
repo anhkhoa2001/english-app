@@ -1,5 +1,6 @@
 
-.blog {
+
+.library {
     display: flex;
     flex-wrap: nowrap;
 
@@ -25,38 +26,53 @@
 
     .right {
         flex-basis: 75%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
 
         .paging {
             text-align: center;
             margin-top: 20px;
+            flex-basis: 100%;
         }
-        .blog-item {
+        .library-item {
+            flex-basis: 30%;
             color: black;
             cursor: pointer;
             box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
-            padding: 12px 0x 12px 12px;
-            margin: 12px 0x 12px 12px;
-            background-color: rgb(243 244 246/0.6);;
+            margin: 12px;
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
+            border-radius: 5%;
+
+
+            &:hover {
+                background-color: #f1f7fe;
+            }
 
             .item-image {
-                max-height: 150px;
+                max-width: 200px;
                 width: auto;
+                margin-top: 12px;
+                margin-bottom: 12px;
             }
 
             .item-detail {
                 margin-left: 16px;
-                flex-basis: 65%;
+                margin-top: 40px;
+                flex-basis: 75%;
 
                 h2 {
                     font-size: 18px;
                     margin: 0px 0px;
-                    margin-top: 12px;
+                    white-space: normal;
+                    overflow-wrap: break-word;
+                    letter-spacing: 1.5 px
                 }
 
                 p {
-                    font-size: 13px;
+                    font-size: 12px;
                     margin: 8px 0px;
                     font-style: italic;
                 }
@@ -65,18 +81,14 @@
                 background-color: rgb(243 244 246/0.6);;
             }
             .ant-comment-inner {
-                margin: 12px;
-                padding: 8px 8px;
+                border-radius: 10%;
                 cursor: pointer;
-                max-width: 140px;
-                border-radius: 5%;
+                padding: 4px;
+                margin: 12px;
+
 
                 .ant-comment-content-author-name {
                     margin-top: 8px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    max-width: 100px;
                 }
 
                 &:hover {

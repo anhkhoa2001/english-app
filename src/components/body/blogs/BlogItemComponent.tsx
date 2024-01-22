@@ -6,7 +6,6 @@ import './css/BlogItemComponent.scss'
 
 const BlogItemComponent: React.FC<{blog: BlogItemDTO}> = ({blog}) => {
 
-    console.log(blog);
     return <div className="blog-item">
         <Comment
             author={<a>{blog.author.fullname}</a>}

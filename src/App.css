@@ -4,4 +4,14 @@
   margin: 0px;
   padding: 0px;
   font-family: sans-serif;
+  position: relative;
+  min-height: 120vh;
 }
+
+a {
+  text-decoration: none;
+}
+/* .udemy {
+  height: 800px;
+  bottom: ;
+} */

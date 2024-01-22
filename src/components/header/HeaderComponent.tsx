@@ -1,10 +1,10 @@
 import RedirectButton from "../event/redirect/RedirectButton";
 import './HeaderComponent.scss'
-import TokenProvider, { useToken } from "../../context/TokenProvider";
 import ProfileComponent from "./profile/ProfileComponent";
 import { useEffect, useState } from "react";
 import LoginService from "../../service/LoginService";
 import MessageResponse from "../../entity/response/MessageResponse";
+import { useToken } from "../../context/TokenProvider";
 
 class UserInfo {
     avatar: string;
@@ -18,21 +18,26 @@ class UserInfo {
 }
 
 const HeaderComponent: React.FC = () => {
-    const obj = useToken() || null;
+    const obj = useToken() || {isLogined: false, token: ''};
+
+    console.log(obj);
     const [isLogin, checkIsLogin] = useState(false);
     const [info, setInfo] = useState(new UserInfo('', ''));
 
     useEffect(() => {
         if (obj != undefined) {
-            checkIsLogin(obj?.isLogined);
+            checkIsLogin(obj.isLogined);
         }
+        console.log(obj?.isLogined);
+
         if (obj?.isLogined) {
             const token = localStorage.getItem('access_token');
+
             LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {
                 setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
             });
         }
-    }, [obj?.isLogined]);
+    }, [obj.isLogined]);
 
 
 

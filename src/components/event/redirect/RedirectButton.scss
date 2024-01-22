@@ -16,6 +16,12 @@
     z-index: 1;
     transition: 0.5s;
     margin: 1em;
+    text-decoration: none;
+
+    &:link { text-decoration: none; }
+    &:visited { text-decoration: none; }
+    &:hover { text-decoration: none; }
+    &:active { text-decoration: none; }
 
     span {
         position: absolute;

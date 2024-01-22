@@ -6,6 +6,7 @@ import ToeicComponent from "./types/TOEICComponent";
 import { Button, CountdownProps, Statistic } from "antd";
 import { MultiChoiceProp } from "../../../entity/props/MultiChoiceProp";
 import THPTComponent from "./types/THPTComponent";
+import { useState } from "react";
 
 const { Countdown } = Statistic;
 
@@ -255,25 +256,35 @@ const DetailExamComponent: React.FC = () => {
     let totalQuestion = 0;
     const structuralQuestion = questions.map((item, index) => {
         var total = 0;
+        var listIndexQuestion:Array<Number | undefined> = [] ;
         item.data.forEach(i => {
             if(i.type == 0) {
                 total++;
+                listIndexQuestion.push(i.index);
             } else {
                 total += i.questionChilds?.length || 0;
+                var tmp:Array<Number | undefined>  = i.questionChilds?.map(e => {return Number(e.index)}) || [];
+                listIndexQuestion = [...listIndexQuestion , ...tmp]
             }
-        });
+            
+        }); 
         totalQuestion += total;
         return {
             part: index + 1,
-            total: total
+            total: total,
+            listIndexQuestion: listIndexQuestion
         };
     });
+    const [indexTab, setIndexTab] = useState('1');
 
-    console.log(structuralQuestion);
-
-    let onChangeTab = undefined;
-
-    const onChangeTabQuesionList = (index: number) => {
+    const onChangeQuestion = (index: number) => {
+        var page = 1;
+        structuralQuestion.forEach((item, i) => {
+            if(item.listIndexQuestion.includes(index)) {
+                page = item.part;
+            } 
+        });
+        setIndexTab(page + '');
     }
 
     return <div className="detail-exam">
@@ -282,7 +293,7 @@ const DetailExamComponent: React.FC = () => {
             <div className="questions">
                 {
                     type == TypeExam.TOEIC ? 
-                    <ToeicComponent questions={questions} /> 
+                    <ToeicComponent questions={questions} indexTab={indexTab}/> 
                     : 
                     <THPTComponent questions={questions} />
                 }
@@ -298,7 +309,9 @@ const DetailExamComponent: React.FC = () => {
                 <h1>Question List</h1>
                 <div className="question-list">
                     {Array.from({ length: totalQuestion }, (_, i) => (
-                        <a href={`#question-${i + 1}`}><span className="item" key={i}>{i + 1}</span></a>
+                        <a href={`#question-${i + 1}`} onClick={() => onChangeQuestion(i)} key={i}>
+                            <span className="item" key={i}>{i + 1}</span>
+                        </a>
                     ))}
                 </div>
            </div>

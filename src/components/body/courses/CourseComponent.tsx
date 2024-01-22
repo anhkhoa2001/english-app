@@ -1,5 +1,5 @@
 import { CourseItemDTO } from '../../../entity/props/CourseItemDTO';
-import './CourseComponent.scss';
+import './detail/css/CourseComponent.scss';
 import CourseItemComponent from './CourseItemComponent';
 import { Checkbox, Collapse, Pagination, Radio, Space } from 'antd';
 import { Link } from 'react-router-dom';
@@ -97,7 +97,6 @@ const CourseComponent: React.FC = () => {
     const [value, setValue] = useState(5);
 
     const onChangeRate = (e: RadioChangeEvent) => {
-        console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
 
@@ -149,7 +148,7 @@ const CourseComponent: React.FC = () => {
         }
     ];
 
-    return <>
+    return <div className="udemy ">
         <TitleComponent type="All Courses" count_results={100} display={true} />
         <div className="course">
             <div className="left">
@@ -188,7 +187,7 @@ const CourseComponent: React.FC = () => {
             <div className="right">
                 {Array.from({ length: data.length }, (_, i) =>
                 (
-                    <Link to={`/learning/course/${data[i].code}?title=${data[i].title}`} ><CourseItemComponent data={data[i]} key={data[i].code} /></Link>
+                    <Link to={`/learning/course/${data[i].code}?title=${data[i].title}`} key={i} ><CourseItemComponent data={data[i]}/></Link>
                 ))}
                 <div className='paging'>
                     <Pagination
@@ -199,7 +198,7 @@ const CourseComponent: React.FC = () => {
                 </div>
             </div>
         </div>
-    </>
+    </div>
 }
 
 

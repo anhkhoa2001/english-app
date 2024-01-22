@@ -6,6 +6,15 @@
   justify-content: center;
   cursor: pointer;
 
+  .ant-btn-compact-first-item {
+    display: none;
+  }
+
+  .ant-btn-compact-last-item {
+     border: none;
+     margin-left: 16px;
+  }
+
   .fir-clickcircle {
     height: 60px;
     width: 60px;

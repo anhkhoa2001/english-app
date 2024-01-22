@@ -59,16 +59,16 @@ const BlogComponent: React.FC = () => {
 
     const blogs: BlogItemDTO[] = [
         {
-            title: "Skills needed to achieve a perfect IELTS Reading score",
+            title: "Describe a time you wore a uniform for work or school - Bài mẫu IELTS Speaking",
             author: {
-                fullname: "Dam Tam Khoa",
+                fullname: "Dam Tam Khoa ",
                 role: "STUDENT",
                 avartar: "https://avatars.githubusercontent.com/u/72397589?v=4",
                 createAt: "11/11/2024"
             },
-            summary: "You need to grasp these skills to improve your IELTS Reading score. Let's read the following article!",
+            summary: "Hãy tham khảo bài mẫu 8.0+ chủ đề “Describe a time you wore a uniform for work or school” cho IELTS Speaking Part 2 và 3 nhé!",
             code: "BLOG001",
-            image: "https://lh7-us.googleusercontent.com/mQjgldxY9ci7dNfPqRhpXIbJoJU3LgDCJLZqIwUlAID8hshfvlIEjAtlhY8oRshztRoZquO1_RqQGwPqvM2FKA8QTTqLsIVPnkLYm1hY7qRiRaMm1a_l9oenPZNroCmrLQlvRfyxbG_jahh64F0nroA",
+            image: "https://study4.com/media/examprep/Post/files/2024/01/18/Topic_Visual_Images_83.png",
             content: <>
 
                 <div
@@ -749,7 +749,7 @@ const BlogComponent: React.FC = () => {
         setIndexBlog(index);
     }
 
-    return <>
+    return <div className="udemy ">
         <TitleComponent type="All Blogs" count_results={100} display={false} />
         <div className="blog">
             <div className="left">
@@ -764,22 +764,22 @@ const BlogComponent: React.FC = () => {
                     :
                     <>
                         {Array.from({ length: blogs.length }, (_, i) =>
-                            <div className="blog-item" onClick={() => onChangeClickToItem(blogs[i].code, i)}>
+                            <div className="blog-item" onClick={() => onChangeClickToItem(blogs[i].code, i)} key={i}>
                                 <img className="item-image" src={blogs[i].image} alt="" />
                                 <div className='item-detail'>
                                     <h2>{blogs[i].title}</h2>
                                     <p>{blogs[i].summary}</p>
+                                    <Comment
+                                        author={<a>{blogs[i].author.fullname}</a>}
+                                        avatar={
+                                            <Avatar
+                                                src={blogs[i].author.avartar}
+                                                alt={blogs[i].author.fullname}
+                                            />
+                                        }
+                                        content={''}
+                                    />
                                 </div>
-                                <Comment
-                                    author={<a>{blogs[i].author.fullname}</a>}
-                                    avatar={
-                                        <Avatar
-                                            src={blogs[i].author.avartar}
-                                            alt={blogs[i].author.fullname}
-                                        />
-                                    }
-                                    content={''}
-                                />
                             </div>
                         )}
 
@@ -793,7 +793,7 @@ const BlogComponent: React.FC = () => {
                     </>}
             </div>
         </div>
-    </>
+    </div>
 
 }
 

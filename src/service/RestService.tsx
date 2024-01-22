@@ -5,8 +5,7 @@ function objectToQueryString(obj: object) {
     const queryString = Object.keys(obj)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent((obj as any)[key])}`)
         .join('&');
-
-    return `?${queryString}`;
+    return queryString === '' ? '' : `?${queryString}`;
 }
 
 class RestService<T> {
@@ -33,18 +32,26 @@ class RestService<T> {
         header: object,
         param: object,
         func: (status: number, data: MessageResponse<T> | null) => void) {
-
-        axios({
-            method: 'get',
-            url: path + objectToQueryString(param),
-            headers: header
+            fetch(path + objectToQueryString(param), {
+            method: "GET",
+            headers: new Headers(Object.entries(header))
         })
-            .then(function (response) {
-                func(response.status, response.data);
+            .then(response => response.json())
+            .then(json => {
+                func(200, json.data);
             })
-            .catch(function(error) {
-                func(error.response.status, null);
-            });
+            .catch(error => console.error(error));
+        // axios({
+        //     method: 'get',
+        //     url: path + objectToQueryString(param),
+        //     headers: header
+        // })
+        //     .then(function (response) {
+        //         func(response.status, response.data);
+        //     })
+        //     .catch(function(error) {
+        //         func(401, null);
+        //     });
     }
 };
 

@@ -1,5 +1,5 @@
 import { Tabs, TabsProps } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactAudioPlayer from "react-audio-player";
 import '../css/ToeicComponent.scss'
 import MultiChoice from "../questions/MultiChoice";
@@ -14,11 +14,14 @@ const TypeQuestion = {
 const ToeicComponent: React.FC<{questions: {
     type: number,
     data: MultiChoiceProp[]
-}[]}> = ({questions}) => {
+}[], indexTab: string}> = ({questions, indexTab}) => {
 
-    const onChange = (key: string) => {
-        console.log(key);
-    };
+    console.log('index 123  ||  ', indexTab);
+    const [index, setIndex] = useState(indexTab);
+
+    useEffect(() => {
+        setIndex(indexTab)
+    } , [indexTab])
 
     const items: TabsProps['items'] = questions.map((item, index) => {
         const result = {
@@ -46,7 +49,7 @@ const ToeicComponent: React.FC<{questions: {
             autoPlay
             controls
         />
-        <Tabs className="tab-list" defaultActiveKey="1" items={items} onChange={onChange} />
+        <Tabs className="tab-list" activeKey={index} items={items} onChange={(e) => setIndex(e)}/>
     </div>
 }
 

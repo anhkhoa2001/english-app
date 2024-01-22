@@ -1,6 +1,6 @@
 import { LuDot } from "react-icons/lu";
 import { CourseItemDTO } from "../../../entity/props/CourseItemDTO";
-import './CourseItemComponent.scss'
+import './detail/css/CourseItemComponent.scss'
 
 
 const CourseItemComponent: React.FC<{data: CourseItemDTO}> = ({data}) => {

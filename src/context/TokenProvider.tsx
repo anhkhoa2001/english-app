@@ -15,7 +15,7 @@ class TokenContextProps {
 
 export const TokenContext = createContext<TokenContextProps | undefined>(undefined);
 
-const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const prop = new TokenContextProps("", false);
     const tokenCurrent = localStorage.getItem("access_token");
     const [session, setSession] = useState<TokenContextProps>(prop);
@@ -27,7 +27,6 @@ const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           console.log((window as any).globalConfig.PATH_FE);
           setSession(new TokenContextProps(response.data, i));
           localStorage.setItem("access_token", response.data);
-          //window.location.replace((window as any).globalConfig.PATH_FE);
           navigate('/');
         } else {
           localStorage.removeItem("access_token");
@@ -48,7 +47,6 @@ const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             type: type
         }, afterCheckLogin);
       } else {
-          console.log('check token');
           LoginService.checkToken(tokenCurrent, afterCheckLogin);
       }
     }, []);

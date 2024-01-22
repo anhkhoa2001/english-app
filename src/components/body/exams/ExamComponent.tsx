@@ -102,6 +102,8 @@ const ExamComponent: React.FC = () => {
         }
     ];
 
+    
+
     return <>
         <TitleComponent type="All Examinations" count_results={100} display={true} />
         <div className="exam">
@@ -112,15 +114,15 @@ const ExamComponent: React.FC = () => {
             </div>
             <div className="right">
                 {Array.from({ length: exams.length }, (_, i) =>
-                    <Link to={`/learning/exam/${exams[i].code}?type=${exams[i].type}`}>
-                        <div className="exam-item" key={i}>
+                    <Link to={`/learning/exam/${exams[i].code}?type=${exams[i].type}`} key={i}>
+                        <div className="exam-item">
                             <img className="item-image" src={exams[i].image} alt="" />
                             <div className='item-detail'>
                                 <h2>{exams[i].title}</h2>
                                 <p>{exams[i].summary}</p>
                             </div>
                             <Comment
-                                author={<a>Han Solo</a>}
+                                author={'Han Solo'}
                                 avatar={
                                     <Avatar
                                         src={exams[i].author.avartar}
