@@ -150,7 +150,7 @@ const CourseComponent: React.FC = () => {
     ];
 
     return <>
-        <TitleComponent type="All Courses" count_results={100} />
+        <TitleComponent type="All Courses" count_results={100} display={true} />
         <div className="course">
             <div className="left">
                 <Collapse items={items}

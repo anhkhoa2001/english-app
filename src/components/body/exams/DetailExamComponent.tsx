@@ -107,7 +107,7 @@ const DetailExamComponent: React.FC = () => {
                 questionChilds: [
                     {
                         type: 0,
-                        index: 5,
+                        index: 4,
                         content: "According to paragraph 1, what did Janssen do after his trip to Thailand?",
                         answers: [
                             {
@@ -127,7 +127,7 @@ const DetailExamComponent: React.FC = () => {
                     },
                     {
                         type: 0,
-                        index: 6,
+                        index: 5,
                         content: "The word \"it\" in paragraph 2 refers to_________.",
                         answers: [
                             {
@@ -147,7 +147,7 @@ const DetailExamComponent: React.FC = () => {
                     },
                     {
                         type: 0,
-                        index: 7,
+                        index: 6,
                         content: "Which best serves as the title for the passage?",
                         answers: [
                             {
@@ -186,7 +186,7 @@ const DetailExamComponent: React.FC = () => {
                 questionChilds: [
                     {
                         type: 0,
-                        index: 5,
+                        index: 7,
                         content: "According to paragraph 1, what did Janssen do after his trip to Thailand?",
                         answers: [
                             {
@@ -206,7 +206,7 @@ const DetailExamComponent: React.FC = () => {
                     },
                     {
                         type: 0,
-                        index: 6,
+                        index: 8,
                         content: "The word \"it\" in paragraph 2 refers to_________.",
                         answers: [
                             {
@@ -226,7 +226,7 @@ const DetailExamComponent: React.FC = () => {
                     },
                     {
                         type: 0,
-                        index: 7,
+                        index: 9,
                         content: "Which best serves as the title for the passage?",
                         answers: [
                             {
@@ -271,12 +271,20 @@ const DetailExamComponent: React.FC = () => {
 
     console.log(structuralQuestion);
 
+    let onChangeTab = undefined;
+
+    const onChangeTabQuesionList = (index: number) => {
+    }
+
     return <div className="detail-exam">
         <CommonNav title={`Practice Set 2023 TOEIC Test 1 `} url_back="/exams" />
         <div className="content-exam">
             <div className="questions">
                 {
-                    type == TypeExam.TOEIC ? <ToeicComponent questions={questions} /> : <THPTComponent questions={questions} />
+                    type == TypeExam.TOEIC ? 
+                    <ToeicComponent questions={questions} /> 
+                    : 
+                    <THPTComponent questions={questions} />
                 }
             </div>
             <div className="overview">
@@ -290,7 +298,7 @@ const DetailExamComponent: React.FC = () => {
                 <h1>Question List</h1>
                 <div className="question-list">
                     {Array.from({ length: totalQuestion }, (_, i) => (
-                        <span className="item" key={i}>{i + 1}</span>
+                        <a href={`#question-${i + 1}`}><span className="item" key={i}>{i + 1}</span></a>
                     ))}
                 </div>
            </div>

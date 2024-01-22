@@ -8,6 +8,7 @@ import CourseComponent from './components/body/courses/CourseComponent.tsx';
 import "../node_modules/video-react/dist/video-react.css";
 import ExamComponent from './components/body/exams/ExamComponent.tsx';
 import DetailExamComponent from './components/body/exams/DetailExamComponent.tsx';
+import BlogComponent from './components/body/blogs/BlogComponent.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
@@ -20,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <CourseComponent />
                     </>
                 }></Route>
-                <Route path="/blogs" element={<h1>Day la trong Bloig 321312</h1>}></Route>
+                <Route path="/blogs" element={<BlogComponent />}></Route>
                 <Route path="/exams" element={
                     <>
                         <ExamComponent />

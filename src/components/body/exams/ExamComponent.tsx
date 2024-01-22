@@ -103,7 +103,7 @@ const ExamComponent: React.FC = () => {
     ];
 
     return <>
-        <TitleComponent type="All Examinations" count_results={100} />
+        <TitleComponent type="All Examinations" count_results={100} display={true} />
         <div className="exam">
             <div className="left">
                 <Collapse items={items}

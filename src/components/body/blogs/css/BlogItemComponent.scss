@@ -1,0 +1,22 @@
+
+.blog-item {
+    flex-wrap: wrap;
+    padding: 20px;
+    padding-left: 30px;
+    padding-top: 30px;
+    .ant-comment-content-author {
+        margin-bottom: 0px;
+        margin-top: 0px;
+
+    }
+
+    .blog-item-avatar {
+        .ant-comment-content-author-name {
+            margin: 0px !important;
+        }
+    }
+
+    .blog-content {
+        padding: 12px;
+    }
+}

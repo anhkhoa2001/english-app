@@ -8,7 +8,9 @@ const MultiChoice: React.FC<{prop: MultiChoiceProp}>
                             = ({prop}) => {
 
     return <div className="question multi-choice">
-        <QuestionNumber index={prop.index}/>
+        <div id = {`question-${prop.index}`}>
+            <QuestionNumber index={prop.index}/>
+        </div>
         <Tooltip title={prop.hint}>
             {prop.content}
         </Tooltip>
