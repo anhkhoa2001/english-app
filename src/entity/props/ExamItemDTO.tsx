@@ -1,12 +1,12 @@
 export interface ExamItemDTO {
     title: string;
-    author: {
+    author?: {
         fullname: string;
         role: string;
         avartar: string;
     };
-    summary: string;
+    summary?: string;
     code: string;
-    image: string;
-    type: number;
+    image?: string;
+    type?: number;
 }

@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import LoginService from '../service/LoginService';
 import MessageResponse from '../entity/response/MessageResponse';
-import { useNavigate } from 'react-router-dom';
 
 class TokenContextProps {
     token: string;
@@ -20,14 +19,11 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const tokenCurrent = localStorage.getItem("access_token");
     const [session, setSession] = useState<TokenContextProps>(prop);
 
-    const navigate = useNavigate();
-
     const afterCheckLogin: (response: MessageResponse<string> | null, i: boolean) => void = (response, i) => {
-        if(response != null) {
-          console.log((window as any).globalConfig.PATH_FE);
+      console.log('response', response);
+      if(response != null) {
           setSession(new TokenContextProps(response.data, i));
           localStorage.setItem("access_token", response.data);
-          navigate('/');
         } else {
           localStorage.removeItem("access_token");
           setSession(new TokenContextProps("", false));
@@ -36,6 +32,7 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
 
     useEffect(() => {
+      console.log('current', tokenCurrent);
       if(tokenCurrent == undefined) {
         const url = new URLSearchParams(window.location.search);
         const code = url.get('code');

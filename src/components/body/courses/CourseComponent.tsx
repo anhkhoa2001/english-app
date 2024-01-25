@@ -156,34 +156,6 @@ const CourseComponent: React.FC = () => {
                     bordered={false}
                     defaultActiveKey={['1']} />
             </div>
-            {/* <div className="left">
-            <ToggleSearch
-                type_select='checkbox'
-                title_header='Video Durations'
-                select_contents={['0 - 1 Hours', '2 - 4 Hours', '5 - 8 Hours']}
-                include_icon={false}
-                count_icon={[]}
-                type_icon={<IoIosStar />}
-            />
-
-            <ToggleSearch
-                type_select='radio'
-                title_header='Ratings'
-                select_contents={['5.0', '4.0', '3.0']}
-                include_icon={true}
-                count_icon={[5, 4, 3]}
-                type_icon={<IoIosStar />}
-            />
-
-            <ToggleSearch
-                type_select='checkbox'
-                title_header='Level'
-                select_contents={['All Level', 'Beginner', 'Intermediate', 'Expert']}
-                include_icon={false}
-                count_icon={[]}
-                type_icon={<IoIosStar />}
-            />
-        </div> */}
             <div className="right">
                 {Array.from({ length: data.length }, (_, i) =>
                 (

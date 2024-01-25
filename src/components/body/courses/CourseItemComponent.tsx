@@ -4,7 +4,6 @@ import './detail/css/CourseItemComponent.scss'
 
 
 const CourseItemComponent: React.FC<{data: CourseItemDTO}> = ({data}) => {
-    // onClick={() => {window.location.replace(redirect_url)}}
     return <div className="course-item" >
         <img src={data.image} className="thumnail"/> 
         <div className="detail">

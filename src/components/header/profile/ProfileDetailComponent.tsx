@@ -83,7 +83,7 @@ const ProfileDetailComponent: React.FC = () => {
         },
     ];
 
-    return <div style={{display: "flex", flexDirection: "column", justifyContent: "center", width: "100%"}}>
+    return <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
         <div className="profile-detail">
         <h1>Account Center</h1>
         <Tabs size='large' defaultActiveKey="1" items={items} onChange={onChange} />

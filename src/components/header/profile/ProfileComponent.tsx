@@ -28,6 +28,11 @@ const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname:
                 key: '2',
                 onClick: () => navigate('/profile')
             },
+            {
+                label: 'Management',
+                key: '3',
+                onClick: () => navigate('/management')
+            },
           ];
         
 

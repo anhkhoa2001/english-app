@@ -32,10 +32,16 @@ const HeaderComponent: React.FC = () => {
 
         if (obj?.isLogined) {
             const token = localStorage.getItem('access_token');
-
-            LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {
-                setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
-            });
+            var info = localStorage.getItem('info') || null;
+            if(info == null) {
+                LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {    
+                    localStorage.setItem('info', JSON.stringify(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''))); 
+                    setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
+                });
+            } else {
+                setInfo(JSON.parse(localStorage.getItem('info') || ""));
+            }
+            
         }
     }, [obj.isLogined]);
 
@@ -50,12 +56,16 @@ const HeaderComponent: React.FC = () => {
             <RedirectButton content="Examination" path="/exams"></RedirectButton>
             <RedirectButton content="Blogs" path="/blogs"></RedirectButton>
             <RedirectButton content="Library" path="/library"></RedirectButton>
-            {isLogin ?
+            {/* {isLogin ?
                 <ProfileComponent
                     avatar={info.avatar}
                     count_noti={10}
                     fullname={info.fullname}></ProfileComponent>
-                : <RedirectButton content="Log in" path="/login"></RedirectButton>}
+                : <RedirectButton content="Log in" path="/login"></RedirectButton>} */}
+                <ProfileComponent
+                    avatar={info.avatar}
+                    count_noti={10}
+                    fullname={info.fullname}></ProfileComponent>
         </ul>
     </nav>
 }

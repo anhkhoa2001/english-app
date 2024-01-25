@@ -12,6 +12,7 @@ import BlogComponent from './components/body/blogs/BlogComponent.tsx';
 import LibraryComponent from './components/body/library/LibraryComponent.tsx';
 import HomeComponent from './components/body/home/HomeComponent.tsx';
 import ProfileDetailComponent from './components/header/profile/ProfileDetailComponent.tsx';
+import ManagementComponent from './components/body/management/ManagementComponent.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="/profile" element={<ProfileDetailComponent />}></Route>
                 <Route path="/profile/privacy" element={<>
                 </>}></Route>
+                <Route path="/management" element={<ManagementComponent />}></Route>
                 <Route path="/profile/term" element={<ProfileDetailComponent />}></Route>
                 <Route path="/exams" element={
                     <>

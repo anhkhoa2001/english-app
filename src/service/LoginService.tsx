@@ -15,6 +15,7 @@ const LoginService = {
             {},
             (status: number, data: MessageResponse<string> | null) => {
                 if(status === 200) {
+                    console.log('data 1', data);
                     func(data, true);
                 } else {
                     func(null, false);
@@ -28,6 +29,7 @@ const LoginService = {
             body,
             (status: number, data: MessageResponse<string> | null) => {
                 if(status === 200) {
+                    console.log('data', data);
                     func(data, true);
                 } else {
                     func(null, false);

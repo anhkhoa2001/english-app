@@ -32,26 +32,26 @@ class RestService<T> {
         header: object,
         param: object,
         func: (status: number, data: MessageResponse<T> | null) => void) {
-            fetch(path + objectToQueryString(param), {
-            method: "GET",
-            headers: new Headers(Object.entries(header))
-        })
-            .then(response => response.json())
-            .then(json => {
-                func(200, json.data);
+            // fetch(path + objectToQueryString(param), {
+            //     method: "GET",
+            //     headers: new Headers(Object.entries(header))
+            // })
+            // .then(response => response.json())
+            // .then(json => {
+            //     func(200, json);
+            // })
+            // .catch(error => console.error(error));
+            axios({
+                method: 'get',
+                url: path + objectToQueryString(param),
+                headers: header
             })
-            .catch(error => console.error(error));
-        // axios({
-        //     method: 'get',
-        //     url: path + objectToQueryString(param),
-        //     headers: header
-        // })
-        //     .then(function (response) {
-        //         func(response.status, response.data);
-        //     })
-        //     .catch(function(error) {
-        //         func(401, null);
-        //     });
+            .then(function (response) {
+                func(response.status, response.data);
+            })
+            .catch(function(error) {
+                func(error, null);
+            });
     }
 };
 

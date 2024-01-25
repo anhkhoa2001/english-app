@@ -1,0 +1,55 @@
+.introduction {
+    h1 {
+        margin: 0px;
+    }
+
+    div {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        .author,
+        p {
+            margin: 0px;
+            font-size: 80%;
+        }
+
+        .author {
+            font-weight: 400;
+            line-height: 1.4;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .rating-star {
+            display: flex;
+            flex-wrap: nowrap;
+
+            p {
+                display: flex;
+                flex-direction: column;
+                margin-left: 16px;
+            }
+
+            ul {
+                font-size: 80%;
+            }
+        }
+    }
+}
+
+.add-section {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 24px 0px;
+
+    .header {
+        font-size: 24px;
+        font-weight: 800;
+    }    
+}
+
+.item-section {
+    margin-right: 8px;
+}

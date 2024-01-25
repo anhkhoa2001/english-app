@@ -1,0 +1,33 @@
+
+.management {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: left;
+    height: 100vh;
+    margin-top: 20px;
+
+    .menu {
+        flex-basis: 15%;
+        position: relative;
+        top: 0;
+        left: 0;
+        padding: 12px 16px;
+    }
+
+    .dashboard {
+        flex-basis: 75%;
+        padding: 12px 16px;
+
+        .header-course {
+
+            .ant-form-item-row {
+                display: flex;
+                justify-content: space-between;
+
+                .ant-form-item-control {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
