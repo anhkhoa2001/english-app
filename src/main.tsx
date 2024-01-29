@@ -13,6 +13,7 @@ import LibraryComponent from './components/body/library/LibraryComponent.tsx';
 import HomeComponent from './components/body/home/HomeComponent.tsx';
 import ProfileDetailComponent from './components/header/profile/ProfileDetailComponent.tsx';
 import ManagementComponent from './components/body/management/ManagementComponent.tsx';
+import TestComponent from './components/body/editor/EditorComponent.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>

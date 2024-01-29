@@ -8,6 +8,7 @@ import { useState } from "react";
 import CourseList from "./course/CourseList";
 import { ExamItemDTO } from "../../../entity/props/ExamItemDTO";
 import ExamManagement from "./exam/ExamManagement";
+import ExamList from "./exam/ExamList";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -61,12 +62,16 @@ const ManagementComponent: React.FC = () => {
         setElementDashboard(<CourseList/>);
     }
 
+    const onChangeExamCenter = () => {
+        setElementDashboard(<ExamList/>);
+    }
+
     const items: MenuProps['items'] = [
         getItem(<p onClick={onChangeCourseCenter}>Courses Center</p>, 'sub1', <AppstoreOutlined />, courses.map(c => {
             return getItem(c.title, c.code);
         })),
 
-        getItem('Exams Center', 'sub2', <AppstoreOutlined />, exams.map(e => {
+        getItem(<p onClick={onChangeExamCenter}>Exams Center</p>, 'sub2', <AppstoreOutlined />, exams.map(e => {
             return getItem(e.title, e.code);
         })),
         getItem('Group', 'grp', null, [
@@ -75,7 +80,6 @@ const ManagementComponent: React.FC = () => {
     ];
 
     const onClick: MenuProps['onClick'] = (e) => {
-        
         if(courses.map(e => e.code).includes(e.key)) {
             setElementDashboard(<CourseManagement />);
         } else if(exams.map(e => e.code).includes(e.key)) {
