@@ -109,6 +109,7 @@ const CourseManagement: React.FC = () => {
     };
 
     const [isModalSectionOpen, setIsModalSectionOpen] = useState(modal);
+    
     const showModalAdd = (key: string) => {
         isModalSectionOpen.set(key, true);
         const newMap = new Map(isModalSectionOpen);

@@ -125,8 +125,8 @@ const ExamComponent: React.FC = () => {
                                 author={'Han Solo'}
                                 avatar={
                                     <Avatar
-                                        src={exams[i].author.avartar}
-                                        alt={exams[i].author.fullname}
+                                        src={exams[i].author?.avartar}
+                                        alt={exams[i].author?.fullname}
                                     />
                                 }
                                 content={''}
