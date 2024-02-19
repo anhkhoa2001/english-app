@@ -3,7 +3,7 @@ import { Button, Form, Input, Select, Switch, Upload } from "antd";
 const { TextArea } = Input;
 
 
-const SectionForm: React.FC<{onSubmit: (e:any) => void}> = ({onSubmit}) => {
+const SectionForm: React.FC<{onSubmit: (e:any) => void, formRef: any}> = ({onSubmit, formRef}) => {
     return <div className="section-form" style={{width: '900px'}}>
         <Form
             labelCol={{ span: 4 }}
@@ -11,16 +11,23 @@ const SectionForm: React.FC<{onSubmit: (e:any) => void}> = ({onSubmit}) => {
             layout="horizontal"
             style={{ width: '900px' }}
             onFinish={onSubmit}
+            ref={formRef}
         >
             <Form.Item 
             label="Section Name"
+            name="sectionName"
             required={true}>
                 <Input />
             </Form.Item>
-            <Form.Item label="Status" valuePropName="checked">
+            <Form.Item 
+            name="status"
+            label="Status" 
+            valuePropName="checked">
                 <Switch />
             </Form.Item>
-            <Form.Item label="Description">
+            <Form.Item 
+            name="description"
+            label="Description">
                 <TextArea rows={4} />
             </Form.Item>
         </Form>

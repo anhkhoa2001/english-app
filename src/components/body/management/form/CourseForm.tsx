@@ -16,24 +16,39 @@ const normFile = (e: any) => {
 
 const levels = ['Beginner', 'Intermediate', 'Expert'];
 
-const CourseForm: React.FC = () => {
+const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({onSubmit, courseFormRef}) => {
     return <div className="course-form" style={{maxWidth: '1200px'}}>
         <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             style={{ width: 1200 }}
+            onFinish={onSubmit}
+            ref={courseFormRef}
         >
             <Form.Item 
-            label="Course Name"
-            rules={[{ required: true, message: 'Please input your name' }]}
+            label="Course Code"
+            name="courseCode"
+            rules={[{ required: true, message: 'Please input course code' }]}
             required={true}>
                 <Input />
             </Form.Item>
-            <Form.Item label="Summary">
+            <Form.Item 
+            label="Course Name"
+            name="courseName"
+            rules={[{ required: true, message: 'Please input course name' }]}
+            required={true}>
+                <Input />
+            </Form.Item>
+            <Form.Item 
+            label="Summary"
+            name="summary"
+            >
                 <TextArea rows={4} />
             </Form.Item>
-            <Form.Item label="Level">
+            <Form.Item 
+            label="Level"
+            name="level">
                 <Select>
                     {levels.map(e => {
                         return <Select.Option value={e}>{e}</Select.Option>;
@@ -41,17 +56,17 @@ const CourseForm: React.FC = () => {
                     
                 </Select>
             </Form.Item>
-            <Form.Item label="Description">
+            <Form.Item label="Description" name="description">
                 <TextArea rows={4} />
             </Form.Item>
-            <Form.Item label="Public" valuePropName="checked">
+            <Form.Item label="Public" name="public" valuePropName="checked">
                 <Switch />
             </Form.Item>
-            <Form.Item label="Status" valuePropName="checked">
+            <Form.Item label="Status" name="status" valuePropName="checked">
                 <Switch />
             </Form.Item>
-            <Form.Item label="Thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload action="/upload.do">
+            <Form.Item label="Thumbnail" name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
+                <Upload action="http://localhost:9999/api/up-file/upload-to-cloud">
                     <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
             </Form.Item>

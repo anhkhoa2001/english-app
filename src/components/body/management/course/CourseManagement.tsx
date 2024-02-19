@@ -2,7 +2,7 @@ import { Button, Collapse, CollapseProps, Form, Image, Modal, Rate, Space, Table
 import PreViewVideo from "./PreviewVideo";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import '../css/CourseManagement.scss'
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import SectionForm from "../form/SectionForm";
 import LessonForm from "../form/LessonForm";
 
@@ -15,7 +15,7 @@ modal.set(LESSON, false);
 
 
 const CourseManagement: React.FC = () => {
-
+    const formRef = useRef(null);
     const url_video = "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4";
     const url_image = "https://admin-s3.s3-sgn09.fptcloud.com/employee/2024/1/24/_DSF0893.JPG";
 
@@ -177,11 +177,14 @@ const CourseManagement: React.FC = () => {
         <Collapse items={itemDashboards} expandIcon={({ isActive }) => <></>} defaultActiveKey={['1']} onChange={onChange} />
         <Modal title="Add New Section"
             open={isModalSectionOpen.get(SECTION)}
-            onOk={() => closeModal(SECTION)}
+            onOk={() => {
+                formRef.current?.submit();
+                closeModal(SECTION)
+            }}
             onCancel={() => handleCancel(SECTION)}
             okText='Submit'
             width={800}>
-            <SectionForm onSubmit={(e) => submitFormAddSection(e)} />
+            <SectionForm onSubmit={submitFormAddSection} formRef={formRef} />
         </Modal>
 
         <Modal title="Add New Lesson"
