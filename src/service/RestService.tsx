@@ -23,7 +23,7 @@ class RestService<T> {
                 func(response.status, response.data);
             })
             .catch(function(error) {
-                func(error.response.status, null);
+                func(error.response.status, error.response.data);
             });
     };
 

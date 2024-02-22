@@ -2,9 +2,12 @@ import { Button, Collapse, CollapseProps, Form, Image, Modal, Rate, Space, Table
 import PreViewVideo from "./PreviewVideo";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import '../css/CourseManagement.scss'
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SectionForm from "../form/SectionForm";
 import LessonForm from "../form/LessonForm";
+import MessageResponse from "../../../../entity/response/MessageResponse";
+import CourseService, { CourseDTO } from "../../../../service/CourseService";
+import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
 
 const SECTION: string = "section";
 const LESSON: string = "lesson";
@@ -14,8 +17,26 @@ modal.set(SECTION, false);
 modal.set(LESSON, false);
 
 
-const CourseManagement: React.FC = () => {
+const CourseManagement: React.FC<{code: string}> = ({code}) => {
     const formRef = useRef(null);
+    const lessonFormRef = useRef(null);
+    const [item, setItem] = useState<CourseItemDTO>();
+    const [rate, setRate] = useState(0);
+
+    const loadCourse: (data: MessageResponse<CourseItemDTO> | null) => void = (data) => {
+        try {
+            setItem(data?.data);
+            console.log('data 1', data);
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    useEffect(() => {
+        CourseService.getByCode("abc", code, loadCourse);
+    }, []);
+
+
     const url_video = "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4";
     const url_image = "https://admin-s3.s3-sgn09.fptcloud.com/employee/2024/1/24/_DSF0893.JPG";
 
@@ -155,17 +176,22 @@ const CourseManagement: React.FC = () => {
         }
     });
 
+
+    const onSubmitAddLesson = (e:any) => {
+        console.log(e);
+    }
+
     return <>
         {/* <PreViewVideo url_image={url_image} url_video={url_video} /> */}
         <div className="introduction">
-            <h1>The English Master Course: English Grammar, English Speaking</h1>
-            <h3>A Complete English Language Course: English Grammar, Speaking, Pronunciation, and Writing. British and American English.</h3>
+            <h1>{item?.courseName}</h1>
+            <h3>{item?.summary}</h3>
             <div>
                 <div className="rating-star">
-                    <Rate disabled allowHalf defaultValue={4.5} />
-                    <p>{1000} students</p>
+                    <Rate disabled allowHalf defaultValue={item?.rate} />
+                    <p>{item?.totalSub} students</p>
                 </div>
-                <span className="author">Created by <a href="/">Khoa dam tam</a></span>
+                <span className="author">Created by <a href="/">{item?.createBy}</a></span>
             </div>
         </div>
         <div className="add-section">
@@ -178,6 +204,7 @@ const CourseManagement: React.FC = () => {
         <Modal title="Add New Section"
             open={isModalSectionOpen.get(SECTION)}
             onOk={() => {
+                //@ts-ignore
                 formRef.current?.submit();
                 closeModal(SECTION)
             }}
@@ -189,11 +216,19 @@ const CourseManagement: React.FC = () => {
 
         <Modal title="Add New Lesson"
             open={isModalSectionOpen.get(LESSON)}
-            onOk={() => closeModal(LESSON)}
+            onOk={() => {
+                //@ts-ignore
+                lessonFormRef.current?.submit();
+            }}
             onCancel={() => handleCancel(LESSON)}
             okText='Submit'
             width={900}>
-            <LessonForm />
+            <LessonForm 
+                section_name={item?.courseName || ""} 
+                section_code={item?.code || ""}
+                lessonFormRef={lessonFormRef}
+                onSubmit={onSubmitAddLesson}
+            />
         </Modal>
     </>
 }

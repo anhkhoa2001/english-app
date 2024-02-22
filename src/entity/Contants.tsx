@@ -27,3 +27,5 @@ export interface UserInfo {
     username: string;
     email: string;
 }
+
+export const URL_UPLOAD_RESOURCE = "http://localhost:9999/api/up-file/upload-to-cloud";

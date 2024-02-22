@@ -1,5 +1,5 @@
-import {Outlet} from 'react-router-dom';
-import './BodyComponent.scss' 
+import { Outlet } from 'react-router-dom';
+import './BodyComponent.scss'
 
 const BodyComponent: React.FC = () => {
 

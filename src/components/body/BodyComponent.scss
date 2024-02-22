@@ -2,7 +2,8 @@
 .main {
     width: 70vw;
     margin: 0 auto;
-    // height: 80vh;
-    // overflow-y: scroll;
 
+    &:has(.management) {
+        width: 100vw;
+    }
 }

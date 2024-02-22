@@ -1,6 +1,5 @@
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Cascader, Checkbox, ColorPicker, DatePicker, Form, Input, InputNumber, Radio, Select, Slider, Switch, TreeSelect, Upload } from "antd";
-import { useState } from "react";
 
 
 const { RangePicker } = DatePicker;
@@ -17,8 +16,11 @@ const normFile = (e: any) => {
 const levels = ['Beginner', 'Intermediate', 'Expert'];
 
 const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({onSubmit, courseFormRef}) => {
+    const [form] = Form.useForm();
+    form.resetFields();
     return <div className="course-form" style={{maxWidth: '1200px'}}>
         <Form
+            form={form}
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 14 }}
             layout="horizontal"
@@ -49,12 +51,15 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
             <Form.Item 
             label="Level"
             name="level">
-                <Select>
-                    {levels.map(e => {
-                        return <Select.Option value={e}>{e}</Select.Option>;
+                <Select
+                    defaultValue={levels[0]}
+                    options={levels.map(e => {
+                        return {
+                            value: e,
+                            label: e
+                        };
                     })}
-                    
-                </Select>
+                />
             </Form.Item>
             <Form.Item label="Description" name="description">
                 <TextArea rows={4} />
@@ -65,7 +70,10 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
             <Form.Item label="Status" name="status" valuePropName="checked">
                 <Switch />
             </Form.Item>
-            <Form.Item label="Thumbnail" name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
+            <Form.Item 
+            rules={[{ required: true, message: 'Please input thumbnail file' }]}
+            label="Thumbnail" 
+            name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
                 <Upload action="http://localhost:9999/api/up-file/upload-to-cloud">
                     <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>

@@ -2,15 +2,17 @@ import { AppstoreOutlined, DeleteOutlined, EditOutlined, MailOutlined, SettingOu
 import { Button, Collapse, CollapseProps, Form, Input, MenuProps, Space, Table, TableProps, Tag } from "antd";
 import { Menu } from "antd/lib";
 import './css/ManagementComponent.scss';
-import { CourseItemDTO } from "../../../entity/props/CourseItemDTO";
 import CourseManagement from "./course/CourseManagement";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CourseList from "./course/CourseList";
 import { ExamItemDTO } from "../../../entity/props/ExamItemDTO";
 import ExamManagement from "./exam/ExamManagement";
 import ExamList from "./exam/ExamList";
+import MessageResponse from "../../../entity/response/MessageResponse";
+import CourseService, { CourseDTO } from "../../../service/CourseService";
 
 type MenuItem = Required<MenuProps>['items'][number];
+const max = 999999;
 
 function getItem(
     label: React.ReactNode,
@@ -31,14 +33,21 @@ function getItem(
 const ManagementComponent: React.FC = () => {
 
     const [elementDashboard, setElementDashboard] = useState(<CourseList/>);
+    const [courses, setCourses] = useState<CourseDTO | null>(null);
 
-    const courses: CourseItemDTO[] = [
-        {
-            code: "TOEIC2001",
-            title: "The English Master Course",
-            type: 0
+    const loadCourse: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
+        try {
+            setCourses(data?.data == undefined ? null : data.data);
+
+            console.log('data', courses?.data);
+        } catch (error) {
+            console.log('error', error);
         }
-    ];
+    }
+
+    useEffect(() => {
+        CourseService.getAllCourse("abc", 1, max, loadCourse);
+    }, []);
 
     const exams: ExamItemDTO[] = [
         {
@@ -67,8 +76,8 @@ const ManagementComponent: React.FC = () => {
     }
 
     const items: MenuProps['items'] = [
-        getItem(<p onClick={onChangeCourseCenter}>Courses Center</p>, 'sub1', <AppstoreOutlined />, courses.map(c => {
-            return getItem(c.title, c.code);
+        getItem(<p onClick={onChangeCourseCenter}>Courses Center</p>, 'sub1', <AppstoreOutlined />, courses?.data.map(c => {
+            return getItem(c.code + ' - ' + c.courseName, c.code);
         })),
 
         getItem(<p onClick={onChangeExamCenter}>Exams Center</p>, 'sub2', <AppstoreOutlined />, exams.map(e => {
@@ -80,8 +89,9 @@ const ManagementComponent: React.FC = () => {
     ];
 
     const onClick: MenuProps['onClick'] = (e) => {
-        if(courses.map(e => e.code).includes(e.key)) {
-            setElementDashboard(<CourseManagement />);
+        if(courses?.data.map(e => e.code).includes(e.key)) {
+            CourseService.getAllCourse("abc", 1, max, loadCourse);
+            setElementDashboard(<CourseManagement code={e.key}/>);
         } else if(exams.map(e => e.code).includes(e.key)) {
             setElementDashboard(<ExamManagement />);
         }

@@ -1,12 +1,16 @@
 export interface CourseItemDTO {
-    title: string;
-    rating?: number;
-    summary?: string;
     code: string;
-    instructor?: string;
-    total_hours?: number;
     lectures?: number;
-    level?: string;
-    image?: string;
     type?: number;
+    courseName: string,
+    description: string,
+    level: string,
+    status: true,
+    summary: string,
+    thumbnail: string,
+    createBy: string,
+    createAt: Date,
+    public: true,
+    totalSub: number,
+    rate?: number
 }
