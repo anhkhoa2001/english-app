@@ -13,8 +13,8 @@ interface Resource {
     files: any[]
 }
 
-const LessonForm: React.FC<{ section_name: string, section_code: string, 
-    onSubmit: (e:any) => void, lessonFormRef: any }> = ({onSubmit, section_name, section_code, lessonFormRef }) => {
+const LessonForm: React.FC<{ section_name: string, section_id: number, 
+    onSubmit: (e:any) => void, lessonFormRef: any }> = ({onSubmit, section_name, section_id, lessonFormRef }) => {
     const [form] = Form.useForm();
     form.resetFields();
     const [video, setVideo] = useState<Resource>();
@@ -61,11 +61,11 @@ const LessonForm: React.FC<{ section_name: string, section_code: string,
             ref={lessonFormRef}
         >
             <Form.Item
-                label="Section Code"
-                name="sectionCode"
+                label="Section Id"
+                name="section_id"
                 style={{ display: "none" }}
             >
-                <Input defaultValue={section_code} disabled={true} />
+                <Input defaultValue={section_id} disabled={true} />
             </Form.Item>
             <Form.Item
                 label="Section Name"

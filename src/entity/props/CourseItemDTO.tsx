@@ -1,3 +1,5 @@
+import { SectionItemDTO } from "./SectionDTO";
+
 export interface CourseItemDTO {
     code: string;
     lectures?: number;
@@ -12,5 +14,6 @@ export interface CourseItemDTO {
     createAt: Date,
     public: true,
     totalSub: number,
-    rate?: number
+    rate?: number,
+    sections: SectionItemDTO[]
 }

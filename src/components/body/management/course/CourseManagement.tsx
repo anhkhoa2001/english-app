@@ -8,6 +8,7 @@ import LessonForm from "../form/LessonForm";
 import MessageResponse from "../../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../../service/CourseService";
 import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
+import { SectionItemDTO } from "../../../../entity/props/SectionDTO";
 
 const SECTION: string = "section";
 const LESSON: string = "lesson";
@@ -22,11 +23,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     const lessonFormRef = useRef(null);
     const [item, setItem] = useState<CourseItemDTO>();
     const [rate, setRate] = useState(0);
+    const [lessonIndex, setLessonIndex] = useState(0);
 
     const loadCourse: (data: MessageResponse<CourseItemDTO> | null) => void = (data) => {
         try {
             setItem(data?.data);
-            console.log('data 1', data);
+            setSectionCurrent(data?.data.sections || []);
+            console.log('data 1', data?.data);
         } catch (error) {
             console.log('error', error);
         }
@@ -41,45 +44,45 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     const url_image = "https://admin-s3.s3-sgn09.fptcloud.com/employee/2024/1/24/_DSF0893.JPG";
 
     const sections = [
-        {
-            title: "Kafka Introduction",
-            lessons: [
-                {
-                    code: 'E001',
-                    title: " Introduction | Apache Kafka Fundamentals",
-                    duration: 3,
-                    status: 0,
-                    url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4",
-                    view: 100,
-                    url_image: "https://1.bp.blogspot.com/-yQtpzhkIyFM/XYs4gGdG8SI/AAAAAAAAAPU/Tg5XXCJyPgA8pJ4ErGCQzGhnPJauB2kagCEwYBhgL/s1600/KafkaIntroduction.png"
-                },
-                {
-                    code: 'E002',
-                    title: "Motivations and Customer Use Cases | Apache Kafka Fundamentals",
-                    duration: 3,
-                    status: 0,
-                    url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503066/nsfhiavjfreuyvwqwvdm.mp4",
-                    view: 100,
-                    url_image: "https://asia-1-fileserver-2.stringee.com/0/asia-1_1_LPVMRM464MX8YV0/1698745038-kafka_la_gi.png"
-                }
-            ],
-            duration: 100,
-        },
-        {
-            title: "Kafka Theory",
-            lessons: [
-                {
-                    code: 'E003',
-                    title: " Introduction | Apache Kafka Fundamentals",
-                    duration: 3,
-                    status: 0,
-                    url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4",
-                    view: 100,
-                    url_image: "https://asia-1-fileserver-2.stringee.com/0/asia-1_1_LPVMRM464MX8YV0/1698745038-kafka_la_gi.png"
-                }
-            ],
-            duration: 100,
-        }
+        // {
+        //     title: "Kafka Introduction",
+        //     lessons: [
+        //         {
+        //             code: 'E001',
+        //             title: " Introduction | Apache Kafka Fundamentals",
+        //             duration: 3,
+        //             status: 0,
+        //             url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4",
+        //             view: 100,
+        //             url_image: "https://1.bp.blogspot.com/-yQtpzhkIyFM/XYs4gGdG8SI/AAAAAAAAAPU/Tg5XXCJyPgA8pJ4ErGCQzGhnPJauB2kagCEwYBhgL/s1600/KafkaIntroduction.png"
+        //         },
+        //         {
+        //             code: 'E002',
+        //             title: "Motivations and Customer Use Cases | Apache Kafka Fundamentals",
+        //             duration: 3,
+        //             status: 0,
+        //             url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503066/nsfhiavjfreuyvwqwvdm.mp4",
+        //             view: 100,
+        //             url_image: "https://asia-1-fileserver-2.stringee.com/0/asia-1_1_LPVMRM464MX8YV0/1698745038-kafka_la_gi.png"
+        //         }
+        //     ],
+        //     duration: 100,
+        // },
+        // {
+        //     title: "Kafka Theory",
+        //     lessons: [
+        //         {
+        //             code: 'E003',
+        //             title: " Introduction | Apache Kafka Fundamentals",
+        //             duration: 3,
+        //             status: 0,
+        //             url_video: "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4",
+        //             view: 100,
+        //             url_image: "https://asia-1-fileserver-2.stringee.com/0/asia-1_1_LPVMRM464MX8YV0/1698745038-kafka_la_gi.png"
+        //         }
+        //     ],
+        //     duration: 100,
+        // }
     ];
     interface DataType {
         key: string;
@@ -123,7 +126,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         },
     ];
 
-    const [sectionCurrent, setSectionCurrent] = useState(sections);
+    const [sectionCurrent, setSectionCurrent] = useState<SectionItemDTO[]>([]);
 
     const onChange = (key: string | string[]) => {
         console.log(key);
@@ -137,8 +140,18 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         setIsModalSectionOpen(newMap);
     };
 
+    const showModalAddLesson = (key: string, index: number) => {
+        isModalSectionOpen.set(key, true);
+        const newMap = new Map(isModalSectionOpen);
+        setLessonIndex(index);
+        setIsModalSectionOpen(newMap);
+    };
+
     const submitFormAddSection = (e: any) => {
+        
+        e.courseCode = item?.code;
         console.log(e);
+
     };
 
     const closeModal = (key: string) => {
@@ -154,7 +167,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     };
 
     const itemDashboards: CollapseProps['items'] = sectionCurrent.map((item, index) => {
-        const dataFake: DataType[] = item.lessons.map((l, i) => {
+        const dataFake: DataType[] = (item.lessons || []).map((l, i) => {
             return {
                 key: i + '',
                 code: l.code,
@@ -166,8 +179,8 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         return {
             key: index + '',
             label: <div className="header-course">
-                <Form.Item label={`Section ${index + 1}: ${item.title}`} name={'name' + index} >
-                    <Button onClick={() => showModalAdd(LESSON)} className="item-section" name={'edit' + index}>Add Lesson</Button>
+                <Form.Item label={`Section ${index + 1}: ${item.sectionName}`} name={'name' + index} >
+                    <Button onClick={() => showModalAddLesson(LESSON, index)} className="item-section" name={'edit' + index}>Add Lesson</Button>
                     <Button className="item-section" name={'edit' + index}>Edit Section</Button>
                     <Button className="item-section" name={'delete' + index}>Delete Section</Button>
                 </Form.Item>
@@ -219,13 +232,14 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             onOk={() => {
                 //@ts-ignore
                 lessonFormRef.current?.submit();
+                closeModal(LESSON)
             }}
             onCancel={() => handleCancel(LESSON)}
             okText='Submit'
             width={900}>
             <LessonForm 
-                section_name={item?.courseName || ""} 
-                section_code={item?.code || ""}
+                section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
+                section_id={sectionCurrent[lessonIndex]?.section_id || 0}
                 lessonFormRef={lessonFormRef}
                 onSubmit={onSubmitAddLesson}
             />
