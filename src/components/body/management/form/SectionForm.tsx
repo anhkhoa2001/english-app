@@ -3,7 +3,15 @@ import { Button, Form, Input, Select, Switch, Upload } from "antd";
 const { TextArea } = Input;
 
 
-const SectionForm: React.FC<{onSubmit: (e:any) => void, formRef: any}> = ({onSubmit, formRef}) => {
+const SectionForm: React.FC<{onSubmit: (e:any) => void, formRef: any, courseCode: string}> = ({onSubmit, formRef, courseCode}) => {
+    
+    const [form] = Form.useForm();
+    form.resetFields();
+
+    form.setFieldsValue({
+        courseCode: courseCode
+    });
+
     return <div className="section-form" style={{width: '900px'}}>
         <Form
             labelCol={{ span: 4 }}
@@ -13,6 +21,12 @@ const SectionForm: React.FC<{onSubmit: (e:any) => void, formRef: any}> = ({onSub
             onFinish={onSubmit}
             ref={formRef}
         >
+            <Form.Item 
+            label="Course Code"
+            name="courseCode"
+            required={true}>
+                <Input defaultValue={courseCode} disabled/>
+            </Form.Item>
             <Form.Item 
             label="Section Name"
             name="sectionName"

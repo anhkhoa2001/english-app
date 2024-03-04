@@ -8,13 +8,19 @@ import LessonForm from "../form/LessonForm";
 import MessageResponse from "../../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../../service/CourseService";
 import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
-import { SectionItemDTO } from "../../../../entity/props/SectionDTO";
+import { SectionDTO, SectionItemDTO } from "../../../../entity/props/SectionDTO";
+import { LessonDTO } from "../../../../entity/props/LessonDTO";
+import { ModalCustom } from "../../../exception/SuccessModal";
 
 const SECTION: string = "section";
+const EDIT_SECTION: string = "edit_section";
+const DELETE_SECTION: string = "delete_section";
 const LESSON: string = "lesson";
 
 const modal = new Map();
 modal.set(SECTION, false);
+modal.set(EDIT_SECTION, false);
+modal.set(DELETE_SECTION, false);
 modal.set(LESSON, false);
 
 
@@ -89,6 +95,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         code: string;
         name: string;
         durations: string;
+        url_video: string;
         tags: React.ReactNode;
     }
 
@@ -97,7 +104,9 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             title: 'Code',
             dataIndex: 'code',
             key: 'code',
-            render: (text) => <a href={url_video} target="_blank">{text}</a>,
+            render: (text, i) => <a onClick={() => {
+                console.log(i.url_video);
+            }} href={i.url_video} target="_blank">{text}</a>,
         },
         {
             title: 'Section Name',
@@ -148,9 +157,22 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     };
 
     const submitFormAddSection = (e: any) => {
-        
         e.courseCode = item?.code;
         console.log(e);
+
+        
+        if (e.sectionName !== null) {
+            const createSection: (data: MessageResponse<SectionDTO> | null) => void = (data) => {
+                try {
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    CourseService.getByCode("abc", code, loadCourse);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            CourseService.createSection("", e, createSection);
+        }
 
     };
 
@@ -170,19 +192,22 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         const dataFake: DataType[] = (item.lessons || []).map((l, i) => {
             return {
                 key: i + '',
-                code: l.code,
-                name: l.title,
-                durations: `${l.duration} min`,
-                tags: <PreViewVideo url_image={l.url_image} url_video={l.url_video} />,
+                code: l.lesson_id,
+                name: l.lessionName + '' + i,
+                durations: `${5} min`,
+                url_video: l.url_video,
+                tags: <PreViewVideo url_image={l.thumbnail} url_video={l.url_video} />,
             }
         });
+        console.log('item', dataFake);
+
         return {
             key: index + '',
             label: <div className="header-course">
                 <Form.Item label={`Section ${index + 1}: ${item.sectionName}`} name={'name' + index} >
                     <Button onClick={() => showModalAddLesson(LESSON, index)} className="item-section" name={'edit' + index}>Add Lesson</Button>
-                    <Button className="item-section" name={'edit' + index}>Edit Section</Button>
-                    <Button className="item-section" name={'delete' + index}>Delete Section</Button>
+                    <Button onClick={() => showModalAdd(EDIT_SECTION)} className="item-section" name={'edit' + index}>Edit Section</Button>
+                    <Button onClick={() => showModalAdd(DELETE_SECTION)} className="item-section" name={'delete' + index}>Delete Section</Button>
                 </Form.Item>
             </div>,
             children: <Table columns={columns} dataSource={dataFake} pagination={false} />
@@ -192,6 +217,27 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
 
     const onSubmitAddLesson = (e:any) => {
         console.log(e);
+
+        if (e.lessonName !== null) {
+
+            const createLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
+                try {
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    CourseService.getByCode("abc", code, loadCourse);
+
+
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            CourseService.createLesson("", e, createLesson);
+        }
+    }
+
+
+    const deleteSection = (section_id: number) => {
+        console.log('section_id', section_id);
     }
 
     return <>
@@ -224,7 +270,19 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             onCancel={() => handleCancel(SECTION)}
             okText='Submit'
             width={800}>
-            <SectionForm onSubmit={submitFormAddSection} formRef={formRef} />
+            <SectionForm onSubmit={submitFormAddSection} formRef={formRef} courseCode={item?.code || ""} />
+        </Modal>
+
+        <Modal title="Are you sure to delete this?"
+            open={isModalSectionOpen.get(DELETE_SECTION)}
+            onOk={() => {
+                //@ts-ignore
+                closeModal(DELETE_SECTION)
+            }}
+            onCancel={() => handleCancel(DELETE_SECTION)}
+            okText='Submit'
+            width={800}>
+            <p>Hmmmmmm........</p>
         </Modal>
 
         <Modal title="Add New Lesson"

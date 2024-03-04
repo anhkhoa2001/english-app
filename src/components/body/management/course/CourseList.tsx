@@ -86,13 +86,13 @@ const CourseList: React.FC = () => {
             },
         ];
 
-    const [courses, setCourses] = useState<CourseDTO | null>(null);
+    const [courses, setCourses] = useState<CourseDTO[]>([]);
 
-    const loadCourse: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
+    const loadCourse: (data: MessageResponse<CourseDTO[]> | null) => void = (data) => {
         try {
-            setCourses(data?.data == undefined ? null : data.data);
+            setCourses(data?.data || []);
 
-            console.log('data', courses?.data);
+            console.log('data', courses);
         } catch (error) {
             console.log('error', error);
         }
@@ -125,7 +125,7 @@ const CourseList: React.FC = () => {
 
             const create: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
                 try {
-                    console.log('data', courses?.data);
+                    console.log('data', courses);
                     handleOk(ADD_COURSE);
                     ModalCustom.onDisplaySuccess('Success', 'Success');
                     CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
@@ -153,10 +153,10 @@ const CourseList: React.FC = () => {
             <Button type="primary" icon={<PlusOutlined />} onClick={() => showModalAdd(ADD_COURSE)}>
                 Add Course
             </Button></span>
-        <Table columns={columns} dataSource={courses?.data} style={{ width: 1300 }} pagination={{
+        <Table columns={columns} dataSource={courses} style={{ width: 1300 }} pagination={{
             current: currentPage,
             pageSize: default_pageSize,
-            total: courses?.totalRecord
+            total: courses.length
         }}
         onChange={change}/>
         <Modal title="Add New Course"

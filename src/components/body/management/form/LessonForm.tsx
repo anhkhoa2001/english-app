@@ -13,10 +13,22 @@ interface Resource {
     files: any[]
 }
 
+const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+        return e;
+    }
+    return e?.fileList;
+};
+
 const LessonForm: React.FC<{ section_name: string, section_id: number, 
     onSubmit: (e:any) => void, lessonFormRef: any }> = ({onSubmit, section_name, section_id, lessonFormRef }) => {
     const [form] = Form.useForm();
     form.resetFields();
+
+    form.setFieldsValue({
+        section_id: section_id,
+        sectionName: section_name
+    });
     const [video, setVideo] = useState<Resource>();
     const [image, setImage] = useState<Resource>();
 
@@ -90,20 +102,21 @@ const LessonForm: React.FC<{ section_name: string, section_id: number,
             </Form.Item>
             <Form.Item
                 label="Thumbnail"
-                valuePropName="thumbnail"
                 name="thumbnail"
+                valuePropName="fileList" getValueFromEvent={normFile}
             >
                 <Upload
                     action={URL_UPLOAD_RESOURCE}
                     //onChange={handleImageChange}
-                    fileList={image?.files}>
+                    
+                    >
                     <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
             </Form.Item>
             <Form.Item
                 label="Video"
-                valuePropName="video"
                 name="video"
+                valuePropName="fileList" getValueFromEvent={normFile}
             >
                 <Upload
                     action={URL_UPLOAD_RESOURCE}
