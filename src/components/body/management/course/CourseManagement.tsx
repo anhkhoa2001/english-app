@@ -11,31 +11,40 @@ import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
 import { SectionDTO, SectionItemDTO } from "../../../../entity/props/SectionDTO";
 import { LessonDTO } from "../../../../entity/props/LessonDTO";
 import { ModalCustom } from "../../../exception/SuccessModal";
+import moment from "moment";
 
 const SECTION: string = "section";
 const EDIT_SECTION: string = "edit_section";
 const DELETE_SECTION: string = "delete_section";
 const LESSON: string = "lesson";
+const EDIT_LESSON: string = "edit_lesson";
+const DELETE_LESSON: string = "delete_lesson";
 
 const modal = new Map();
 modal.set(SECTION, false);
 modal.set(EDIT_SECTION, false);
 modal.set(DELETE_SECTION, false);
 modal.set(LESSON, false);
+modal.set(EDIT_LESSON, false);
+
+
+let indexSection:number = 0;
 
 
 const CourseManagement: React.FC<{code: string}> = ({code}) => {
     const formRef = useRef(null);
     const lessonFormRef = useRef(null);
+    const editLessonFormRef = useRef(null);
     const [item, setItem] = useState<CourseItemDTO>();
     const [rate, setRate] = useState(0);
     const [lessonIndex, setLessonIndex] = useState(0);
+    const [lessonItemEffect, setLessonItemEffect] = useState<LessonDTO>();
 
     const loadCourse: (data: MessageResponse<CourseItemDTO> | null) => void = (data) => {
         try {
             setItem(data?.data);
             setSectionCurrent(data?.data.sections || []);
-            console.log('data 1', data?.data);
+            console.log('course detail', data);
         } catch (error) {
             console.log('error', error);
         }
@@ -43,7 +52,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
 
     useEffect(() => {
         CourseService.getByCode("abc", code, loadCourse);
-    }, []);
+    }, [code]);
 
 
     const url_video = "https://res.cloudinary.com/dwqrocbjv/video/upload/v1705503074/f9f7gqaurfg9gac0nuap.mp4";
@@ -97,6 +106,9 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         durations: string;
         url_video: string;
         tags: React.ReactNode;
+        item: LessonDTO,
+        createBy: string,
+        createAt: string
     }
 
     const columns: TableProps<DataType>['columns'] = [
@@ -114,22 +126,34 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             key: '2',
         },
         {
-            title: 'Durations',
-            dataIndex: 'durations',
-            key: 'durations',
-        },
-        {
             title: 'Preview',
             key: 'tags',
             dataIndex: 'tags'
         },
         {
+            title: 'Create By',
+            key: 'createBy',
+            dataIndex: 'createBy'
+        },
+        {
+            title: 'Create At',
+            key: 'createAt',
+            dataIndex: 'code',
+            render: (text, i) => <p>{moment(i.createAt).format('DD-MM-YYYY HH:mm:ss') + ''}</p>
+        },
+        {
             title: 'Action',
             key: 'action',
-            render: () => (
+            render: (text, i) => (
                 <Space size="small">
-                    <Button icon={<EditOutlined />} />
-                    <Button icon={<DeleteOutlined />} />
+                    <Button onClick={() => {
+                        setLessonItemEffect(i.item);
+                        showModalAdd(EDIT_LESSON);
+                    }} icon={<EditOutlined />} />
+                    <Button onClick={() => {
+                        setLessonItemEffect(i.item);
+                        showModalAdd(DELETE_LESSON);
+                    }} icon={<DeleteOutlined />} />
                 </Space>
             ),
         },
@@ -143,7 +167,8 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
 
     const [isModalSectionOpen, setIsModalSectionOpen] = useState(modal);
     
-    const showModalAdd = (key: string) => {
+    const showModalAdd = (key: string, index?: number) => {
+        indexSection = index || 0;
         isModalSectionOpen.set(key, true);
         const newMap = new Map(isModalSectionOpen);
         setIsModalSectionOpen(newMap);
@@ -197,17 +222,17 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
                 durations: `${5} min`,
                 url_video: l.url_video,
                 tags: <PreViewVideo url_image={l.thumbnail} url_video={l.url_video} />,
+                item: l,
+                createAt: l.createAt,
+                createBy: l.createBy || 'admin'
             }
         });
-        console.log('item', dataFake);
-
         return {
             key: index + '',
             label: <div className="header-course">
                 <Form.Item label={`Section ${index + 1}: ${item.sectionName}`} name={'name' + index} >
                     <Button onClick={() => showModalAddLesson(LESSON, index)} className="item-section" name={'edit' + index}>Add Lesson</Button>
-                    <Button onClick={() => showModalAdd(EDIT_SECTION)} className="item-section" name={'edit' + index}>Edit Section</Button>
-                    <Button onClick={() => showModalAdd(DELETE_SECTION)} className="item-section" name={'delete' + index}>Delete Section</Button>
+                    <Button onClick={() => showModalAdd(DELETE_SECTION, item.section_id)} className="item-section" name={'delete' + index}>Delete Section</Button>
                 </Form.Item>
             </div>,
             children: <Table columns={columns} dataSource={dataFake} pagination={false} />
@@ -217,15 +242,12 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
 
     const onSubmitAddLesson = (e:any) => {
         console.log(e);
-
         if (e.lessonName !== null) {
 
             const createLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
                 try {
                     ModalCustom.onDisplaySuccess('Success', 'Success');
                     CourseService.getByCode("abc", code, loadCourse);
-
-
                 } catch (error) {
                     console.log('error', error);
                 }
@@ -235,9 +257,50 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         }
     }
 
+    const onSubmitEditLesson = (e:any) => {
+        console.log(e);
+        const updateLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
+            try {
+                ModalCustom.onDisplaySuccess('Success', 'Success');
+                CourseService.getByCode("abc", code, loadCourse);
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
 
-    const deleteSection = (section_id: number) => {
-        console.log('section_id', section_id);
+        CourseService.updateLesson("", e, updateLesson);
+    }
+
+
+    const deleteSection = () => {
+        console.log('section_id', indexSection);
+
+        const deleteSection: (data: MessageResponse<SectionDTO> | null) => void = (data) => {
+            try {
+                ModalCustom.onDisplaySuccess('Success', 'Success');
+                CourseService.getByCode("abc", code, loadCourse);
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
+
+        CourseService.deleteSection("", indexSection, deleteSection);
+
+    }
+
+
+    const deleteLesson = () => {
+        console.log('lesson_id', lessonItemEffect);
+        const deleteLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
+            try {
+                ModalCustom.onDisplaySuccess('Success', 'Success');
+                CourseService.getByCode("abc", code, loadCourse);
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
+
+        CourseService.deleteLesson("", lessonItemEffect?.lesson_id || 0, deleteLesson);
     }
 
     return <>
@@ -245,6 +308,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         <div className="introduction">
             <h1>{item?.courseName}</h1>
             <h3>{item?.summary}</h3>
+            <p>{item?.description}</p>
             <div>
                 <div className="rating-star">
                     <Rate disabled allowHalf defaultValue={item?.rate} />
@@ -277,12 +341,46 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             open={isModalSectionOpen.get(DELETE_SECTION)}
             onOk={() => {
                 //@ts-ignore
-                closeModal(DELETE_SECTION)
+                deleteSection();
+                closeModal(DELETE_SECTION);
             }}
             onCancel={() => handleCancel(DELETE_SECTION)}
             okText='Submit'
             width={800}>
             <p>Hmmmmmm........</p>
+        </Modal>
+
+
+        <Modal title="Are you sure to delete this?"
+            open={isModalSectionOpen.get(DELETE_LESSON)}
+            onOk={() => {
+                //@ts-ignore
+                deleteLesson();
+                closeModal(DELETE_LESSON);
+            }}
+            onCancel={() => handleCancel(DELETE_LESSON)}
+            okText='Submit'
+            width={800}>
+            <p>Hmmmmmm........</p>
+        </Modal>
+
+        <Modal title="Edit Lesson"
+            open={isModalSectionOpen.get(EDIT_LESSON)}
+            onOk={() => {
+                //@ts-ignore
+                editLessonFormRef.current?.submit();
+                closeModal(EDIT_LESSON)
+            }}
+            onCancel={() => handleCancel(EDIT_LESSON)}
+            okText='Submit'
+            width={900}>
+            <LessonForm 
+                section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
+                section_id={sectionCurrent[lessonIndex]?.section_id || 0}
+                item={lessonItemEffect}
+                lessonFormRef={editLessonFormRef}
+                onSubmit={onSubmitEditLesson}
+            />
         </Modal>
 
         <Modal title="Add New Lesson"

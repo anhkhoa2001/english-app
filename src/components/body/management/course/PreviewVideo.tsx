@@ -1,12 +1,12 @@
 import { Image } from "antd";
 import { useRef } from "react";
 
-const PreViewVideo: React.FC<{url_video: string, url_image: string}> = ({url_video, url_image}) => {
+const PreViewVideo: React.FC<{url_video: string, url_image: string, width?: number}> = ({url_video, url_image, width}) => {
 
     const videoRef = useRef<HTMLVideoElement | null>(null);
     return <>
         <Image
-            width={200}
+            width={width || 200}
             preview={{
                 imageRender: () => (
                     <video

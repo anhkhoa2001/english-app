@@ -27,6 +27,24 @@ class RestService<T> {
             });
     };
 
+    delete(path: string,
+        header: object,
+        body: object,
+        func: (status: number, data: MessageResponse<T> | null) => void) {
+        axios({
+            method: 'delete',
+            url: path,
+            data: body,
+            headers: header,
+        })
+            .then(function (response) {
+                func(response.status, response.data);
+            })
+            .catch(function(error) {
+                func(error.response.status, error.response.data);
+            });
+    };
+
     get(
         path: string,
         header: object,

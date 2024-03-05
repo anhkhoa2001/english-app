@@ -1,9 +1,14 @@
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Cascader, Checkbox, ColorPicker, DatePicker, Form, Input, InputNumber, Radio, Select, Slider, Switch, TreeSelect, Upload } from "antd";
+import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
+import EditorComponent from "../../editor/EditorComponent";
+import { useRef, useState } from "react";
 
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+
+let con = "";
 
 const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -18,6 +23,14 @@ const levels = ['Beginner', 'Intermediate', 'Expert'];
 const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({onSubmit, courseFormRef}) => {
     const [form] = Form.useForm();
     form.resetFields();
+    const des = useRef("");
+
+    console.log('des', des);
+    form.setFieldsValue({
+        level: levels[0],
+        des: con
+    });
+
     return <div className="course-form" style={{maxWidth: '1200px'}}>
         <Form
             form={form}
@@ -31,14 +44,14 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
             <Form.Item 
             label="Course Code"
             name="courseCode"
-            rules={[{ required: true, message: 'Please input course code' }]}
+            //rules={[{ required: true, message: 'Please input course code' }]}
             required={true}>
                 <Input />
             </Form.Item>
             <Form.Item 
             label="Course Name"
             name="courseName"
-            rules={[{ required: true, message: 'Please input course name' }]}
+            //rules={[{ required: true, message: 'Please input course name' }]}
             required={true}>
                 <Input />
             </Form.Item>
@@ -62,7 +75,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
                 />
             </Form.Item>
             <Form.Item label="Description" name="description">
-                <TextArea rows={4} />
+                <EditorComponent class_name="tall" content={des}/>
             </Form.Item>
             <Form.Item label="Public" name="public" valuePropName="checked">
                 <Switch />
@@ -71,10 +84,10 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
                 <Switch />
             </Form.Item>
             <Form.Item 
-            rules={[{ required: true, message: 'Please input thumbnail file' }]}
+            //rules={[{ required: true, message: 'Please input thumbnail file' }]}
             label="Thumbnail" 
             name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload action="http://localhost:9999/api/up-file/upload-to-cloud">
+                <Upload action={URL_UPLOAD_RESOURCE}>
                     <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
             </Form.Item>

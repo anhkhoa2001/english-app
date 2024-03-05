@@ -90,7 +90,8 @@ const ManagementComponent: React.FC = () => {
 
     const onClick: MenuProps['onClick'] = (e) => {
         if(courses.map(e => e.code).includes(e.key)) {
-            CourseService.getAllCourse("abc", 1, max, loadCourse);
+            //CourseService.getAllCourse("abc", 1, max, loadCourse);
+            console.log('key', e.key);
             setElementDashboard(<CourseManagement code={e.key}/>);
         } else if(exams.map(e => e.code).includes(e.key)) {
             setElementDashboard(<ExamManagement />);

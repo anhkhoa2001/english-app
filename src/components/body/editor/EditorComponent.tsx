@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
-const EditorComponent: React.FC<{class_name: string}> = (class_name) => {
+const EditorComponent: React.FC<{class_name: string, content?: any}> 
+    = (class_name, content) => {
+        console.log('c', content);
     return <div className={`${class_name}`} >
         <CKEditor
             editor={ClassicEditor}
@@ -18,11 +20,12 @@ const EditorComponent: React.FC<{class_name: string}> = (class_name) => {
             onReady={editor => {
                 console.log('Editor is ready to use!', editor);
             }}
-            onChange={(event) => {
-                console.log(event);
+            onChange={(event, data) => {
+                console.log('data', data);
             }}
             onBlur={(event, editor) => {
-                console.log('Blur.', editor);
+                console.log('Blur.', content);
+                content.current = editor.getData();
             }}
             onFocus={(event, editor) => {
                 console.log('Focus.', editor);

@@ -27,64 +27,64 @@ const CourseList: React.FC = () => {
     }
 
     const columns: TableProps<CourseDTO>['columns'] = [
-            {
-                title: 'Code',
-                dataIndex: 'code',
-                key: 'code',
-                render: (text) => <a>{text}</a>,
-            },
-            {
-                title: 'Name',
-                dataIndex: 'courseName',
-                key: 'courseName',
-            },
-            {
-                title: 'Summary',
-                dataIndex: 'summary',
-                key: 'summary',
-            },
-            {
-                title: 'Level',
-                dataIndex: 'level',
-                key: 'level',
-            },
-            {
-                title: 'Thumbnail',
-                dataIndex: 'thumbnail',
-                key: 'thumbnail',
-                render: (url) => <Image
-                    width={120}
-                    src={url}
-                />
-            },
-            {
-                title: 'Public',
-                dataIndex: 'public',
-                key: 'public',
-                render: (pub) => <Switch checked={pub} disabled />
-            },
-            {
-                title: 'Create At',
-                dataIndex: 'createAt',
-                key: 'createAt',
-                render: (value: Date) => `${moment(value).format('DD-MM-YYYY HH:mm:ss')}`,
-            },
-            {
-                title: 'Create By',
-                dataIndex: 'createBy',
-                key: 'createBy',
-            },
-            {
-                title: 'Action',
-                key: 'action',
-                render: (_, e) => (
-                    <Space size="middle">
-                        <Button onClick={() => editCourse(e)} icon={<EditOutlined />} />
-                        <Button icon={<DeleteOutlined />} />
-                    </Space>
-                ),
-            },
-        ];
+        {
+            title: 'Code',
+            dataIndex: 'code',
+            key: 'code',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Name',
+            dataIndex: 'courseName',
+            key: 'courseName',
+        },
+        {
+            title: 'Summary',
+            dataIndex: 'summary',
+            key: 'summary',
+        },
+        {
+            title: 'Level',
+            dataIndex: 'level',
+            key: 'level',
+        },
+        {
+            title: 'Thumbnail',
+            dataIndex: 'thumbnail',
+            key: 'thumbnail',
+            render: (url) => <Image
+                width={120}
+                src={url}
+            />
+        },
+        {
+            title: 'Public',
+            dataIndex: 'public',
+            key: 'public',
+            render: (pub) => <Switch checked={pub} disabled />
+        },
+        {
+            title: 'Create At',
+            dataIndex: 'createAt',
+            key: 'createAt',
+            render: (value: Date) => `${moment(value).format('DD-MM-YYYY HH:mm:ss')}`,
+        },
+        {
+            title: 'Create By',
+            dataIndex: 'createBy',
+            key: 'createBy',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, e) => (
+                <Space size="middle">
+                    <Button onClick={() => editCourse(e)} icon={<EditOutlined />} />
+                    <Button icon={<DeleteOutlined />} />
+                </Space>
+            ),
+        },
+    ];
 
     const [courses, setCourses] = useState<CourseDTO[]>([]);
 
@@ -102,49 +102,52 @@ const CourseList: React.FC = () => {
         CourseService.getAllCourse("abc", 1, default_pageSize, loadCourse);
     }, []);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(modal);
     const showModalAdd = (key: string) => {
         modal.set(key, true);
-        setIsModalOpen(modal.get(key));
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
 
     const handleOk = (key: string) => {
         modal.set(key, false);
-        setIsModalOpen(modal.get(key));
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
 
     const handleCancel = (key: string) => {
         modal.set(key, false);
-        setIsModalOpen(modal.get(key));
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
 
 
     const submitFormAddCourse = (e: any) => {
-        console.log(e);
-        if (e.courseCode !== null && e.courseName !== null) {
+        console.log('checkll sksks', e);
+        // if (e.courseCode !== null && e.courseName !== null) {
 
-            const create: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
-                try {
-                    console.log('data', courses);
-                    handleOk(ADD_COURSE);
-                    ModalCustom.onDisplaySuccess('Success', 'Success');
-                    CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
-                } catch (error) {
-                    console.log('error', error);
-                }
-            }
+        //     const create: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
+        //         try {
+        //             console.log('data', courses);
+        //             handleOk(ADD_COURSE);
+        //             ModalCustom.onDisplaySuccess('Success', 'Success');
+        //             CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
+        //         } catch (error) {
+        //             console.log('error', error);
+        //         }
+        //     }
 
-            CourseService.create("", e, create);
-        }
+        //     CourseService.create("", e, create);
+        // }
     }
 
     const [currentPage, setCurrentPage] = useState(default_page);
 
-    const change:TableProps['onChange'] = (pagination) => {
+    const change: TableProps['onChange'] = (pagination) => {
         console.log(pagination);
         setCurrentPage(pagination.current || default_page);
-        CourseService.getAllCourse("abc", pagination.current || default_page, 
-                            pagination.pageSize || default_pageSize, loadCourse);
+        CourseService.getAllCourse("abc", pagination.current || default_page,
+            pagination.pageSize || default_pageSize, loadCourse);
     }
 
     return <div className="course-list">
@@ -152,32 +155,35 @@ const CourseList: React.FC = () => {
         <span className="add-course">
             <Button type="primary" icon={<PlusOutlined />} onClick={() => showModalAdd(ADD_COURSE)}>
                 Add Course
-            </Button></span>
+            </Button>
+        </span>
         <Table columns={columns} dataSource={courses} style={{ width: 1300 }} pagination={{
-            current: currentPage,
-            pageSize: default_pageSize,
-            total: courses.length
-        }}
-        onChange={change}/>
+                current: currentPage,
+                pageSize: default_pageSize,
+                total: courses.length
+            }}
+        onChange={change} />
+
         <Modal title="Add New Course"
-            open={isModalOpen}
+            open={isModalOpen.get(ADD_COURSE)}
             onOk={() => {
                 //@ts-ignore
                 courseFormRef.current?.submit();
+                handleOk(ADD_COURSE);
             }}
-            onCancel={() => handleCancel(ADD_COURSE)} 
+            onCancel={() => handleCancel(ADD_COURSE)}
             okText='Submit'
             width={1200}>
             <CourseForm onSubmit={submitFormAddCourse} courseFormRef={courseFormRef} />
         </Modal>
 
         <Modal title="Edit Course"
-            open={isModalOpen}
+            open={isModalOpen.get(EDIT_COURSE)}
             onOk={() => {
                 //@ts-ignore
                 courseFormRef.current?.submit();
             }}
-            onCancel={() => handleCancel(EDIT_COURSE)}  
+            onCancel={() => handleCancel(EDIT_COURSE)}
             okText='Submit'
             width={1200}>
             <CourseForm onSubmit={submitFormAddCourse} courseFormRef={courseFormRef} />

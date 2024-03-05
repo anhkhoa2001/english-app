@@ -73,6 +73,22 @@ const CourseService = {
                 }
             });
     },
+    deleteSection: (token: string, sectionId: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
+        new RestService<SectionDTO>().delete(
+            BASE_PATH.PATH_PROXY + `/api/section/delete-by-id?sectionId=${sectionId}`,
+            {
+                'Authorization': token
+            },
+            {},
+            (status: number, data: MessageResponse<SectionDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Delete section failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
     createLesson: (token: string, request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
         new RestService<LessonDTO>().post(
             BASE_PATH.PATH_PROXY + '/api/lesson/create',
@@ -86,6 +102,38 @@ const CourseService = {
                 } else {
                     //func(null, false);
                     ModalCustom.onDisplayError("Create lesson failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    updateLesson: (token: string, request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
+        new RestService<LessonDTO>().post(
+            BASE_PATH.PATH_PROXY + '/api/lesson/update',
+            {
+                'Authorization': token
+            },
+            request,
+            (status: number, data: MessageResponse<LessonDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    deleteLesson: (token: string, lessonId: number, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
+        new RestService<LessonDTO>().delete(
+            BASE_PATH.PATH_PROXY + `/api/lesson/delete?lessonId=${lessonId}`,
+            {
+                'Authorization': token
+            },
+            {},
+            (status: number, data: MessageResponse<LessonDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message}`)
                 }
             });
     },
