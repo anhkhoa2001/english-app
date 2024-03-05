@@ -57,6 +57,22 @@ const CourseService = {
                 }
             });
     },
+    update: (token: string, request: any, func: (data: MessageResponse<CourseDTO> | null) => void) =>  {
+        new RestService<CourseDTO>().post(
+            BASE_PATH.PATH_PROXY + '/api/course/update',
+            {
+                'Authorization': token
+            },
+            request,
+            (status: number, data: MessageResponse<CourseDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
     createSection: (token: string, request: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
         new RestService<SectionDTO>().post(
             BASE_PATH.PATH_PROXY + '/api/section/create',

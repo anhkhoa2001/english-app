@@ -303,13 +303,19 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         CourseService.deleteLesson("", lessonItemEffect?.lesson_id || 0, deleteLesson);
     }
 
+    const ReactComponent = (element: string) => {
+        return React.createElement('div', { dangerouslySetInnerHTML: { __html: element } });
+      };
+
     return <>
         {/* <PreViewVideo url_image={url_image} url_video={url_video} /> */}
         <div className="introduction">
             <h1>{item?.courseName}</h1>
             <h3>{item?.summary}</h3>
-            <p>{item?.description}</p>
-            <div>
+            <div >
+                {ReactComponent(item?.description || "")}
+            </div>
+            <div className="rate-auth">
                 <div className="rating-star">
                     <Rate disabled allowHalf defaultValue={item?.rate} />
                     <p>{item?.totalSub} students</p>

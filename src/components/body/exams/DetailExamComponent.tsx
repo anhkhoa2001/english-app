@@ -248,6 +248,31 @@ const DetailExamComponent: React.FC = () => {
                 ],
                 answers: [],
                 hint: "Mark the letter A, B, C, or D on your answer sheet to indicate the sentence that best combines each pair of sentences in the following questions",
+            },
+            {
+                type: 0,
+                index: 5,
+                content: <>
+                    <p>Travelling around Thailand in the 1990s, William Janssen was impressed with the basic rooftop solar heating systems that were on many homes, where energy from the sun was absorbed by a plate and then used to heat water for the home. Two decades later Janssen developed that basic idea he saw in south-east Asia into a portable device that uses the power from the sun to purify water.</p>
+                    <p>The Desolenator operates as a mobile desalination unit that can take water from different places, such as the sea, rivers, boreholes, and rain, and purify <strong><u>it</u></strong> for human consumption. It is particularly valuable in regions where natural groundwater reserves have been polluted, or where seawater is the only water source available. Janssen saw that there was a need for a sustainable way to clean water for both the developing and the developed countries when he moved to the United Arab Emirates and saw large-scale water processing.</p>
+                    <p>The Desolenator can produce 15 liters of drinking water per day, enough to sustain a family for cooking and drinking. Its main <strong><u>selling point</u></strong> is that unlike standard desalination techniques, it doesn't require a generated power supply; just sunlight. It measures 120 cm by 90 cm, and it's easy to transport, thanks to its two wheels. Water enters through a pipe and flows as a thin film between a sheet of double glazing and the surface of a solar panel, where it is heated by the sun. The warm water flows into a small boiler (heated by a solar-powered battery) where it is converted to steam. When the steam cools, it becomes <strong><u>distilled</u></strong> water. The device has a very simple filter to trap particles, and this can easily be shaken to remove them. A recent analysis found that at least two- thirds of the world's population lives with severe water scarcity for at least a month every year. Janssen says that by 2030 half of the world's population will be living with water stress - where the demand exceeds the supply over a certain period of time. It is really important that a sustainable solution is brought to the market that is able to help these people,' he says. 'Many countries don't have the money for desalination plants, which are very expensive to build. They don't have the money to operate them, they are very maintenance intensive, and they don't have the money to buy the diesel to run the desalination plants, so it is a really bad situation."</p>
+                    <p>(Adapted from Cambridge English IELTS Academic 15 by Cambridge University Press)​</p>
+                </>,
+                answers: [
+                    {
+                        key: "A",
+                        value: "locate"
+                    },
+                    {
+                        key: "B",
+                        value: "located"
+                    },
+                    {
+                        key: "C",
+                        value: "locating"
+                    }
+                ],
+                hint: "Mark the letter A, B, C, or D on your answer sheet to indicate the sentence that best combines each pair of sentences in the following questions",
             }
         ]
     }

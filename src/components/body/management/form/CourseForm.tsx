@@ -2,13 +2,13 @@ import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Cascader, Checkbox, ColorPicker, DatePicker, Form, Input, InputNumber, Radio, Select, Slider, Switch, TreeSelect, Upload } from "antd";
 import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
 import EditorComponent from "../../editor/EditorComponent";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
+import { CourseDTO } from "../../../../service/CourseService";
 
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-
-let con = "";
 
 const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -20,16 +20,45 @@ const normFile = (e: any) => {
 
 const levels = ['Beginner', 'Intermediate', 'Expert'];
 
-const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({onSubmit, courseFormRef}) => {
+const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?: CourseDTO}> 
+                                    = ({onSubmit, courseFormRef, item}) => {
     const [form] = Form.useForm();
+    const [dataEditor, setDataEditor] = useState<string>();
     form.resetFields();
-    const des = useRef("");
 
-    console.log('des', des);
     form.setFieldsValue({
         level: levels[0],
-        des: con
+        description: localStorage.getItem("editor")
     });
+
+    if(item != undefined) {
+        useEffect(() => {
+            setDataEditor(item.description);
+            console.log('course item', item);
+        }, []);
+        form.setFieldsValue({
+            level: item.level,
+            courseCode: item.code,
+            courseName: item.courseName,
+            summary: item.summary,
+            status: item.status,
+            public: item.public,
+            thumbnail: [
+                {
+                    name: item.thumbnail,
+                    type: 'image/',
+                    response: {
+                        default: item.thumbnail
+                    }
+                }
+            ]
+        });
+    }
+
+    const handleSubmit = (e: any) => {
+        e.description = localStorage.getItem("editor");
+        onSubmit(e);
+    }
 
     return <div className="course-form" style={{maxWidth: '1200px'}}>
         <Form
@@ -38,20 +67,20 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             style={{ width: 1200 }}
-            onFinish={onSubmit}
+            onFinish={handleSubmit}
             ref={courseFormRef}
         >
             <Form.Item 
             label="Course Code"
             name="courseCode"
-            //rules={[{ required: true, message: 'Please input course code' }]}
+            rules={[{ required: true, message: 'Please input course code' }]}
             required={true}>
-                <Input />
+                <Input disabled={item != undefined}/>
             </Form.Item>
             <Form.Item 
             label="Course Name"
             name="courseName"
-            //rules={[{ required: true, message: 'Please input course name' }]}
+            rules={[{ required: true, message: 'Please input course name' }]}
             required={true}>
                 <Input />
             </Form.Item>
@@ -75,7 +104,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
                 />
             </Form.Item>
             <Form.Item label="Description" name="description">
-                <EditorComponent class_name="tall" content={des}/>
+                <EditorComponent class_name="tall" data={dataEditor} />
             </Form.Item>
             <Form.Item label="Public" name="public" valuePropName="checked">
                 <Switch />
@@ -84,7 +113,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any}> = ({
                 <Switch />
             </Form.Item>
             <Form.Item 
-            //rules={[{ required: true, message: 'Please input thumbnail file' }]}
+            rules={[{ required: true, message: 'Please input thumbnail file' }]}
             label="Thumbnail" 
             name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
                 <Upload action={URL_UPLOAD_RESOURCE}>

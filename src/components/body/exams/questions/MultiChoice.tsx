@@ -11,7 +11,7 @@ const MultiChoice: React.FC<{prop: MultiChoiceProp}>
         <div id = {`question-${prop.index}`}>
             <QuestionNumber index={prop.index}/>
         </div>
-        <Tooltip title={prop.hint}>
+        <Tooltip title={prop.hint} style={{marginLeft: "36px"}}>
             {prop.content}
         </Tooltip>
         <Radio.Group className="answer" style={prop.content !== "" ? {marginLeft: "36px"} : {marginLeft: "0px"}}>  

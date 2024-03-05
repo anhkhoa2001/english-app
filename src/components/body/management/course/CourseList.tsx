@@ -10,7 +10,7 @@ import { ModalCustom } from "../../../exception/SuccessModal";
 
 
 const default_page = 1;
-const default_pageSize = 2;
+const default_pageSize = 10;
 
 const ADD_COURSE = 'ADD_COURSE';
 const EDIT_COURSE = 'EDIT_COURSE';
@@ -21,9 +21,12 @@ modal.set(EDIT_COURSE, false);
 const CourseList: React.FC = () => {
     const courseFormRef = useRef(null);
 
+    const [itemEdit, setItemEdit] = useState<CourseDTO>();
+
     const editCourse = (item: CourseDTO) => {
+        setItemEdit(item);
         showModalAdd(EDIT_COURSE);
-        console.log(item);
+        console.log('edit item', item);
     }
 
     const columns: TableProps<CourseDTO>['columns'] = [
@@ -64,6 +67,12 @@ const CourseList: React.FC = () => {
             render: (pub) => <Switch checked={pub} disabled />
         },
         {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (pub) => <Switch checked={pub} disabled />
+        },
+        {
             title: 'Create At',
             dataIndex: 'createAt',
             key: 'createAt',
@@ -80,7 +89,6 @@ const CourseList: React.FC = () => {
             render: (_, e) => (
                 <Space size="middle">
                     <Button onClick={() => editCourse(e)} icon={<EditOutlined />} />
-                    <Button icon={<DeleteOutlined />} />
                 </Space>
             ),
         },
@@ -124,21 +132,40 @@ const CourseList: React.FC = () => {
 
     const submitFormAddCourse = (e: any) => {
         console.log('checkll sksks', e);
-        // if (e.courseCode !== null && e.courseName !== null) {
+        if (e.courseCode !== null && e.courseName !== null) {
 
-        //     const create: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
-        //         try {
-        //             console.log('data', courses);
-        //             handleOk(ADD_COURSE);
-        //             ModalCustom.onDisplaySuccess('Success', 'Success');
-        //             CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
-        //         } catch (error) {
-        //             console.log('error', error);
-        //         }
-        //     }
+            const create: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
+                try {
+                    console.log('data', courses);
+                    handleOk(ADD_COURSE);
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
 
-        //     CourseService.create("", e, create);
-        // }
+            CourseService.create("", e, create);
+        }
+    }
+
+
+    const submitFormEditCourse = (e: any) => {
+        console.log('checkll edit course', e);
+        if (e.courseName !== null && e.thumbnail !== null) {
+            const update: (data: MessageResponse<CourseDTO> | null) => void = (data) => {
+                try {
+                    handleOk(EDIT_COURSE);
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            CourseService.update("", e, update);
+            
+        }
     }
 
     const [currentPage, setCurrentPage] = useState(default_page);
@@ -169,7 +196,6 @@ const CourseList: React.FC = () => {
             onOk={() => {
                 //@ts-ignore
                 courseFormRef.current?.submit();
-                handleOk(ADD_COURSE);
             }}
             onCancel={() => handleCancel(ADD_COURSE)}
             okText='Submit'
@@ -186,7 +212,7 @@ const CourseList: React.FC = () => {
             onCancel={() => handleCancel(EDIT_COURSE)}
             okText='Submit'
             width={1200}>
-            <CourseForm onSubmit={submitFormAddCourse} courseFormRef={courseFormRef} />
+            <CourseForm onSubmit={submitFormEditCourse} courseFormRef={courseFormRef} item={itemEdit} />
         </Modal>
     </div>
 }

@@ -1,11 +1,15 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Space, Table, TableProps } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import CourseForm from "../form/CourseForm";
 import ExamForm from "../form/ExamForm";
 
+const ADD_EXAM = 'ADD_EXAM';
+const modal = new Map();
+modal.set(ADD_EXAM, false);
 
 const ExamList: React.FC = () => {
+    const examFormRef = useRef(null);
 
     interface DataType {
         key: string;
@@ -68,32 +72,49 @@ const ExamList: React.FC = () => {
             tags: ['cool', 'teacher'],
         },
     ];
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModalAdd = () => {
-        setIsModalOpen(true);
+    const [isModalOpen, setIsModalOpen] = useState(modal);
+
+    const showModalAdd = (key: string) => {
+        modal.set(key, true);
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const handleOk = (key: string) => {
+        modal.set(key, false);
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleCancel = (key: string) => {
+        modal.set(key, false);
+        const newMap = new Map(modal);
+        setIsModalOpen(newMap);
     };
+
+
+    const onSubmitAddExam = (e: any) => {
+        console.log('exam', e);
+    }
 
 
     return <div className="course-list">
         <span className="title">All Examinations</span>
         <span className="add-course">
-            <Button type="primary" icon={<PlusOutlined />} onClick={showModalAdd}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => showModalAdd(ADD_EXAM)}>
                 Add Examinations
             </Button></span>
         <Table columns={columns} dataSource={data} pagination={false} />
         <Modal title="Add New Examination"
-            open={isModalOpen} onOk={handleOk}
-            onCancel={handleCancel} okText='Submit'
+            open={isModalOpen.get(ADD_EXAM)} 
+            onOk={() => {
+                //@ts-ignore
+                examFormRef.current?.submit();
+            }}
+            onCancel={() => handleCancel(ADD_EXAM)} 
+            okText='Submit'
             width={1200}>
-            <ExamForm />
+            <ExamForm examFormRef={examFormRef} onSubmit={onSubmitAddExam}/>
         </Modal>
     </div>
 }
