@@ -38,6 +38,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
+                    ModalCustom.onDisplayError("Get All course failed!!", `Defail : ${data?.message}`)
                 }
             });
     },

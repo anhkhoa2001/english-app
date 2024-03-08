@@ -55,9 +55,10 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
         });
     }
 
-    const handleSubmit = (e: any) => {
-        e.description = localStorage.getItem("editor");
-        onSubmit(e);
+    const handleEditor = (value: string) => {
+        form.setFieldsValue({
+            description: value
+        });
     }
 
     return <div className="course-form" style={{maxWidth: '1200px'}}>
@@ -67,7 +68,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             style={{ width: 1200 }}
-            onFinish={handleSubmit}
+            onFinish={onSubmit}
             ref={courseFormRef}
         >
             <Form.Item 
@@ -104,7 +105,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
                 />
             </Form.Item>
             <Form.Item label="Description" name="description">
-                <EditorComponent class_name="tall" data={dataEditor} />
+                <EditorComponent class_name="tall" data={dataEditor} setContent={handleEditor} />
             </Form.Item>
             <Form.Item label="Public" name="public" valuePropName="checked">
                 <Switch />

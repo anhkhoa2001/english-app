@@ -1,80 +1,109 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Modal, Space, Table, TableProps } from "antd";
-import { useRef, useState } from "react";
-import CourseForm from "../form/CourseForm";
+import { Button, Image, Modal, Space, Switch, Table, TableProps } from "antd";
+import { useEffect, useRef, useState } from "react";
 import ExamForm from "../form/ExamForm";
+import MessageResponse from "../../../../entity/response/MessageResponse";
+import { ExamDTO, ExamService } from "../../../../service/ExamService";
+import { ModalCustom } from "../../../exception/SuccessModal";
+import moment from "moment";
 
 const ADD_EXAM = 'ADD_EXAM';
+const DELETE_EXAM = 'DELETE_EXAM';
+const EDIT_EXAM = 'EDIT_EXAM';
+
 const modal = new Map();
 modal.set(ADD_EXAM, false);
+modal.set(DELETE_EXAM, false);
+modal.set(EDIT_EXAM, false);
+
+let examCode:string = "";
 
 const ExamList: React.FC = () => {
     const examFormRef = useRef(null);
+    const [exams, setExams] = useState<ExamDTO[]>([]);
+    const [examItem, setExamItem] = useState<ExamDTO>();
 
-    interface DataType {
-        key: string;
-        name: string;
-        age: number;
-        address: string;
-        tags: string[];
+    const loadExam: (data: MessageResponse<ExamDTO[]> | null) => void = (data) => {
+        setExams(data?.data || []);
     }
 
-    const columns: TableProps<DataType>['columns'] = [
+    useEffect(() => {
+        ExamService.getAllExam('abc', loadExam);
+    }, [])
+
+    const columns: TableProps<ExamDTO>['columns'] = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Code',
+            dataIndex: 'examCode',
+            key: 'examCode',
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Name',
+            dataIndex: 'examName',
+            key: 'examName',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (pub) => <Switch checked={pub} disabled />
+        },
+        {
+            title: 'Summary',
+            dataIndex: 'summary',
+            key: 'summary',
+        },
+        {
+            title: 'Skill',
+            dataIndex: 'skill',
+            key: 'skill',
+        },
+        {
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
+        },
+        {
+            title: 'Thumbnail',
+            dataIndex: 'thumbnail',
+            key: 'thumbnail',
+            render: (text) => <Image
+                width={120}
+                src={text}
+            />
+        },
+        {
+            title: 'Create At',
+            dataIndex: 'createAt',
+            key: 'createAt',
+            render: (value: Date) => `${moment(value).format('DD-MM-YYYY HH:mm:ss')}`,
+        },
+        {
+            title: 'Create By',
+            dataIndex: 'createBy',
+            key: 'createBy',
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_, code) => (
+            render: (_, item) => (
                 <Space size="middle">
-                    <Button icon={<EyeOutlined />}></Button>
-                    <Button icon={<EditOutlined />} />
-                    <Button icon={<DeleteOutlined />} />
+                    <Button icon={<EditOutlined onClick={() => {
+                        setExamItem(item);
+                        showModalAdd(EDIT_EXAM);
+                    }}/>} />
+                    {
+                        item.status ? <Button icon={<DeleteOutlined onClick={() => showModalAdd(DELETE_EXAM, item.examCode)}/>} /> : <></>
+                    }
                 </Space>
             ),
         },
     ];
-
-    const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
     const [isModalOpen, setIsModalOpen] = useState(modal);
 
-    const showModalAdd = (key: string) => {
+    const showModalAdd = (key: string, code?: string) => {
+        examCode = code || "";
         modal.set(key, true);
         const newMap = new Map(modal);
         setIsModalOpen(newMap);
@@ -93,8 +122,61 @@ const ExamList: React.FC = () => {
     };
 
 
+    const deleteExam = () => {
+        console.log('delete code', examCode);
+
+        if (examCode !== null || examCode != "") {
+            const deleteExam: (data: MessageResponse<string> | null) => void = (data) => {
+                try {
+                    handleOk(DELETE_EXAM);
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    ExamService.getAllExam('abc', loadExam);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            ExamService.deleteExam("", examCode, deleteExam);
+        }
+    }
+
+
     const onSubmitAddExam = (e: any) => {
         console.log('exam', e);
+
+        if (e.examCode !== null && e.examName !== null) {
+
+            const create: (data: MessageResponse<ExamDTO> | null) => void = (data) => {
+                try {
+                    handleOk(ADD_EXAM);
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    ExamService.getAllExam('abc', loadExam);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            ExamService.createExam("", e, create);
+        }
+    }
+
+
+    const onSubmitEditExam = (e: any) => {
+        console.log('exam edit', e);
+
+        if (e.examName !== null) {
+            const edit: (data: MessageResponse<ExamDTO> | null) => void = (data) => {
+                try {
+                    handleOk(EDIT_EXAM );
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    ExamService.getAllExam('abc', loadExam);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+
+            ExamService.editExam("", e, edit);
+        }
     }
 
 
@@ -104,7 +186,7 @@ const ExamList: React.FC = () => {
             <Button type="primary" icon={<PlusOutlined />} onClick={() => showModalAdd(ADD_EXAM)}>
                 Add Examinations
             </Button></span>
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Table columns={columns} dataSource={exams} pagination={false} />
         <Modal title="Add New Examination"
             open={isModalOpen.get(ADD_EXAM)} 
             onOk={() => {
@@ -115,6 +197,30 @@ const ExamList: React.FC = () => {
             okText='Submit'
             width={1200}>
             <ExamForm examFormRef={examFormRef} onSubmit={onSubmitAddExam}/>
+        </Modal>
+
+        <Modal title={`Edit Examination ${examCode}`}
+            open={isModalOpen.get(EDIT_EXAM)} 
+            onOk={() => {
+                //@ts-ignore
+                examFormRef.current?.submit();
+            }}
+            onCancel={() => handleCancel(EDIT_EXAM)} 
+            okText='Submit'
+            width={1200}>
+            <ExamForm examFormRef={examFormRef} onSubmit={onSubmitEditExam} item={examItem}/>
+        </Modal>
+
+        <Modal title="Are you sure to delete this?"
+            open={isModalOpen.get(DELETE_EXAM)}
+            onOk={() => {
+                //@ts-ignore
+                deleteExam();
+            }}
+            onCancel={() => handleCancel(DELETE_EXAM)}
+            okText='Submit'
+            width={800}>
+            <p>Hmmmmmm........</p>
         </Modal>
     </div>
 }

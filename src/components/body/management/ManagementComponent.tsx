@@ -10,6 +10,7 @@ import ExamManagement from "./exam/ExamManagement";
 import ExamList from "./exam/ExamList";
 import MessageResponse from "../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../service/CourseService";
+import { ExamDTO, ExamService } from "../../../service/ExamService";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const max = 999999;
@@ -34,6 +35,7 @@ const ManagementComponent: React.FC = () => {
 
     const [elementDashboard, setElementDashboard] = useState(<CourseList/>);
     const [courses, setCourses] = useState<CourseDTO[]>([]);
+    const [exams, setExams] = useState<ExamDTO[]>([]);
 
     const loadCourse: (data: MessageResponse<CourseDTO[]> | null) => void = (data) => {
         try {
@@ -45,27 +47,32 @@ const ManagementComponent: React.FC = () => {
         }
     }
 
+    const loadExam: (data: MessageResponse<ExamDTO[]> | null) => void = (data) => {
+        setExams(data?.data || []);
+    }
+
     useEffect(() => {
         CourseService.getAllCourse("abc", 1, max, loadCourse);
+        ExamService.getAllExam("abc", loadExam);
     }, []);
 
-    const exams: ExamItemDTO[] = [
-        {
-            code: "TOEIC-EXAM2002",
-            title: "TOEIC Test 2023 Listening",
-            type: 1
-        },
-        {
-            code: "TOEIC-EXAM2003",
-            title: "TOEIC Test 2024 Listening",
-            type: 2
-        },
-        {
-            code: "TOEIC-EXAM2004",
-            title: "TOEIC Test 2025 Listening",
-            type: 3
-        }
-    ]
+    // const exams: ExamItemDTO[] = [
+    //     {
+    //         code: "TOEIC-EXAM2002",
+    //         title: "TOEIC Test 2023 Listening",
+    //         type: 1
+    //     },
+    //     {
+    //         code: "TOEIC-EXAM2003",
+    //         title: "TOEIC Test 2024 Listening",
+    //         type: 2
+    //     },
+    //     {
+    //         code: "TOEIC-EXAM2004",
+    //         title: "TOEIC Test 2025 Listening",
+    //         type: 3
+    //     }
+    // ]
 
     const onChangeCourseCenter = () => {
         setElementDashboard(<CourseList/>);
@@ -82,7 +89,7 @@ const ManagementComponent: React.FC = () => {
         })),
 
         getItem(<p onClick={onChangeExamCenter}>Exams Center</p>, 'sub2', <AppstoreOutlined />, exams.map(e => {
-            return getItem(e.title, e.code);
+            return getItem(e.examName, e.examCode);
         })),
         getItem('Group', 'grp', null, [
             getItem('Blogs Center', '13'),
@@ -94,8 +101,8 @@ const ManagementComponent: React.FC = () => {
             //CourseService.getAllCourse("abc", 1, max, loadCourse);
             console.log('key', e.key);
             setElementDashboard(<CourseManagement code={e.key}/>);
-        } else if(exams.map(e => e.code).includes(e.key)) {
-            setElementDashboard(<ExamManagement />);
+        } else if(exams.map(e => e.examCode).includes(e.key)) {
+            setElementDashboard(<ExamManagement code={e.key}/>);
         }
     };
 

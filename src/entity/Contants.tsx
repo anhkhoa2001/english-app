@@ -29,3 +29,5 @@ export interface UserInfo {
 }
 
 export const URL_UPLOAD_RESOURCE = "http://localhost:9999/api/up-file/upload-to-cloud";
+
+export const URL_UPLOAD_RESOURCE_CK = "http://localhost:9999/api/up-file/upload-for-ckeditor";
