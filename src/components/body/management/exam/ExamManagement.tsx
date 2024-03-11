@@ -1,13 +1,14 @@
 import { Button, Collapse, CollapseProps, Form, Modal, Rate, Space, Table } from "antd";
 import '../css/ExamManagement.scss';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TableProps } from "antd/lib";
 import { MultiChoiceProp } from "../../../../entity/props/MultiChoiceProp";
 import PreviewContentQuestion from "./PreviewContentQuestion";
-import QuestionForm from "../form/QuestionForm";
+import QuestionForm from "../form/CreateQuestionForm";
 import { ExamDTO, ExamService } from "../../../../service/ExamService";
 import MessageResponse from "../../../../entity/response/MessageResponse";
+import CreateQuestionForm from "../form/CreateQuestionForm";
 
 const PART = 'PART';
 const DELETE_PART = 'DELETE_PART';
@@ -25,6 +26,9 @@ let indexDelete = 0;
 const ExamManagement: React.FC<{code: string}> = ({code}) => {
     const [isModalSectionOpen, setIsModalSectionOpen] = useState(modal);
     const [item, setItem] = useState<ExamDTO>();
+    const [indexPart, setIndexPart] = useState<number>(0);
+    const [input, setInput] = useState<any>();
+    const formRef = useRef(null);
 
 
     const loadExam: (data: MessageResponse<ExamDTO> | null) => void = (data) => {
@@ -41,8 +45,9 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
         ExamService.getExamByCode("abc", code, loadExam);
     }, [code]);
 
-    const showModalAdd = (key: string) => {
+    const showModalAdd = (key: string, indexPart?: number) => {
         isModalSectionOpen.set(key, true);
+        setIndexPart(indexPart || 0);
         const newMap = new Map(isModalSectionOpen);
         setIsModalSectionOpen(newMap);
     };
@@ -383,7 +388,6 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
             data: []
         }];
         setSectionCurrent(newParts);
-        console.log(newParts);
     }
 
 
@@ -411,6 +415,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     };
 
     const handleCancel = (key: string) => {
+        console.log('handle cancel');
         isModalSectionOpen.set(key, false);
         const newMap = new Map(isModalSectionOpen);
         setIsModalSectionOpen(newMap);
@@ -419,6 +424,12 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     const ReactComponent = (element: string) => {
         return React.createElement('div', { dangerouslySetInnerHTML: { __html: element } });
       };
+
+    const onSubmitAddQuestion = (e:any) => {
+        console.log('question ===== ', e);
+    }
+
+
 
     return <div className="exam-manage" >
         <div className="introduction">
@@ -441,22 +452,29 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
             </Button>
         </div>
         <Collapse items={itemDashboards} expandIcon={({ isActive }) => <></>} defaultActiveKey={['1']} />
-        <Modal title="Edit Question"
+        {/* <Modal title="Edit Question"
             open={isModalSectionOpen.get(EDIT_QUESTION)}
             onOk={() => closeModal(EDIT_QUESTION)}
             onCancel={() => handleCancel(EDIT_QUESTION)}
             okText='Submit'
             width={1400}>
-            <QuestionForm />
-        </Modal>
+            <CreateQuestionForm />
+        </Modal> */}
 
         <Modal title="Add New Question"
             open={isModalSectionOpen.get(ADD_QUESTION)}
-            onOk={() => closeModal(ADD_QUESTION)}
+            onOk={() => {
+                 //@ts-ignore
+                formRef.current?.submit();
+            }}
             onCancel={() => handleCancel(ADD_QUESTION)}
             okText='Submit'
             width={1400}>
-            <QuestionForm />
+            <CreateQuestionForm 
+                id={Math.random()} 
+                part={indexPart} 
+                onSubmit={onSubmitAddQuestion} 
+                formRef={formRef}/>
         </Modal>
 
         <Modal title="Warning when delete part" 

@@ -1,4 +1,3 @@
-import { Modal } from "antd";
 import { BASE_PATH } from "../entity/Contants";
 import MessageResponse from "../entity/response/MessageResponse";
 import RestService from "./RestService";

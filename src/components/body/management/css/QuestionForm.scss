@@ -6,5 +6,33 @@
         margin-bottom: 30px;
     }
 
-    
+    .ant-flex.css-dev-only-do-not-override-zl9ks2.ant-flex-wrap-wrap.ant-flex-gap-small {
+        justify-content: center;
+    }
+
+    .question {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+
+        .options {
+            height: 25%;
+        }
+    }
+    .answer {
+        justify-content: left;
+        display: flex;
+        margin-left: 160px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+
+        input {
+            flex-basis: 800px;
+            margin-right: 10px;
+        }
+        button {
+            border: none;
+            font-size: 40%;
+        }
+    }
 }

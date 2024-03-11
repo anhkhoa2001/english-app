@@ -16,3 +16,10 @@
         min-height: 900px;
     }
 }
+
+.very-low {
+    width: 700px;
+    .ck-editor__editable {
+        min-height: 100px;
+    }
+}
