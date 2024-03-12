@@ -18,6 +18,10 @@
         .options {
             height: 25%;
         }
+
+        .ant-upload-wrapper {
+            max-width: 200px;
+        }
     }
     .answer {
         justify-content: left;

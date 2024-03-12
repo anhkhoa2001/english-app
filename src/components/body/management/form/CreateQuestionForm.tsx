@@ -25,52 +25,65 @@ const CreateQuestionForm: React.FC<{id: number, part: number,
         setInput(form.getFieldsValue());
 
         setQuestions([]);
-        setTypeQuestion(types[0]);
+        setTypeQuestion(types[0 ]);
         setQuestionElement(<></>);
     }, [id]);
 
     const handleContent = (value: string) => {
-        console.log('check value content', value);
+        console.log('check value content ========================== ', value);
         setInput({
-            content: value,
-            ...input
+            ...input,
+            content: value
         });
-        form.setFieldsValue(input);
+        form.setFieldsValue({
+            ...input,
+            content: value
+        });
     }
+
+    const handleInput = (content: any) => {
+        console.log('handle input', content);
+        form.setFieldsValue({
+            type: content.type,
+            questions: content.questions,
+            content: content.content
+        });
+    };
 
     const addNewQuestion = () => {
         const index = questions.length + 1;
         var temp:any;
-        const questionsCpy = [{
+        const questionsCpy = [...questions, {
             index: index
-        }, ...questions];
+        }];
         setQuestions(questionsCpy);
         if(questionsCpy.length > 1) {
             temp = {
-                type: types[1],
-                ...input
+                ...input,
+                type: types[1]
             };
-            setTypeQuestion(types[1]);
         }  else {
             temp = {
-                type: types[0],
-                ...input
+                ...input,
+                type: types[0]
             }
         }
-        console.log('ques', questionsCpy);
         temp = {
-            questions: questionsCpy,
-            ...temp
+            ...temp,
+            questions: questionsCpy
         };
-        console.log('ques type', temp);
+        console.log('ques type detail', temp);
+        setTypeQuestion(temp.type);
         setInput(temp);
-        form.setFieldsValue(input);
+        form.setFieldsValue(temp);
 
-        const element = <QuestionItem index={index} input={temp}/>
-        setQuestionElement(React.createElement('div', {}, element, questionElemment));
+        setQuestionElement(questionsCpy.map(q => {
+                console.log('item questions', q);
+                return <QuestionItem index={q.index} input={temp} setInput={handleInput}/>   
+            }));
     }
 
-
+    console.log('ques type', typeQuestion);
     return <div className="question-form">
         <Form
             labelCol={{ span: 3 }}
