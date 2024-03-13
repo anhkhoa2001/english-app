@@ -29,6 +29,7 @@
         margin-left: 160px;
         margin-bottom: 20px;
         flex-wrap: wrap;
+        position: relative;
 
         input {
             flex-basis: 800px;
@@ -37,6 +38,11 @@
         button {
             border: none;
             font-size: 40%;
+        }
+
+        .delete-item {
+            position: absolute;
+            right: 10%;
         }
     }
 }

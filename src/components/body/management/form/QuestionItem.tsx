@@ -2,7 +2,7 @@ import { Form, SelectProps } from "antd";
 import EditorComponent from "../../editor/EditorComponent";
 import { Button, Input, Radio, RadioChangeEvent, Select, Space, Upload } from "antd/lib";
 import { useEffect, useState } from "react";
-import { CloseOutlined, SearchOutlined, UploadOutlined } from "@ant-design/icons";
+import { CloseOutlined, DeleteOutlined, SearchOutlined, UploadOutlined } from "@ant-design/icons";
 import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
 import ReactAudioPlayer from "react-audio-player";
 
@@ -16,7 +16,7 @@ interface PropUpload {
     url: string
 }
 
-const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => void }> = ({ index, input, setInput }) => {
+const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => void, deleteItem: (index: number) => void }> = ({ index, input, getInput, deleteItem }) => {
 
     console.log('index', index);
     const [upload, setUpload] = useState<PropUpload>({
@@ -30,8 +30,9 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
     useEffect(() => {
         const elementQ = getElement();
         elementQ.type = haveContent;
-        setInput(input);
-    }, [index]);
+
+        //getInput(input);
+    }, []);
  
     const getElement:any = () => {
         var rs:any = {};
@@ -50,7 +51,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
     const handleContent = (value: string) => {
         const elementQ = getElement();
         elementQ.content = value;
-        setInput(input);
+        getInput(input);
     }
 
     const handleChange = (value: string[]) => {
@@ -62,7 +63,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         const elementQ = getElement();
         elementQ.type = value;
         setValues([]);
-        setInput(input);
+        getInput(input);
     };
 
     const options: SelectProps['options'] = [
@@ -97,7 +98,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         setValueMC(e.target.value);
         const elementQ = getElement();
         elementQ.solution = e.target.value;  
-        setInput(input);
+        getInput(input);
     };
 
     const addNewOption = (e: any) => {
@@ -109,7 +110,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         const elementQ = getElement();
         console.log('element q add new', elementQ);
         elementQ.answer = [...values, op];
-        setInput(input);  
+        getInput(input);  
     }
 
     const onRemoveOption = (key: number) => {
@@ -117,7 +118,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         setValues(newOps);
         const elementQ = getElement();
         elementQ.answer = newOps;  
-        setInput(input);  
+        getInput(input);  
     }
 
     const getValueOption = (e:any, key: number) => {
@@ -126,7 +127,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         setValues([...values]); 
         const elementQ = getElement();
         elementQ.answer = [...values];  
-        setInput(input);
+        getInput(input);
     }
 
     const listenUpload = (e: any) => {
@@ -136,7 +137,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
             setUpload({...mock});
             const elementQ = getElement();
             elementQ.content = mock.url;  
-            setInput(input);
+            getInput(input);
         }
     }
 
@@ -144,7 +145,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
         console.log('solve text', e.target.value);
         const elementQ = getElement();
         elementQ.solution = e.target.value;  
-        setInput(input);
+        getInput(input);
     }
     return <div>
         <div className={`question ${index}`}>
@@ -203,6 +204,7 @@ const QuestionItem: React.FC<{ index: number, input: any, setInput: (e: any) => 
             </Radio.Group> 
             : 
             <Input onBlur={(e) => getSolve(e)} style={{ width: 100, marginLeft: 60, flexBasis: '700px' }} placeholder="typing your answer...." />}
+            <Button className="delete-item" icon={<DeleteOutlined />} onClick={() => deleteItem(index)} />
         </div>
     </div>
 }

@@ -1,20 +1,8 @@
 import { ModalCustom } from "../components/exception/SuccessModal";
 import { BASE_PATH } from "../entity/Contants";
+import { ExamDTO, QuestionDTO } from "../entity/props/ExamDTO";
 import MessageResponse from "../entity/response/MessageResponse";
 import RestService from "./RestService";
-
-export interface ExamDTO {
-    examCode: string,
-    examName: string,
-    description: string,
-    summary: string,
-    skill: true,
-    type: string,
-    thumbnail: string,
-    createBy: string,
-    createAt: Date,
-    status: boolean
-}
 
 export const ExamService = {
     createExam: (token: string, request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
@@ -98,6 +86,22 @@ export const ExamService = {
                 } else {
                     //func(null, false);
                     ModalCustom.onDisplayError("Get All exam failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    createQuestion: (token: string, request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
+        new RestService<QuestionDTO>().post(
+            BASE_PATH.PATH_PROXY + '/api/question/create',
+            {
+                'Authorization': token
+            },
+            request,
+            (status: number, data: MessageResponse<QuestionDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Create question failed!!", `Defail : ${data?.message}`)
                 }
             });
     },
