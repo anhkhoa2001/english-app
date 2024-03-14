@@ -105,4 +105,39 @@ export const ExamService = {
                 }
             });
     },
+
+    deletePart: (token: string, request: any, func: (data: MessageResponse<string> | null) => void) =>  {
+        new RestService<string>().get(
+            BASE_PATH.PATH_PROXY + '/api/exam/delete-part',
+            {
+                'Authorization': token
+            },
+            request,
+            (status: number, data: MessageResponse<string> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Delete part failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    deleteQuestion: (token: string, questionId: number, func: (data: MessageResponse<string> | null) => void) =>  {
+        new RestService<string>().get(
+            BASE_PATH.PATH_PROXY + '/api/question/delete',
+            {
+                'Authorization': token
+            },
+            {
+                questionId: questionId
+            },
+            (status: number, data: MessageResponse<string> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Delete question failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
 }

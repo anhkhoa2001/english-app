@@ -14,7 +14,6 @@ const CreateQuestionForm: React.FC<{
     onSubmit: (e: any) => void, formRef: any, examCode: string, item?: QuestionDTO
 }> =
     ({ id, part, onSubmit, formRef, examCode, item }) => {
-
         const [questionElemment, setQuestionElement] = useState<React.ReactNode[]>([]);
         const [questions, setQuestions] = useState<any>([]);
         const [typeQuestion, setTypeQuestion] = useState<string>(types[0]);
@@ -22,9 +21,8 @@ const CreateQuestionForm: React.FC<{
         const [form] = Form.useForm();
         const elementRef = useRef<React.ReactNode[]>([]);
         const questionRef = useRef<any[]>([]);
-        const [dataEditorParent, setDataEditorParent] = useState();
+        const [dataEditorParent, setDataEditorParent] = useState<string>();
 
-        console.log('id', id);
         useEffect(() => {
             if (item === undefined) {
                 form.setFieldsValue({
@@ -35,7 +33,6 @@ const CreateQuestionForm: React.FC<{
                     content: ''
                 });
                 setInput(form.getFieldsValue());
-
                 setQuestions([]);
                 setTypeQuestion(types[0]);
                 setQuestionElement([]);
@@ -51,8 +48,8 @@ const CreateQuestionForm: React.FC<{
                 setDataEditorParent(item.content);
                 setQuestions(item.questionChilds);
                 questionRef.current = item.questionChilds;
-                const questionEle = item.questionChilds.map(q => {
-                    return <QuestionItem index={q.index} input={form.getFieldsValue()} getInput={handleInput} deleteItem={deleteQuestion} />
+                const questionEle = item.questionChilds.map((q, index) => {
+                    return <QuestionItem index={index + 1} input={form.getFieldsValue()} getInput={handleInput} deleteItem={deleteQuestion} item={q} id={Math.random()} />
                 });
                 elementRef.current = questionEle;
                 setQuestionElement(questionEle);
@@ -71,11 +68,9 @@ const CreateQuestionForm: React.FC<{
             });
         }
 
-        const handleInput = (content: any) => {
+        const  handleInput = (content: any) => {
             form.setFieldsValue({
-                type: content.type,
-                questions: content.questions,
-                content: content.content
+                questions: [...questions, content]
             });
         };
 
@@ -107,7 +102,7 @@ const CreateQuestionForm: React.FC<{
             setQuestions(questionsCpy);
             questionRef.current = questionsCpy;
             const questionEle = questionsCpy.map(q => {
-                return <QuestionItem index={q.index} input={temp} getInput={handleInput} deleteItem={deleteQuestion} />
+                return <QuestionItem index={q.index} item={q} input={temp} getInput={handleInput} deleteItem={deleteQuestion} />
             });
             elementRef.current = questionEle;
             setQuestionElement(questionEle);
@@ -122,7 +117,7 @@ const CreateQuestionForm: React.FC<{
             }
             setQuestions([...questionRef.current]);
             setQuestionElement(questionRef.current.map(q => {
-                return <QuestionItem index={q.index} input={form.getFieldsValue()} getInput={handleInput} deleteItem={deleteQuestion} />
+                return <QuestionItem index={q.index} item={q} input={form.getFieldsValue()} getInput={handleInput} deleteItem={deleteQuestion} />
             }));
             form.setFieldsValue({
                 ...form.getFieldsValue(),

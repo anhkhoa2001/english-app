@@ -47,12 +47,12 @@ export interface QuestionItemDTO {
     content: string;
     solution: string;
     type: string;
-    answers: AnswerAttributeDTO[];
+    answer: AnswerAttributeDTO[];
 }
 
 
 export interface AnswerAttributeDTO {
-    key: string;
+    key: number;
     value: string;
-    id: number;
+    id?: number;
 }

@@ -14,11 +14,13 @@ import { ModalCustom } from "../../../exception/SuccessModal";
 const PART = 'PART';
 const DELETE_PART = 'DELETE_PART';
 const ADD_QUESTION = 'ADD_QUESTION';
+const DELETE_QUESTION = 'DELETE_QUESTION';
 const EDIT_QUESTION = 'EDIT_QUESTION';
 const modal = new Map();
 modal.set(PART, false);
 modal.set(EDIT_QUESTION, false);
 modal.set(ADD_QUESTION, false);
+modal.set(DELETE_QUESTION, false);
 modal.set(DELETE_PART, false);
 
 
@@ -84,7 +86,10 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
                         indexQuestionRef.current = i.item;
                         showModalAdd(EDIT_QUESTION);
                     }} icon={<EditOutlined />} />
-                    <Button icon={<DeleteOutlined />} />
+                    <Button icon={<DeleteOutlined onClick={() => {
+                        indexQuestionRef.current = i.item;
+                        showModalAdd(DELETE_QUESTION);
+                    }} />} />
                 </Space>
             ),
         },
@@ -375,7 +380,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
         return {
             key: index + '',
             label: <div className="header-course">
-                <Form.Item label={`Part ${index + 1}`} >
+                <Form.Item label={`Part ${index + 1}`} > 
                     <Button className="item-part" name={'edit' + index} onClick={() => showModalAdd(ADD_QUESTION, index)}>Add New Question</Button>
                     <Button className="item-part" name={'delete' + index} onClick={() => deletePart(index)}>Delete Part</Button>
                 </Form.Item>
@@ -407,6 +412,34 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     const closeModal = (key: string) => {
         if(key === DELETE_PART) {
             //can call api
+            const request = {
+                examCode: code,
+                partId: Number(indexDelete)
+            }
+
+            const deletePart: (data: MessageResponse<string> | null) => void = (data) => {
+                try {
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    ExamService.getExamByCode("abc", code, loadExam);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+    
+            ExamService.deletePart('abc', request, deletePart);
+        } 
+
+        if(key === DELETE_QUESTION) {
+            const deleteQuestion: (data: MessageResponse<string> | null) => void = (data) => {
+                try {
+                    ModalCustom.onDisplaySuccess('Success', 'Success');
+                    ExamService.getExamByCode("abc", code, loadExam);
+                } catch (error) {
+                    console.log('error', error);
+                }
+            }
+    
+            ExamService.deleteQuestion('abc', indexQuestionRef.current.questionId, deleteQuestion);
         }
         isModalSectionOpen.set(key, false);
         const newMap = new Map(isModalSectionOpen);
@@ -441,8 +474,9 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     }
 
     const onSubmitEditQuestion = (e:any) => {
-    
         console.log('result edit question', e);
+
+        
     }
 
 
@@ -509,7 +543,14 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
             onOk={() => closeModal(DELETE_PART)}
             onCancel={() => handleCancel(DELETE_PART)}>
             <p>The section you want to delete contains questions!!! Do you want to continue deleting?</p>
-      </Modal>
+        </Modal>
+
+        <Modal title="Warning when delete question" 
+            open={isModalSectionOpen.get(DELETE_QUESTION)}
+            onOk={() => closeModal(DELETE_QUESTION)}
+            onCancel={() => handleCancel(DELETE_QUESTION)}>
+            <p>The question you want to delete contains list question!!! Do you want to continue deleting?</p>
+        </Modal>
     </div>
 }
 
