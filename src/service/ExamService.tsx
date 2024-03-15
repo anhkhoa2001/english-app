@@ -140,4 +140,20 @@ export const ExamService = {
                 }
             });
     },
+    updateQuestion: (token: string, request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
+        new RestService<QuestionDTO>().post(
+            BASE_PATH.PATH_PROXY + '/api/question/update',
+            {
+                'Authorization': token
+            },
+            request,
+            (status: number, data: MessageResponse<QuestionDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Update question failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
 }

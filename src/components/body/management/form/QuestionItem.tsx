@@ -29,32 +29,15 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
         const [haveContent, setHaveContent] = useState<string[]>(['content_text', 'multi_choice']);
         const [editorData, setEditorData] = useState<string>("");
         const [solution, setSolution] = useState<string>("");
+        const [hint, setHint] = useState<string>(item.hint);
 
         useEffect(() => {
             loadToElement(item);
             //getInput(input);
         }, [id]);
 
-        const getElement: any = () => {
-            var rs: any = {};
-            try {
-                if (item === undefined) {
-                    const questions = input.questions || [];
-                    //@ts-ignore
-                    const elementQ = questions.filter(e => e.index === index)[0];
-                    rs = elementQ;
-                } else {
-                    console.log('check element queue', input);
-                    rs = {...item};
-                }
-            } catch (error) {
-                console.log('handle element Q failed ' + error);
-            }
-
-            return rs;
-        }
-
         const loadToElement = (i: QuestionItemDTO) => {
+            console.log('question item dto', i);
             try {
                 const types = i.type.replace(/ /g, '').split(',');
                 if (types.includes('audio')) {
@@ -66,7 +49,7 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
                     setEditorData(i.content);
                 }
                 setHaveContent(types);
-    
+                setHint(i.hint);
                 if (!types.includes('multi_choice')) {
                     setSolution(i.solution);
                 } else {
@@ -79,7 +62,7 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
                     setValues(valuesRes);
                     setValueMC(Number(i.solution));
                 }
-            } catch(err) {
+            } catch (err) {
                 console.log('error ==== ', err);
                 i.type = haveContent.join(',');
             }
@@ -143,7 +126,7 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
             };
             setValues([...values, op]);
             console.log('check item', item);
-            item.answer  = [...values, op];
+            item.answer = [...values, op];
             getInput(item);
         }
 
@@ -177,7 +160,13 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
             item.solution = e.target.value;
             getInput(item);
         }
-        
+
+        const onBlurHint = (e: any) => {
+            console.log('hint', e.target.value);
+            item.hint = e.target.value;
+            getInput(item);
+        } 
+
         return <div>
             <div className={`question ${index}`}>
                 <Form.Item label={`Question ${index}`}>
@@ -233,9 +222,14 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
                                 </>}
                             </Radio>
                         </Space>
+                        <Input className="hint" onBlur={onBlurHint} defaultValue={hint} placeholder="typing hint........."/>
                     </Radio.Group>
                     :
-                    <Input onBlur={(e) => getSolve(e)} defaultValue={solution} style={{ width: 100, marginLeft: 60, flexBasis: '700px' }} placeholder="typing your answer...." />
+                    <>
+                        <Input onBlur={(e) => getSolve(e)} defaultValue={solution} style={{ width: 100, marginLeft: 60, flexBasis: '700px' }} 
+                                        placeholder="typing your answer...." />
+                        <Input className="hint no_ans" onBlur={onBlurHint} defaultValue={hint} placeholder="typing hint........." />
+                    </>
                 }
                 <Button className="delete-item" icon={<DeleteOutlined />} onClick={() => deleteItem(index)} />
             </div>

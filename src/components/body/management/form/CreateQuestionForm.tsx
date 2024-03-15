@@ -42,7 +42,8 @@ const CreateQuestionForm: React.FC<{
                     questions: item.questionChilds,
                     examCode: examCode,
                     part: part,
-                    content: item.content
+                    content: item.content,
+                    questionId: id
                 });
                 console.log('checked', form.getFieldsValue());
                 setDataEditorParent(item.content);
@@ -69,6 +70,8 @@ const CreateQuestionForm: React.FC<{
         }
 
         const  handleInput = (content: any) => {
+            console.log('check handle content', content);
+            console.log('checked handle', form.getFieldsValue());
             form.setFieldsValue({
                 questions: [...questions, content]
             });
@@ -143,6 +146,13 @@ const CreateQuestionForm: React.FC<{
                     </Select>
                 </Form.Item>
                 <Form.Item label="Type Question" name="part" style={{ display: "none" }}>
+                    <Select value={typeQuestion} disabled>
+                        {types.map(e => {
+                            return <Select.Option value={e}>{e}</Select.Option>;
+                        })}
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Type Question" name="questionId" style={{ display: "none" }}>
                     <Select value={typeQuestion} disabled>
                         {types.map(e => {
                             return <Select.Option value={e}>{e}</Select.Option>;

@@ -30,6 +30,7 @@
         margin-bottom: 20px;
         flex-wrap: wrap;
         position: relative;
+        flex-wrap: wrap;
 
         input {
             flex-basis: 800px;
@@ -43,6 +44,16 @@
         .delete-item {
             position: absolute;
             right: 10%;
+        }
+
+        .hint {
+            flex-basis: 700px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+
+            &.no_ans {
+                margin-left: 60px;
+            }
         }
     }
 }

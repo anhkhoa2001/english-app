@@ -84,7 +84,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
                 <Space size="small">
                     <Button onClick={() => {
                         indexQuestionRef.current = i.item;
-                        showModalAdd(EDIT_QUESTION);
+                        showModalAdd(EDIT_QUESTION, i.index);
                     }} icon={<EditOutlined />} />
                     <Button icon={<DeleteOutlined onClick={() => {
                         indexQuestionRef.current = i.item;
@@ -365,6 +365,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
         childs: number;
         kind: string;
         item: QuestionDTO;
+        index: number;
     }
     const itemDashboards: CollapseProps['items'] = item.parts.map((itemChild, index) => {
         const dataFake: DataType[] = itemChild.questions.map((l, i) => {
@@ -374,15 +375,16 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
                 content: <PreviewContentQuestion content={l.content} />,
                 childs: l.questionChilds?.length || 0,
                 kind: l.type,
-                item: l
+                item: l,
+                index: itemChild.partId
             }
         });
         return {
             key: index + '',
             label: <div className="header-course">
-                <Form.Item label={`Part ${index + 1}`} > 
+                <Form.Item label={`Part ${itemChild.partId}`} > 
                     <Button className="item-part" name={'edit' + index} onClick={() => showModalAdd(ADD_QUESTION, index)}>Add New Question</Button>
-                    <Button className="item-part" name={'delete' + index} onClick={() => deletePart(index)}>Delete Part</Button>
+                    <Button className="item-part" name={'delete' + index} onClick={() => deletePart(index, itemChild.partId)}>Delete Part</Button>
                 </Form.Item>
             </div>,
             children: <Table columns={columns} dataSource={dataFake} pagination={false} />
@@ -397,10 +399,10 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
 
 
 
-    const deletePart = (key: number) => {
+    const deletePart = (key: number, indexPart: number) => {
         var newParts = item?.parts;
         if(newParts[key].questions.length > 0) {
-            indexDelete = key;
+            indexDelete = indexPart;
             showModalAdd(DELETE_PART);
         } else {
             newParts.splice(key, 1);
@@ -416,6 +418,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
                 examCode: code,
                 partId: Number(indexDelete)
             }
+            
 
             const deletePart: (data: MessageResponse<string> | null) => void = (data) => {
                 try {
@@ -476,7 +479,18 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     const onSubmitEditQuestion = (e:any) => {
         console.log('result edit question', e);
 
-        
+        const updateQuestion: (data: MessageResponse<QuestionDTO> | null) => void = (data) => {
+            try {
+                ModalCustom.onDisplaySuccess('Success', 'Success');
+                closeModal(EDIT_QUESTION);
+                ExamService.getExamByCode("abc", code, loadExam);
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
+
+        ExamService.updateQuestion('abc', e, updateQuestion);
+
     }
 
 
