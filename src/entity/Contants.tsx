@@ -15,7 +15,7 @@ export const BASE_PATH =  {
     PATH_USER_SERVICE: 'http://localhost:9001',
     PATH_GATEWAY: 'http://localhost:9000',
     PATH_FE: 'http://localhost:5173',
-    PATH_PROXY: 'http://localhost:9999'
+    PATH_PROXY: 'http://localhost:9001/api'
 }
 
 export const BEARER = "Bearer ";
@@ -28,6 +28,6 @@ export interface UserInfo {
     email: string;
 }
 
-export const URL_UPLOAD_RESOURCE = "http://localhost:9999/api/up-file/upload-to-cloud";
+export const URL_UPLOAD_RESOURCE = "http://localhost:9001/api/up-file/upload-to-cloud";
 
-export const URL_UPLOAD_RESOURCE_CK = "http://localhost:9999/api/up-file/upload-for-ckeditor";
+export const URL_UPLOAD_RESOURCE_CK = "http://localhost:9001/api/up-file/upload-for-ckeditor";

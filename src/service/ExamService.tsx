@@ -4,8 +4,9 @@ import { ExamDTO, QuestionDTO } from "../entity/props/ExamDTO";
 import MessageResponse from "../entity/response/MessageResponse";
 import RestService from "./RestService";
 
+const token = localStorage.getItem('access_token');
 export const ExamService = {
-    createExam: (token: string, request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
+    createExam: ( request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().post(
             BASE_PATH.PATH_PROXY + '/api/exam/create',
             {
@@ -21,7 +22,7 @@ export const ExamService = {
                 }
             });
     },
-    deleteExam: (token: string, examCode: string, func: (data: MessageResponse<string> | null) => void) =>  {
+    deleteExam: ( examCode: string, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
             BASE_PATH.PATH_PROXY + `/api/exam/delete`,
             {
@@ -39,7 +40,7 @@ export const ExamService = {
                 }
             });
     },
-    editExam: (token: string, request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
+    editExam: ( request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().post(
             BASE_PATH.PATH_PROXY + `/api/exam/update`,
             {
@@ -55,7 +56,7 @@ export const ExamService = {
                 }
             });
     },
-    getExamByCode: (token: string, examCode: string, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
+    getExamByCode: ( examCode: string, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().get(
             BASE_PATH.PATH_PROXY + `/api/exam/get-by-code`,
             {
@@ -73,7 +74,7 @@ export const ExamService = {
                 }
             });
     },
-    getAllExam: (token: string, func: (data: MessageResponse<ExamDTO[]> | null) => void) =>  {
+    getAllExam: ( func: (data: MessageResponse<ExamDTO[]> | null) => void) =>  {
         new RestService<ExamDTO[]>().get(
             BASE_PATH.PATH_PROXY + '/api/exam/get-all',
             {
@@ -89,7 +90,7 @@ export const ExamService = {
                 }
             });
     },
-    createQuestion: (token: string, request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
+    createQuestion: ( request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
         new RestService<QuestionDTO>().post(
             BASE_PATH.PATH_PROXY + '/api/question/create',
             {
@@ -106,7 +107,7 @@ export const ExamService = {
             });
     },
 
-    deletePart: (token: string, request: any, func: (data: MessageResponse<string> | null) => void) =>  {
+    deletePart: ( request: any, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
             BASE_PATH.PATH_PROXY + '/api/exam/delete-part',
             {
@@ -122,7 +123,7 @@ export const ExamService = {
                 }
             });
     },
-    deleteQuestion: (token: string, questionId: number, func: (data: MessageResponse<string> | null) => void) =>  {
+    deleteQuestion: ( questionId: number, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
             BASE_PATH.PATH_PROXY + '/api/question/delete',
             {
@@ -140,7 +141,7 @@ export const ExamService = {
                 }
             });
     },
-    updateQuestion: (token: string, request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
+    updateQuestion: ( request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
         new RestService<QuestionDTO>().post(
             BASE_PATH.PATH_PROXY + '/api/question/update',
             {

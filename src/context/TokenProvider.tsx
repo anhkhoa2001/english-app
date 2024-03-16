@@ -32,7 +32,6 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
 
     useEffect(() => {
-      console.log('current', tokenCurrent);
       if(tokenCurrent == undefined) {
         const url = new URLSearchParams(window.location.search);
         const code = url.get('code');

@@ -31,6 +31,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
         description: localStorage.getItem("editor")
     });
 
+
     if(item != undefined) {
         useEffect(() => {
             setDataEditor(item.description);
@@ -59,6 +60,10 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
         form.setFieldsValue({
             description: value
         });
+    }
+
+    const preview = (e: any) => {
+        console.log('preview', e);
     }
 
     return <div className="course-form" style={{maxWidth: '1200px'}}>
@@ -117,7 +122,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
             rules={[{ required: true, message: 'Please input thumbnail file' }]}
             label="Thumbnail" 
             name="thumbnail" valuePropName="fileList" getValueFromEvent={normFile}>
-                <Upload action={URL_UPLOAD_RESOURCE}>
+                <Upload action={URL_UPLOAD_RESOURCE} onChange={preview}>
                     <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
             </Form.Item>

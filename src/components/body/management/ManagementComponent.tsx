@@ -10,7 +10,8 @@ import ExamManagement from "./exam/ExamManagement";
 import ExamList from "./exam/ExamList";
 import MessageResponse from "../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../service/CourseService";
-import { ExamDTO, ExamService } from "../../../service/ExamService";
+import { ExamService } from "../../../service/ExamService";
+import { ExamDTO } from "../../../entity/props/ExamDTO";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const max = 999999;
@@ -52,8 +53,8 @@ const ManagementComponent: React.FC = () => {
     }
 
     useEffect(() => {
-        CourseService.getAllCourse("abc", 1, max, loadCourse);
-        ExamService.getAllExam("abc", loadExam);
+        CourseService.getAllCourse(1, max, loadCourse);
+        ExamService.getAllExam(loadExam);
     }, []);
 
     // const exams: ExamItemDTO[] = [
@@ -76,7 +77,7 @@ const ManagementComponent: React.FC = () => {
 
     const onChangeCourseCenter = () => {
         setElementDashboard(<CourseList/>);
-        CourseService.getAllCourse("abc", 1, max, loadCourse);
+        CourseService.getAllCourse(1, max, loadCourse);
     }
 
     const onChangeExamCenter = () => {

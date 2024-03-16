@@ -106,7 +106,7 @@ class Editor extends ClassicEditor {
 			]
 		},
 		simpleUpload : {
-			uploadUrl :  "http://localhost:9999/api/up-file/upload-for-ckeditor"
+			uploadUrl :  "http://localhost:9001/api/up-file/upload-for-ckeditor"
 		},
 	}
 }

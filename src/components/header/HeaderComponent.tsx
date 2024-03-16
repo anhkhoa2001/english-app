@@ -18,19 +18,15 @@ class UserInfo {
 }
 
 const HeaderComponent: React.FC = () => {
-    const obj = useToken() || {isLogined: false, token: ''};
-
-    console.log(obj);
-    const [isLogin, checkIsLogin] = useState(false);
+    console.log('check in header');
+    const obj = useToken();
+    console.log('check in header obj', obj);
+    const [isLogin, checkIsLogin] = useState(obj?.isLogined);
     const [info, setInfo] = useState(new UserInfo('', ''));
 
     useEffect(() => {
-        if (obj != undefined) {
-            checkIsLogin(obj.isLogined);
-        }
-        console.log(obj?.isLogined);
-
-        if (obj?.isLogined) {
+        checkIsLogin(localStorage.getItem('access_token') != undefined);
+        if (isLogin) {
             const token = localStorage.getItem('access_token');
             var info = localStorage.getItem('info') || null;
             if(info == null) {
@@ -41,9 +37,9 @@ const HeaderComponent: React.FC = () => {
             } else {
                 setInfo(JSON.parse(localStorage.getItem('info') || ""));
             }
-            
+            console.log('info', info);
         }
-    }, [obj.isLogined]);
+    }, [obj?.isLogined]);
 
 
 
@@ -56,16 +52,16 @@ const HeaderComponent: React.FC = () => {
             <RedirectButton content="Examination" path="/exams"></RedirectButton>
             <RedirectButton content="Blogs" path="/blogs"></RedirectButton>
             <RedirectButton content="Library" path="/library"></RedirectButton>
-            {/* {isLogin ?
+            {isLogin ?
                 <ProfileComponent
                     avatar={info.avatar}
                     count_noti={10}
                     fullname={info.fullname}></ProfileComponent>
-                : <RedirectButton content="Log in" path="/login"></RedirectButton>} */}
-                <ProfileComponent
+                : <RedirectButton content="Log in" path="/login"></RedirectButton>}
+                {/* <ProfileComponent
                     avatar={info.avatar}
                     count_noti={10}
-                    fullname={info.fullname}></ProfileComponent>
+                    fullname={info.fullname}></ProfileComponent> */}
         </ul>
     </nav>
 }

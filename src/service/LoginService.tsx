@@ -49,7 +49,7 @@ const LoginService = {
     },
     getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserInfo> | null) => void) {
         new RestService<UserInfo>().get(
-            BASE_PATH.PATH_PROXY + '/api/user/user-info',
+            BASE_PATH.PATH_PROXY + '/user/user-info',
             {
                 'Authorization': BEARER + token
             },

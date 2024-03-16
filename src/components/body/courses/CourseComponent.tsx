@@ -1,73 +1,103 @@
 import { CourseItemDTO } from '../../../entity/props/CourseItemDTO';
 import './detail/css/CourseComponent.scss';
 import CourseItemComponent from './CourseItemComponent';
-import { Checkbox, Collapse, Pagination, Radio, Space } from 'antd';
+import { Checkbox, Collapse, Modal, Pagination, Radio, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import type { CheckboxProps, CollapseProps } from 'antd';
 import { RadioChangeEvent } from 'antd/lib';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoIosStar } from 'react-icons/io';
 import TitleComponent from '../TitleComponent';
+import CourseService, { CourseListResponse } from '../../../service/CourseService';
+import MessageResponse from '../../../entity/response/MessageResponse';
+
+
 
 const CourseComponent: React.FC = () => {
 
-    let data: CourseItemDTO[] = [
-        {
-            title: "Introduction to Programming",
-            rating: 4.5,
-            summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-            code: "CS101",
-            instructor: "John Doe",
-            total_hours: 20,
-            lectures: 10,
-            level: "Beginner",
-            image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-        },
-        {
-            title: "Introduction to Programming",
-            rating: 4.5,
-            summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-            code: "CS102",
-            instructor: "John Doe",
-            total_hours: 20,
-            lectures: 10,
-            level: "Beginner",
-            image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-        },
-        {
-            title: "Introduction to Programming",
-            rating: 4.5,
-            summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-            code: "CS103",
-            instructor: "John Doe",
-            total_hours: 20,
-            lectures: 10,
-            level: "Beginner",
-            image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-        },
-        {
-            title: "Introduction to Programming",
-            rating: 4.5,
-            summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-            code: "CS104",
-            instructor: "John Doe",
-            total_hours: 20,
-            lectures: 10,
-            level: "Beginner",
-            image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-        },
-        {
-            title: "Introduction to Programming",
-            rating: 4.5,
-            summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-            code: "CS105",
-            instructor: "John Doe",
-            total_hours: 20,
-            lectures: 10,
-            level: "Beginner",
-            image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    // let data: CourseItemDTO[] = [
+    //     {
+    //         title: "Introduction to Programming",
+    //         rating: 4.5,
+    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
+    //         code: "CS101",
+    //         instructor: "John Doe",
+    //         total_hours: 20,
+    //         lectures: 10,
+    //         level: "Beginner",
+    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    //     },
+    //     {
+    //         title: "Introduction to Programming",
+    //         rating: 4.5,
+    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
+    //         code: "CS102",
+    //         instructor: "John Doe",
+    //         total_hours: 20,
+    //         lectures: 10,
+    //         level: "Beginner",
+    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    //     },
+    //     {
+    //         title: "Introduction to Programming",
+    //         rating: 4.5,
+    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
+    //         code: "CS103",
+    //         instructor: "John Doe",
+    //         total_hours: 20,
+    //         lectures: 10,
+    //         level: "Beginner",
+    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    //     },
+    //     {
+    //         title: "Introduction to Programming",
+    //         rating: 4.5,
+    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
+    //         code: "CS104",
+    //         instructor: "John Doe",
+    //         total_hours: 20,
+    //         lectures: 10,
+    //         level: "Beginner",
+    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    //     },
+    //     {
+    //         title: "Introduction to Programming",
+    //         rating: 4.5,
+    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
+    //         code: "CS105",
+    //         instructor: "John Doe",
+    //         total_hours: 20,
+    //         lectures: 10,
+    //         level: "Beginner",
+    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
+    //     }
+    // ];
+
+    const [courses, setCourses] = useState<CourseListResponse>();
+    const [join, setJoin] = useState<boolean>(false);
+    const courseCode = useRef<string>("");
+
+    const pagination = useRef({
+        page: 1,
+        pageSize: 10,
+        isPublic: true
+    });
+
+    const loadCourse: (data: MessageResponse<CourseListResponse> | null) => void = (data) => {
+        try {
+            setCourses(data?.data);
+            console.log('data', courses);
+        } catch (error) {
+            console.log('error', error);
         }
-    ];
+    }
+
+    useEffect(() => {
+        CourseService.getAllCoursePublic(pagination.current, loadCourse);
+    }, []);
+
+
+
     const onChangeVideo: CheckboxProps['onChange'] = (e) => {
         console.log(`checked = ${e.target.checked}`);
     };
@@ -77,13 +107,13 @@ const CourseComponent: React.FC = () => {
     };
 
 
-    const video_durations = [
-        <>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>0 - 1 Hours</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>2 - 4 Hours</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>5 - 8 Hours</Checkbox>
-        </>
-    ];
+    // const video_durations = [
+    //     <>
+    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>0 - 1 Hours</Checkbox>
+    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>2 - 4 Hours</Checkbox>
+    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>5 - 8 Hours</Checkbox>
+    //     </>
+    // ];
 
     const levels = [
         <>
@@ -131,11 +161,11 @@ const CourseComponent: React.FC = () => {
     ];
 
     const items: CollapseProps['items'] = [
-        {
-            key: '1',
-            label: 'Video Durations',
-            children: video_durations,
-        },
+        // {
+        //     key: '1',
+        //     label: 'Video Durations',
+        //     children: video_durations,
+        // },
         {
             key: '2',
             label: 'Level',
@@ -148,8 +178,31 @@ const CourseComponent: React.FC = () => {
         }
     ];
 
+    const openNoti = (code?: string) => {
+        courseCode.current = code || "";
+        setJoin(true);
+    }
+
+    const closeModal = () => {
+        const joinCourse: (data: MessageResponse<string> | null) => void = (data) => {
+            try {
+                console.log('data', data);
+                window.location.href = `/learning/course/${courseCode.current}?title=${courseCode.current}`;
+                setJoin(false);
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
+
+        CourseService.joinToCourse(courseCode.current, joinCourse);
+    }
+
+    const handleCancel = () => {
+        setJoin(false);
+    }
+
     return <div className="udemy ">
-        <TitleComponent type="All Courses" count_results={100} display={true} />
+        <TitleComponent type="All Courses" count_results={courses?.totalRecord || 0} display={true} />
         <div className="course">
             <div className="left">
                 <Collapse items={items}
@@ -157,19 +210,30 @@ const CourseComponent: React.FC = () => {
                     defaultActiveKey={['1']} />
             </div>
             <div className="right">
-                {Array.from({ length: data.length }, (_, i) =>
+                {Array.from({ length: courses?.data.length || 0}, (_, i) =>
                 (
-                    <Link to={`/learning/course/${data[i].code}?title=${data[i].title}`} key={i} ><CourseItemComponent data={data[i]}/></Link>
+                    // <Link to={`/learning/course/${courses?.data[i].code}?title=${courses?.data[i].code}`} key={i} >
+                    //     <CourseItemComponent data={courses?.data[i]}/>
+                    // </Link>
+                    <div onClick={() => openNoti(courses?.data[i].code)}>
+                        <CourseItemComponent data={courses?.data[i]}/>
+                    </div>
                 ))}
                 <div className='paging'>
                     <Pagination
                         onChange={() => { console.log('123') }}
-                        total={data.length}
-                        pageSize={2}
+                        total={courses?.totalRecord}
+                        pageSize={pagination.current.pageSize}
                     />
                 </div>
             </div>
         </div>
+        <Modal title="Do you want to join this course?" 
+            open={join}
+            onOk={() => closeModal()}
+            onCancel={() => handleCancel()}>
+            <p>Hmmmmm.....................................</p>
+        </Modal>
     </div>
 }
 

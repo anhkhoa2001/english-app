@@ -2,10 +2,12 @@ import './css/Lessonlist.scss';
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { ImDisplay } from "react-icons/im";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VideoPlay from './VideoPlay';
+import { CourseItemDTO } from '../../../../entity/props/CourseItemDTO';
 
-const LessonList: React.FC = () => {
+const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
+    console.log('course', course);
     const sections = [
         {
             title: "Kafka Introduction",
@@ -66,14 +68,25 @@ const LessonList: React.FC = () => {
 
     //set url video and image
     const [url, setUrl] = useState({
-        url_video: sections[0].lessons[0].url_video,
-        url_image: sections[0].lessons[0].url_image
+        url_video: '',
+        url_image: ''
     });
+    
+    useEffect(() => {
+        try {
+            setUrl({
+                url_video: course.sections[0].lessons[0].url_video,
+                url_image: course.sections[0].lessons[0].thumbnail
+            });
+        } catch(err) {
+                
+        }
+    }, [course])
 
     function changeVideo(i: number, j: number) {
         setUrl({
-            url_video: sections[i].lessons[j].url_video,
-            url_image: sections[i].lessons[j].url_image
+            url_video: course.sections[i].lessons[j].url_video,
+            url_image: course.sections[i].lessons[j].thumbnail
         });
     }
 
@@ -86,20 +99,20 @@ const LessonList: React.FC = () => {
             <hr></hr>
             <div className='content-section'>
                 {
-                    Array.from({ length: sections.length }, (_, i) => (
+                    Array.from({ length: course.sections.length }, (_, i) => (
                         <section className='item-section' key={i}>
                             <div className='header-item-section' onClick={() => drop(i)}>
-                                <h3>Section {i + 1}: {sections[i].title}</h3>
+                                <h3>Section {i + 1}: {course.sections[i].sectionName}</h3>
                                 <span className='icon' key={i}>{appearLesson[i] ? <IoIosArrowDown /> : <IoIosArrowUp />}</span>
-                                <p>4/4 | {sections[i].duration}min</p>
+                                {/* <p>4/4 | {course.sections[i].duration}min</p> */}
                             </div>
                             <div className={appearLesson[i] ? "lessons active" : "lessons"} >
-                                {Array.from({ length: sections[i].lessons.length }, (_, j) => (
+                                {Array.from({ length: course.sections[i].lessons.length }, (_, j) => (
                                     <div className='item-lesson' key={j} onClick={() => changeVideo(i, j)}>
                                         <input type="checkbox" key={j} />
                                         <div className='right'>
-                                            <p>{j + 1}. {sections[i].lessons[j].title}</p>
-                                            <ImDisplay /> <span className='lesson-duration'>{sections[i].lessons[j].duration}min</span>
+                                            <p>{j + 1}. {course.sections[i].lessons[j].lessionName}</p>
+                                            {/* <ImDisplay /> <span className='lesson-duration'>{course.sections[i].lessons[j].duration}min</span> */}
                                         </div>
                                     </div>
                                 ))}

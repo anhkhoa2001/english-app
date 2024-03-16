@@ -1,9 +1,24 @@
-export interface SectionItemDTO {
+export class SectionItemDTO {
     sectionName: string;
     description: string;
     status: boolean;
-    lessons: any[];
+    lessons: LessonDTO[];
     section_id: number;
+
+    constructor() {
+        this.lessons = [];
+    }
+}
+
+export class LessonDTO {
+    lesson_id: number;
+    lessionName: string;
+    status: boolean;
+    thumbnail: string;
+    url_video: string;
+    description: string;
+    create_by: string;
+    create_at: Date;
 }
 
 

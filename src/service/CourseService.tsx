@@ -18,15 +18,23 @@ export interface CourseDTO {
     createAt: Date,
     public: true,
     totalSub: number,
-    rate: number
+    rate: number,
+    lectures: number,
+    total_student: number
+}
+
+
+export interface CourseListResponse {
+    data: CourseDTO[],
+    totalRecord: number
 }
 
 const CourseService = {
-    getAllCourse: async (token: string, page: number, pageSize: number, func: (data: MessageResponse<CourseDTO[]> | null) => void) =>  {
+    getAllCourse: async ( page: number, pageSize: number, func: (data: MessageResponse<CourseDTO[]> | null) => void) =>  {
         new RestService<CourseDTO[]>().post(
-            BASE_PATH.PATH_PROXY + '/api/course/get-all',
+            BASE_PATH.PATH_PROXY + '/course/get-all',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {
                 page: page,
@@ -41,11 +49,27 @@ const CourseService = {
                 }
             });
     },
-    create: (token: string, request: any, func: (data: MessageResponse<CourseDTO> | null) => void) =>  {
-        new RestService<CourseDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/course/create',
+    getAllCoursePublic: async ( request: any, func: (data: MessageResponse<CourseListResponse> | null) => void) =>  {
+        new RestService<CourseListResponse>().post(
+            BASE_PATH.PATH_PROXY + '/course/get-courses-public',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<CourseListResponse> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All course public failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    create: ( request: any, func: (data: MessageResponse<CourseDTO> | null) => void) =>  {
+        new RestService<CourseDTO>().post(
+            BASE_PATH.PATH_PROXY + '/course/create',
+            {
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<CourseDTO> | null) => {
@@ -57,11 +81,11 @@ const CourseService = {
                 }
             });
     },
-    update: (token: string, request: any, func: (data: MessageResponse<CourseDTO> | null) => void) =>  {
+    update: ( request: any, func: (data: MessageResponse<CourseDTO> | null) => void) =>  {
         new RestService<CourseDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/course/update',
+            BASE_PATH.PATH_PROXY + '/course/update',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<CourseDTO> | null) => {
@@ -73,11 +97,11 @@ const CourseService = {
                 }
             });
     },
-    createSection: (token: string, request: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
+    createSection: ( request: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
         new RestService<SectionDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/section/create',
+            BASE_PATH.PATH_PROXY + '/section/create',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<SectionDTO> | null) => {
@@ -89,11 +113,11 @@ const CourseService = {
                 }
             });
     },
-    deleteSection: (token: string, sectionId: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
+    deleteSection: ( sectionId: any, func: (data: MessageResponse<SectionDTO> | null) => void) =>  {
         new RestService<SectionDTO>().delete(
-            BASE_PATH.PATH_PROXY + `/api/section/delete-by-id?sectionId=${sectionId}`,
+            BASE_PATH.PATH_PROXY + `/section/delete-by-id?sectionId=${sectionId}`,
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {},
             (status: number, data: MessageResponse<SectionDTO> | null) => {
@@ -105,11 +129,11 @@ const CourseService = {
                 }
             });
     },
-    createLesson: (token: string, request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
+    createLesson: ( request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
         new RestService<LessonDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/lesson/create',
+            BASE_PATH.PATH_PROXY + '/lesson/create',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<LessonDTO> | null) => {
@@ -121,11 +145,11 @@ const CourseService = {
                 }
             });
     },
-    updateLesson: (token: string, request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
+    updateLesson: ( request: any, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
         new RestService<LessonDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/lesson/update',
+            BASE_PATH.PATH_PROXY + '/lesson/update',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<LessonDTO> | null) => {
@@ -137,11 +161,11 @@ const CourseService = {
                 }
             });
     },
-    deleteLesson: (token: string, lessonId: number, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
+    deleteLesson: ( lessonId: number, func: (data: MessageResponse<LessonDTO> | null) => void) =>  {
         new RestService<LessonDTO>().delete(
-            BASE_PATH.PATH_PROXY + `/api/lesson/delete?lessonId=${lessonId}`,
+            BASE_PATH.PATH_PROXY + `/lesson/delete?lessonId=${lessonId}`,
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {},
             (status: number, data: MessageResponse<LessonDTO> | null) => {
@@ -153,11 +177,11 @@ const CourseService = {
                 }
             });
     },
-    getByCode: (token: string, code: string, func: (data: MessageResponse<CourseItemDTO> | null) => void) =>  {
+    getByCode: ( code: string, func: (data: MessageResponse<CourseItemDTO> | null) => void) =>  {
         new RestService<CourseItemDTO>().get(
-            BASE_PATH.PATH_PROXY + '/api/course/get-by-code',
+            BASE_PATH.PATH_PROXY + '/course/get-by-code',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {
                 code: code
@@ -168,6 +192,24 @@ const CourseService = {
                 } else {
                     //func(null, false);
                     ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message}`)
+                }
+            });
+    },
+    joinToCourse: (courseCode: string, func: (data: MessageResponse<string> | null) => void) =>  {
+        new RestService<string>().get(
+            BASE_PATH.PATH_PROXY + '/course/join-course',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            {
+                courseCode: courseCode
+            },
+            (status: number, data: MessageResponse<string> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Join course failed!!", `Defail : ${data?.message}`)
                 }
             });
     }

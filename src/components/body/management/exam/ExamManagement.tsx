@@ -45,7 +45,7 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
     }
 
     useEffect(() => {
-        ExamService.getExamByCode("abc", code, loadExam);
+        ExamService.getExamByCode( code, loadExam);
     }, [code]);
 
     const showModalAdd = (key: string, indexPart?: number) => {
@@ -423,26 +423,26 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
             const deletePart: (data: MessageResponse<string> | null) => void = (data) => {
                 try {
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    ExamService.getExamByCode("abc", code, loadExam);
+                    ExamService.getExamByCode(code, loadExam);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
     
-            ExamService.deletePart('abc', request, deletePart);
+            ExamService.deletePart(request, deletePart);
         } 
 
         if(key === DELETE_QUESTION) {
             const deleteQuestion: (data: MessageResponse<string> | null) => void = (data) => {
                 try {
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    ExamService.getExamByCode("abc", code, loadExam);
+                    ExamService.getExamByCode(code, loadExam);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
     
-            ExamService.deleteQuestion('abc', indexQuestionRef.current.questionId, deleteQuestion);
+            ExamService.deleteQuestion(indexQuestionRef.current.questionId, deleteQuestion);
         }
         isModalSectionOpen.set(key, false);
         const newMap = new Map(isModalSectionOpen);
@@ -467,13 +467,13 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
                 ModalCustom.onDisplaySuccess('Success', 'Success');
                 console.log('create question success', data);
                 closeModal(ADD_QUESTION);
-                ExamService.getExamByCode("abc", code, loadExam);
+                ExamService.getExamByCode( code, loadExam);
             } catch (error) {
                 console.log('error', error);
             }
         }
 
-        ExamService.createQuestion('abc', e, createQuestion);
+        ExamService.createQuestion(e, createQuestion);
     }
 
     const onSubmitEditQuestion = (e:any) => {
@@ -483,13 +483,13 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
             try {
                 ModalCustom.onDisplaySuccess('Success', 'Success');
                 closeModal(EDIT_QUESTION);
-                ExamService.getExamByCode("abc", code, loadExam);
+                ExamService.getExamByCode( code, loadExam);
             } catch (error) {
                 console.log('error', error);
             }
         }
 
-        ExamService.updateQuestion('abc', e, updateQuestion);
+        ExamService.updateQuestion(e, updateQuestion);
 
     }
 

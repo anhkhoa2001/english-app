@@ -51,7 +51,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     }
 
     useEffect(() => {
-        CourseService.getByCode("abc", code, loadCourse);
+        CourseService.getByCode(code, loadCourse);
     }, [code]);
 
 
@@ -190,13 +190,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             const createSection: (data: MessageResponse<SectionDTO> | null) => void = (data) => {
                 try {
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    CourseService.getByCode("abc", code, loadCourse);
+                    CourseService.getByCode( code, loadCourse);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            CourseService.createSection("", e, createSection);
+            CourseService.createSection(e, createSection);
         }
 
     };
@@ -214,6 +214,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     };
 
     const itemDashboards: CollapseProps['items'] = sectionCurrent.map((item, index) => {
+        //@ts-ignore
         const dataFake: DataType[] = (item.lessons || []).map((l, i) => {
             return {
                 key: i + '',
@@ -223,8 +224,8 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
                 url_video: l.url_video,
                 tags: <PreViewVideo url_image={l.thumbnail} url_video={l.url_video} />,
                 item: l,
-                createAt: l.createAt,
-                createBy: l.createBy || 'admin'
+                createAt: l.create_at,
+                createBy: l.create_by || 'admin'
             }
         });
         return {
@@ -247,13 +248,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             const createLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
                 try {
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    CourseService.getByCode("abc", code, loadCourse);
+                    CourseService.getByCode(code, loadCourse);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            CourseService.createLesson("", e, createLesson);
+            CourseService.createLesson(e, createLesson);
         }
     }
 
@@ -262,13 +263,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         const updateLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
             try {
                 ModalCustom.onDisplaySuccess('Success', 'Success');
-                CourseService.getByCode("abc", code, loadCourse);
+                CourseService.getByCode(code, loadCourse);
             } catch (error) {
                 console.log('error', error);
             }
         }
 
-        CourseService.updateLesson("", e, updateLesson);
+        CourseService.updateLesson(e, updateLesson);
     }
 
 
@@ -278,13 +279,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         const deleteSection: (data: MessageResponse<SectionDTO> | null) => void = (data) => {
             try {
                 ModalCustom.onDisplaySuccess('Success', 'Success');
-                CourseService.getByCode("abc", code, loadCourse);
+                CourseService.getByCode(code, loadCourse);
             } catch (error) {
                 console.log('error', error);
             }
         }
 
-        CourseService.deleteSection("", indexSection, deleteSection);
+        CourseService.deleteSection(indexSection, deleteSection);
 
     }
 
@@ -294,13 +295,13 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         const deleteLesson: (data: MessageResponse<LessonDTO> | null) => void = (data) => {
             try {
                 ModalCustom.onDisplaySuccess('Success', 'Success');
-                CourseService.getByCode("abc", code, loadCourse);
+                CourseService.getByCode(code, loadCourse);
             } catch (error) {
                 console.log('error', error);
             }
         }
 
-        CourseService.deleteLesson("", lessonItemEffect?.lesson_id || 0, deleteLesson);
+        CourseService.deleteLesson(lessonItemEffect?.lesson_id || 0, deleteLesson);
     }
 
     const ReactComponent = (element: string) => {
