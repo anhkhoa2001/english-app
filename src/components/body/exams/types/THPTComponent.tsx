@@ -3,33 +3,33 @@ import '../css/THPTComponent.scss'
 import { MultiChoiceProp } from '../../../../entity/props/MultiChoiceProp';
 import MultiChoice from '../questions/MultiChoice';
 import MultiChoiceGroup from '../questions/MultiChoiceGroup';
+import { ExamPartDTO, QuestionDTO } from '../../../../entity/props/ExamDTO';
 
 const TypeQuestion = {
-    SINGLE: 0,
-    GROUP: 1
+    SINGLE: 'Single',
+    GROUP: 'Group'
 }
 
-const THPTComponent: React.FC<{questions: {
-    type: number,
-    data: MultiChoiceProp[]
-}[]}> = ({questions}) => {
+const THPTComponent: React.FC<{parts: ExamPartDTO[]}> = ({parts}) => {
 
     const onChange = (key: string) => {
         console.log(key);
     };
 
-    const items: TabsProps['items'] = questions.map((item, index) => {
+    console.log('parts tghpr', parts);
+
+    const items: TabsProps['items'] = parts.map((item, index) => {
         const result = {
             key: index + 1 + '',
             label: `Part ${index + 1}`,
             children: <>
-                {Array.from({ length: item.data.length }, (_, i) => (
-                     item.data[i].type == TypeQuestion.SINGLE ? 
-                     <MultiChoice prop={item.data[i]} key={i}/> 
+                {Array.from({ length: item.questions.length }, (_, i) => (
+                     item.questions[i].type == TypeQuestion.SINGLE ? 
+                     <MultiChoice prop={item.questions[i]} key={i}/> 
                      : 
                      <MultiChoiceGroup   
-                     content={item.data[i].content} 
-                     questionChilds={item.data[i].questionChilds || []} 
+                     content={item.questions[i].content} 
+                     questionChilds={item.questions || []} 
                      key={i} />
                 ))} 
             </>

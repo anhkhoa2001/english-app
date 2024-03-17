@@ -14,6 +14,9 @@ const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname:
             var token = localStorage.getItem('access_token');
             LoginService.killToken(token ?? '');
             localStorage.removeItem('access_token');
+            localStorage.removeItem('info');
+            localStorage.removeItem('refresh');
+            //navigate()
             window.location.replace(BASE_PATH.PATH_FE);
         }
 

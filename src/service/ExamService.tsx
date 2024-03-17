@@ -8,9 +8,9 @@ const token = localStorage.getItem('access_token');
 export const ExamService = {
     createExam: ( request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/exam/create',
+            BASE_PATH.PATH_PROXY + '/exam/create',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<ExamDTO> | null) => {
@@ -18,15 +18,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create exam failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create exam failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     deleteExam: ( examCode: string, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
-            BASE_PATH.PATH_PROXY + `/api/exam/delete`,
+            BASE_PATH.PATH_PROXY + `/exam/delete`,
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {
                 examCode: examCode
@@ -36,15 +36,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Delete exam failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Delete exam failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     editExam: ( request: any, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().post(
-            BASE_PATH.PATH_PROXY + `/api/exam/update`,
+            BASE_PATH.PATH_PROXY + `/exam/update`,
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<ExamDTO> | null) => {
@@ -52,15 +52,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Edit exam failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Edit exam failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     getExamByCode: ( examCode: string, func: (data: MessageResponse<ExamDTO> | null) => void) =>  {
         new RestService<ExamDTO>().get(
-            BASE_PATH.PATH_PROXY + `/api/exam/get-by-code`,
+            BASE_PATH.PATH_PROXY + `/exam/get-by-code`,
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {
                 code: examCode
@@ -70,15 +70,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Get exam by code failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Get exam by code failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     getAllExam: ( func: (data: MessageResponse<ExamDTO[]> | null) => void) =>  {
         new RestService<ExamDTO[]>().get(
-            BASE_PATH.PATH_PROXY + '/api/exam/get-all',
+            BASE_PATH.PATH_PROXY + '/exam/get-all',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {},
             (status: number, data: MessageResponse<ExamDTO[]> | null) => {
@@ -86,15 +86,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Get All exam failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Get All exam failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     createQuestion: ( request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
         new RestService<QuestionDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/question/create',
+            BASE_PATH.PATH_PROXY + '/question/create',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<QuestionDTO> | null) => {
@@ -102,16 +102,16 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create question failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create question failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
 
     deletePart: ( request: any, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
-            BASE_PATH.PATH_PROXY + '/api/exam/delete-part',
+            BASE_PATH.PATH_PROXY + '/exam/delete-part',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<string> | null) => {
@@ -119,15 +119,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Delete part failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Delete part failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     deleteQuestion: ( questionId: number, func: (data: MessageResponse<string> | null) => void) =>  {
         new RestService<string>().get(
-            BASE_PATH.PATH_PROXY + '/api/question/delete',
+            BASE_PATH.PATH_PROXY + '/question/delete',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             {
                 questionId: questionId
@@ -137,15 +137,15 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Delete question failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Delete question failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },
     updateQuestion: ( request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
         new RestService<QuestionDTO>().post(
-            BASE_PATH.PATH_PROXY + '/api/question/update',
+            BASE_PATH.PATH_PROXY + '/question/update',
             {
-                'Authorization': token
+                'Authorization': localStorage.getItem('access_token')
             },
             request,
             (status: number, data: MessageResponse<QuestionDTO> | null) => {
@@ -153,7 +153,7 @@ export const ExamService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Update question failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Update question failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },

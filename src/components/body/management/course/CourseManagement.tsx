@@ -36,7 +36,6 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
     const lessonFormRef = useRef(null);
     const editLessonFormRef = useRef(null);
     const [item, setItem] = useState<CourseItemDTO>();
-    const [rate, setRate] = useState(0);
     const [lessonIndex, setLessonIndex] = useState(0);
     const [lessonItemEffect, setLessonItemEffect] = useState<LessonDTO>();
 
@@ -233,7 +232,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             label: <div className="header-course">
                 <Form.Item label={`Section ${index + 1}: ${item.sectionName}`} name={'name' + index} >
                     <Button onClick={() => showModalAddLesson(LESSON, index)} className="item-section" name={'edit' + index}>Add Lesson</Button>
-                    <Button onClick={() => showModalAdd(DELETE_SECTION, item.section_id)} className="item-section" name={'delete' + index}>Delete Section</Button>
+                    <Button onClick={() => showModalAdd(DELETE_SECTION, item.sectionId)} className="item-section" name={'delete' + index}>Delete Section</Button>
                 </Form.Item>
             </div>,
             children: <Table columns={columns} dataSource={dataFake} pagination={false} />
@@ -274,7 +273,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
 
 
     const deleteSection = () => {
-        console.log('section_id', indexSection);
+        console.log('sectionId', indexSection);
 
         const deleteSection: (data: MessageResponse<SectionDTO> | null) => void = (data) => {
             try {
@@ -383,7 +382,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             width={900}>
             <LessonForm 
                 section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
-                section_id={sectionCurrent[lessonIndex]?.section_id || 0}
+                sectionId={sectionCurrent[lessonIndex]?.sectionId || 0}
                 item={lessonItemEffect}
                 lessonFormRef={editLessonFormRef}
                 onSubmit={onSubmitEditLesson}
@@ -402,7 +401,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             width={900}>
             <LessonForm 
                 section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
-                section_id={sectionCurrent[lessonIndex]?.section_id || 0}
+                sectionId={sectionCurrent[lessonIndex]?.sectionId || 0}
                 lessonFormRef={lessonFormRef}
                 onSubmit={onSubmitAddLesson}
             />

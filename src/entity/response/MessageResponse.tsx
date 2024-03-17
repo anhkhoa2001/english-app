@@ -7,6 +7,7 @@ interface MessageResponse<T> {
     timestamp: number;
     data: T;
     total: number;
+    error: string;
 }
 
 

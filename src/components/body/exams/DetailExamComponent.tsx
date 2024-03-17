@@ -320,7 +320,7 @@ const DetailExamComponent: React.FC = () => {
                     type == TypeExam.TOEIC ? 
                     <ToeicComponent questions={questions} indexTab={indexTab}/> 
                     : 
-                    <THPTComponent questions={questions} />
+                    <></>
                 }
             </div>
             <div className="overview">

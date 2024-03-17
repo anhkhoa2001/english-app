@@ -1,9 +1,11 @@
+import { ExamPartDTO } from "./ExamDTO";
+
 export class SectionItemDTO {
     sectionName: string;
     description: string;
     status: boolean;
     lessons: LessonDTO[];
-    section_id: number;
+    sectionId: number;
 
     constructor() {
         this.lessons = [];
@@ -19,6 +21,8 @@ export class LessonDTO {
     description: string;
     create_by: string;
     create_at: Date;
+    type: string;
+    examModel: ExamPartDTO;
 }
 
 

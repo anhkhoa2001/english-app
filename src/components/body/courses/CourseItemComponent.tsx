@@ -1,10 +1,10 @@
 import { LuDot } from "react-icons/lu";
-import { CourseItemDTO } from "../../../entity/props/CourseItemDTO";
 import './detail/css/CourseItemComponent.scss'
 import { CourseDTO } from "../../../service/CourseService";
 
 
 const CourseItemComponent: React.FC<{data?: CourseDTO}> = ({data}) => {
+    console.log('data item', data);
     return <div className="course-item" >
         <img src={data?.thumbnail} className="thumnail"/> 
         <div className="detail">
@@ -14,10 +14,10 @@ const CourseItemComponent: React.FC<{data?: CourseDTO}> = ({data}) => {
             <p className="summary">{data?.summary}</p>
             <span className="instructor">{data?.createBy}</span>
             <div className="rating-star">
-                <i data-star={data?.rate} />
+                <i data-star={Number(data?.rate) || 1} />
             </div>
             <div className="additional">
-                <p>{data?.total_student} students</p>
+                <p>{data?.totalStudent} students</p>
                 <LuDot />
                 <p>{data?.lectures} lectures</p>
                 <LuDot />

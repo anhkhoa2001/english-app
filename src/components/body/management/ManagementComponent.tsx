@@ -77,7 +77,7 @@ const ManagementComponent: React.FC = () => {
 
     const onChangeCourseCenter = () => {
         setElementDashboard(<CourseList/>);
-        CourseService.getAllCourse(1, max, loadCourse);
+        //CourseService.getAllCourse(1, max, loadCourse);
     }
 
     const onChangeExamCenter = () => {

@@ -37,6 +37,12 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         const code = url.get('code');
         const username = url.get('username');
         const type = url.get('type');
+        const refresh = {
+            code: code,
+            username: username,
+            type: type
+        };
+        localStorage.setItem('refresh', JSON.stringify(refresh));
         LoginService.getToken({
             code: code,
             username: username,

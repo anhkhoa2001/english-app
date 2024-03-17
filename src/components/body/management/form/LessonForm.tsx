@@ -1,5 +1,5 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Image, Input, Switch, Upload } from "antd";
+import { Button, Form, Image, Input, Select, Switch, Upload } from "antd";
 import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
 import { useEffect, useState } from "react";
 import PreViewVideo from "../course/PreviewVideo";
@@ -22,26 +22,27 @@ const normFile = (e: any) => {
 };
 
 const LessonForm: React.FC<{
-    section_name: string, section_id: number,
+    section_name: string, sectionId: number,
     item?: LessonDTO
     onSubmit: (e: any) => void, lessonFormRef: any
 }> =
-    ({ onSubmit, section_name, section_id, lessonFormRef, item }) => {
+    ({ onSubmit, section_name, sectionId, lessonFormRef, item }) => {
         const [form] = Form.useForm();
         form.setFieldsValue({
-            section_id: section_id,
+            sectionId: sectionId,
             sectionName: section_name
         });
 
         const [video, setVideo] = useState<string>();
         const [image, setImage] = useState<string>();
+        const [isLesson, setIsLesson] = useState<boolean>(true);
 
         useEffect(() => {
             console.log('checl');
             setVideo(item?.url_video);
             setImage(item?.thumbnail);
 
-            if(item?.lesson_id != undefined) {
+            if (item?.lesson_id != undefined) {
                 form.setFieldsValue({
                     lessonName: item?.lessionName,
                     status: item?.status,
@@ -87,6 +88,11 @@ const LessonForm: React.FC<{
             }
         };
 
+        const changeType = (e: string) => {
+            console.log('type', e);
+            setIsLesson(e === 'lesson');
+        }
+
 
         return <div className="lesson-form" style={{ width: '900px' }}>
             <Form
@@ -100,10 +106,10 @@ const LessonForm: React.FC<{
             >
                 <Form.Item
                     label="Section Id"
-                    name="section_id"
+                    name="sectionId"
                     style={{ display: "none" }}
                 >
-                    <Input defaultValue={section_id} disabled={true} />
+                    <Input defaultValue={sectionId} disabled={true} />
                 </Form.Item>
                 <Form.Item
                     label="Section Name"
@@ -113,47 +119,84 @@ const LessonForm: React.FC<{
                     <Input defaultValue={section_name} disabled={true} />
                 </Form.Item>
                 <Form.Item
+                    label="Type"
+                    name="type"
+                    required={true}
+                >
+                    <Select
+                        defaultValue="lesson"
+                        allowClear
+                        onChange={changeType}
+                        options={[
+                            { value: 'lesson', label: 'Lesson' },
+                            { value: 'minitest', label: 'Mini-test' }
+                        ]}
+                    />
+                </Form.Item>
+                <Form.Item
                     label="Lesson Name"
                     name="lessonName"
                     required={true}
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item
-                    label="Status"
-                    valuePropName="checked"
-                    name="status"
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="Thumbnail"
-                    name="thumbnail"
-                    valuePropName="fileList"
-                    getValueFromEvent={normFile}
-                >
-                    <Upload
-                        action={URL_UPLOAD_RESOURCE}
-                        onChange={handleImageChange}
-                    >
-                        <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                </Form.Item>
-                <Form.Item
-                    label="Video"
-                    name="video"
-                    valuePropName="fileList" getValueFromEvent={normFile}
-                >
-                    <Upload
-                        action={URL_UPLOAD_RESOURCE}
-                    //onChange={handleVideoChange} 
-                    >
-                        <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                </Form.Item>
-                <div className="preview-video" style={{ textAlign: "center", marginBottom: "30px" }}>
-                    <PreViewVideo url_video={video || ""} url_image={image || ""} width={400}/>
-                </div>
+                {
+                    isLesson ?
+                        <>
+                            
+                            <Form.Item
+                                label="Status"
+                                valuePropName="checked"
+                                name="status"
+                            >
+                                <Switch />
+                            </Form.Item>
+                            <Form.Item
+                                label="Thumbnail"
+                                name="thumbnail"
+                                valuePropName="fileList"
+                                getValueFromEvent={normFile}
+                            >
+                                <Upload
+                                    action={URL_UPLOAD_RESOURCE}
+                                    onChange={handleImageChange}
+                                >
+                                    <Button icon={<UploadOutlined />}>Upload</Button>
+                                </Upload>
+                            </Form.Item>
+                            <Form.Item
+                                label="Video"
+                                name="video"
+                                valuePropName="fileList" getValueFromEvent={normFile}
+                            >
+                                <Upload
+                                    action={URL_UPLOAD_RESOURCE}
+                                //onChange={handleVideoChange} 
+                                >
+                                    <Button icon={<UploadOutlined />}>Upload</Button>
+                                </Upload>
+                            </Form.Item>
+                            <div className="preview-video" style={{ textAlign: "center", marginBottom: "30px" }}>
+                                <PreViewVideo url_video={video || ""} url_image={image || ""} width={400} />
+                            </div>
+                        </>
+                        :
+                        <>
+                            <Form.Item
+                                label="Exam Name"
+                                name="examName"
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                label="Part"
+                                valuePropName="checked"
+                                name="part"
+                            >
+                                <Switch />
+                            </Form.Item>
+                        </>
+                }
                 <Form.Item label="Description"
                     name="des">
                     <TextArea rows={4} />

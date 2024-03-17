@@ -3,9 +3,10 @@ import { Button, Image, Modal, Space, Switch, Table, TableProps } from "antd";
 import { useEffect, useRef, useState } from "react";
 import ExamForm from "../form/ExamForm";
 import MessageResponse from "../../../../entity/response/MessageResponse";
-import { ExamDTO, ExamService } from "../../../../service/ExamService";
+import { ExamService } from "../../../../service/ExamService";
 import { ModalCustom } from "../../../exception/SuccessModal";
 import moment from "moment";
+import { ExamDTO } from "../../../../entity/props/ExamDTO";
 
 const ADD_EXAM = 'ADD_EXAM';
 const DELETE_EXAM = 'DELETE_EXAM';
@@ -28,7 +29,7 @@ const ExamList: React.FC = () => {
     }
 
     useEffect(() => {
-        ExamService.getAllExam('abc', loadExam);
+        ExamService.getAllExam(loadExam);
     }, [])
 
     const columns: TableProps<ExamDTO>['columns'] = [
@@ -130,13 +131,13 @@ const ExamList: React.FC = () => {
                 try {
                     handleOk(DELETE_EXAM);
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    ExamService.getAllExam('abc', loadExam);
+                    ExamService.getAllExam( loadExam);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            ExamService.deleteExam("", examCode, deleteExam);
+            ExamService.deleteExam( examCode, deleteExam);
         }
     }
 
@@ -150,13 +151,13 @@ const ExamList: React.FC = () => {
                 try {
                     handleOk(ADD_EXAM);
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    ExamService.getAllExam('abc', loadExam);
+                    ExamService.getAllExam( loadExam);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            ExamService.createExam("", e, create);
+            ExamService.createExam(e, create);
         }
     }
 
@@ -169,13 +170,13 @@ const ExamList: React.FC = () => {
                 try {
                     handleOk(EDIT_EXAM );
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    ExamService.getAllExam('abc', loadExam);
+                    ExamService.getAllExam(loadExam);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            ExamService.editExam("", e, edit);
+            ExamService.editExam(e, edit);
         }
     }
 

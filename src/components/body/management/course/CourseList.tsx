@@ -107,7 +107,7 @@ const CourseList: React.FC = () => {
     }
 
     useEffect(() => {
-        CourseService.getAllCourse("abc", 1, default_pageSize, loadCourse);
+        CourseService.getAllCourse( 1, default_pageSize, loadCourse);
     }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(modal);
@@ -139,13 +139,13 @@ const CourseList: React.FC = () => {
                     console.log('data', courses);
                     handleOk(ADD_COURSE);
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
+                    CourseService.getAllCourse(default_page, default_pageSize, loadCourse);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            CourseService.create("", e, create);
+            CourseService.create( e, create);
         }
     }
 
@@ -157,13 +157,13 @@ const CourseList: React.FC = () => {
                 try {
                     handleOk(EDIT_COURSE);
                     ModalCustom.onDisplaySuccess('Success', 'Success');
-                    CourseService.getAllCourse("abc", default_page, default_pageSize, loadCourse);
+                    CourseService.getAllCourse(default_page, default_pageSize, loadCourse);
                 } catch (error) {
                     console.log('error', error);
                 }
             }
 
-            CourseService.update("", e, update);
+            CourseService.update( e, update);
             
         }
     }
@@ -173,7 +173,7 @@ const CourseList: React.FC = () => {
     const change: TableProps['onChange'] = (pagination) => {
         console.log(pagination);
         setCurrentPage(pagination.current || default_page);
-        CourseService.getAllCourse("abc", pagination.current || default_page,
+        CourseService.getAllCourse(pagination.current || default_page,
             pagination.pageSize || default_pageSize, loadCourse);
     }
 

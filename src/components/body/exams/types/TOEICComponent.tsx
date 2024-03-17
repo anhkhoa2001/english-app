@@ -5,16 +5,14 @@ import '../css/ToeicComponent.scss'
 import MultiChoice from "../questions/MultiChoice";
 import MultiChoiceGroup from "../questions/MultiChoiceGroup";
 import { MultiChoiceProp } from "../../../../entity/props/MultiChoiceProp";
+import { ExamPartDTO } from "../../../../entity/props/ExamDTO";
 
 const TypeQuestion = {
-    SINGLE: 0,
-    GROUP: 1
+    SINGLE: 'Single',
+    GROUP: 'Group'
 }
 
-const ToeicComponent: React.FC<{questions: {
-    type: number,
-    data: MultiChoiceProp[]
-}[], indexTab: string}> = ({questions, indexTab}) => {
+const ToeicComponent: React.FC<{questions: ExamPartDTO[], indexTab: string}> = ({questions, indexTab}) => {
 
     console.log('index 123  ||  ', indexTab);
     const [index, setIndex] = useState(indexTab);
@@ -28,13 +26,13 @@ const ToeicComponent: React.FC<{questions: {
             key: index + 1 + '',
             label: `Part ${index + 1}`,
             children: <>
-                {Array.from({ length: item.data.length }, (_, i) => (
-                     item.data[i].type == TypeQuestion.SINGLE ? 
-                     <MultiChoice prop={item.data[i]} key={i}/> 
+                {Array.from({ length: item.questions.length }, (_, i) => (
+                     item.questions[i].type == TypeQuestion.SINGLE ? 
+                     <MultiChoice prop={item.questions[i]} key={i}/> 
                      : 
                      <MultiChoiceGroup 
-                     content={item.data[i].content} 
-                     questionChilds={item.data[i].questionChilds || []} 
+                     content={item.questions[i].content} 
+                     questionChilds={item.questions || []} 
                      key={i} />
                 ))} 
             </>

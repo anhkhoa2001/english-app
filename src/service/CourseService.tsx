@@ -20,7 +20,7 @@ export interface CourseDTO {
     totalSub: number,
     rate: number,
     lectures: number,
-    total_student: number
+    totalStudent: number
 }
 
 
@@ -45,7 +45,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Get All course failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Get All course failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -61,7 +61,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Get All course public failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Get All course public failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -77,7 +77,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -93,7 +93,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -109,7 +109,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create section failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create section failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -125,7 +125,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Delete section failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Delete section failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -141,7 +141,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create lesson failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Create lesson failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -157,7 +157,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -173,7 +173,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Update lesson failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -187,11 +187,13 @@ const CourseService = {
                 code: code
             },
             (status: number, data: MessageResponse<CourseItemDTO> | null) => {
+                console.log('get-by-code', data);
+                console.log('get-by-status', status);
                 if (status === 200) {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Create course failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("get course by code failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     },
@@ -209,7 +211,7 @@ const CourseService = {
                     func(data);
                 } else {
                     //func(null, false);
-                    ModalCustom.onDisplayError("Join course failed!!", `Defail : ${data?.message}`)
+                    ModalCustom.onDisplayError("Join course failed!!", `Defail : ${data?.message || data.error}`)
                 }
             });
     }

@@ -50,15 +50,6 @@ class RestService<T> {
         header: object,
         param: object,
         func: (status: number, data: MessageResponse<T> | null) => void) {
-            // fetch(path + objectToQueryString(param), {
-            //     method: "GET",
-            //     headers: new Headers(Object.entries(header))
-            // })
-            // .then(response => response.json())
-            // .then(json => {
-            //     func(200, json);
-            // })
-            // .catch(error => console.error(error));
             axios({
                 method: 'get',
                 url: path + objectToQueryString(param),
@@ -68,7 +59,7 @@ class RestService<T> {
                 func(response.status, response.data);
             })
             .catch(function(error) {
-                func(error, null);
+                func(error.response.status, error.response.data);
             });
     }
 };

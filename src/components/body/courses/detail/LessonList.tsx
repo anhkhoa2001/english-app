@@ -5,6 +5,9 @@ import { ImDisplay } from "react-icons/im";
 import { useEffect, useState } from 'react';
 import VideoPlay from './VideoPlay';
 import { CourseItemDTO } from '../../../../entity/props/CourseItemDTO';
+import { ClockCircleOutlined, FileTextOutlined, FolderOpenOutlined } from '@ant-design/icons';
+import { ExamPartDTO, QuestionDTO } from '../../../../entity/props/ExamDTO';
+import THPTComponent from '../../exams/types/THPTComponent';
 
 const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
     console.log('course', course);
@@ -47,6 +50,7 @@ const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
         }
     ];
 
+    
 
     //set drop tab lessons
     var initLessonDrop = (size: number) => {
@@ -57,7 +61,9 @@ const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
         return result;
     };
 
-    const [appearLesson, setAppearLesson] = useState(initLessonDrop(sections.length));
+    const [appearLesson, setAppearLesson] = useState(initLessonDrop(course.sections.length));
+    const [isLesson, setIsLesson] = useState<boolean>(true);
+    const [minitest, setMinitest] = useState<ExamPartDTO[]>([]);
 
     function drop(index: number) {
         var mock = [...appearLesson];
@@ -83,15 +89,29 @@ const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
         }
     }, [course])
 
-    function changeVideo(i: number, j: number) {
-        setUrl({
-            url_video: course.sections[i].lessons[j].url_video,
-            url_image: course.sections[i].lessons[j].thumbnail
-        });
+    function changeVideo(i: number, j: number, type: string) {
+        if(type === 'lesson') {
+            setIsLesson(true);
+            setUrl({
+                url_video: course.sections[i].lessons[j].url_video,
+                url_image: course.sections[i].lessons[j].thumbnail
+            });
+        } else {
+            setIsLesson(false);
+            const parts = course.sections[i].lessons[j].examModel;
+            setMinitest([parts]);
+        }
     }
 
     return <>
-        <VideoPlay url_video={url.url_video} url_image={url.url_image}/>
+        {
+            isLesson ?  
+            <VideoPlay url_video={url.url_video} url_image={url.url_image}/> 
+            : 
+            <div className="minitest">
+                <THPTComponent parts={minitest}/> 
+            </div>
+        }
         <div className="section-list">
             <div className='header-section'>
                 Course Content
@@ -108,11 +128,26 @@ const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
                             </div>
                             <div className={appearLesson[i] ? "lessons active" : "lessons"} >
                                 {Array.from({ length: course.sections[i].lessons.length }, (_, j) => (
-                                    <div className='item-lesson' key={j} onClick={() => changeVideo(i, j)}>
-                                        <input type="checkbox" key={j} />
+                                    <div className='item-lesson' key={j} onClick={() => changeVideo(i, j, course.sections[i].lessons[j].type)}>
+                                        {/* <input type="checkbox" key={j} /> */}
+                                        <div className='icon'>
+                                            {
+                                                course.sections[i].lessons[j].type == 'lesson' ? <ImDisplay /> : <FolderOpenOutlined />
+                                            }
+                                        </div>
+                                    
                                         <div className='right'>
                                             <p>{j + 1}. {course.sections[i].lessons[j].lessionName}</p>
-                                            {/* <ImDisplay /> <span className='lesson-duration'>{course.sections[i].lessons[j].duration}min</span> */}
+                                            {
+                                                course.sections[i].lessons[j].type == 'minitest' ? 
+                                                <>
+                                                    <FileTextOutlined /> <span className='lesson-duration'>{course.sections[i].lessons[j].examModel.questions.length} questions</span>
+                                                </>
+                                                :
+                                                <>
+                                                    <ClockCircleOutlined /> <span className='lesson-duration'>{10}min</span>
+                                                </>
+                                            }
                                         </div>
                                     </div>
                                 ))}

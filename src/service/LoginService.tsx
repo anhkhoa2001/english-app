@@ -38,7 +38,7 @@ const LoginService = {
     },
     killToken: function(token: string) {
         new RestService<string>().get(
-            BASE_PATH.PATH_USER_SERVICE + '/public/kill-token',
+            BASE_PATH.PATH_PROXY + '/public/kill-token',
             {
                 'Authorization': BEARER + token
             },
