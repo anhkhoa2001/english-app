@@ -3,10 +3,10 @@ import { Button, Col, Form, Input, InputNumber, Row, Select, Space, Switch, Uplo
 import TextArea from "antd/lib/input/TextArea";
 import EditorComponent from "../../editor/EditorComponent";
 import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
-import { ExamDTO } from "../../../../service/ExamService";
 import { useEffect, useState } from "react";
+import { ExamDTO } from "../../../../entity/props/ExamDTO";
 
-const typeExams = ['TOEIC', 'THPT', 'IELTS'];
+export const typeExams = ['TOEIC', 'THPT', 'IELTS'];
 const skills = ['Listening', 'Speaking', 'Writing', 'Reading', 'Other...'];
 
 const normFile = (e: any) => {
@@ -15,6 +15,8 @@ const normFile = (e: any) => {
     }
     return e?.fileList;
 };
+
+const timesExam = [10, 15, 20, 30, 45, 60, 75, 90, 120, 180, 360];
 
 const ExamForm: React.FC<{onSubmit: (e:any) => void, examFormRef: any, item?: ExamDTO}> 
                                     = ({onSubmit, examFormRef, item}) => {
@@ -82,6 +84,19 @@ const ExamForm: React.FC<{onSubmit: (e:any) => void, examFormRef: any, item?: Ex
               rules={[{ required: true, message: 'Please input course code' }]}
               required={true}>
                   <Input />
+            </Form.Item>
+            <Form.Item 
+              label="Work Time"
+              name="countdown"
+              rules={[{ required: true, message: 'Please input course code' }]}
+              required={true}>
+                  <Select defaultValue={`${timesExam[0]} minutes`}>
+                        {
+                            timesExam.map(e => {
+                                return <Select.Option value={e}>{e} minutes</Select.Option>
+                            })
+                        }
+                  </Select>
             </Form.Item>
             <Form.Item 
               label="Status"

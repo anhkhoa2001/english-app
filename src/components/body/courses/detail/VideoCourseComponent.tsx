@@ -3,9 +3,9 @@ import LessonList from "./LessonList";
 import './css/VideoCourseComponent.scss'
 import CommonNav from "./CommonNav";
 import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
-import MessageResponse from "../../../../entity/response/MessageResponse";
 import { useEffect, useState } from "react";
 import CourseService from "../../../../service/CourseService";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
 
 const VideoCourseComponent: React.FC = () => {

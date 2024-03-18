@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import LoginService from "../../service/LoginService";
 import MessageResponse from "../../entity/response/MessageResponse";
 import { useToken } from "../../context/TokenProvider";
+import { UserDTO } from "../../entity/props/ExamDTO";
 
 class UserInfo {
     avatar: string;
@@ -30,7 +31,7 @@ const HeaderComponent: React.FC = () => {
             const token = localStorage.getItem('access_token');
             var info = localStorage.getItem('info') || null;
             if(info == null) {
-                LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {    
+                LoginService.getUsetInfo(token, (response: MessageResponse<UserDTO> | null) => {    
                     localStorage.setItem('info', JSON.stringify(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''))); 
                     setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
                 });

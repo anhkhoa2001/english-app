@@ -1,4 +1,3 @@
-
 import { Button, message, Input, Tabs, TabsProps, Upload, UploadProps } from 'antd';
 import './ProfileDetailComponent.scss'
 import { Link } from 'react-router-dom';
@@ -7,7 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import LoginService from '../../../service/LoginService';
 import MessageResponse from '../../../entity/response/MessageResponse';
-import { UserInfo } from '../../../entity/Contants';
+import { UserDTO } from '../../../entity/props/ExamDTO';
 
 const ProfileDetailComponent: React.FC = () => {
     const appName = 'Udemy';
@@ -22,7 +21,7 @@ const ProfileDetailComponent: React.FC = () => {
 
     useEffect(() => {
         var token = localStorage.getItem("access_token");
-        LoginService.getUsetInfo(token, (response: MessageResponse<UserInfo> | null) => {
+        LoginService.getUsetInfo(token, (response: MessageResponse<UserDTO> | null) => {
             setInfo({
                 username: response?.data.username || '',
                 avatar: response?.data.avatar || '',

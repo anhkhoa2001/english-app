@@ -1,5 +1,5 @@
 
-interface MessageResponse<T> {
+export interface MessageResponse<T> {
 	BASIC_NAME: string;
     status: number;
     message: string;
@@ -11,4 +11,7 @@ interface MessageResponse<T> {
 }
 
 
-export default MessageResponse;
+export interface DataResponse<T> {
+    totalRecord: number;
+    data: T;
+}

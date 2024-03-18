@@ -12,16 +12,16 @@ const TypeQuestion = {
     GROUP: 'Group'
 }
 
-const ToeicComponent: React.FC<{questions: ExamPartDTO[], indexTab: string}> = ({questions, indexTab}) => {
+const ToeicComponent: React.FC<{parts: ExamPartDTO[], indexTab: string}> = ({parts, indexTab}) => {
 
-    console.log('index 123  ||  ', indexTab);
+    console.log('index 123  ||  ', parts);
     const [index, setIndex] = useState(indexTab);
 
     useEffect(() => {
         setIndex(indexTab)
     } , [indexTab])
 
-    const items: TabsProps['items'] = questions.map((item, index) => {
+    const items: TabsProps['items'] = parts.map((item, index) => {
         const result = {
             key: index + 1 + '',
             label: `Part ${index + 1}`,

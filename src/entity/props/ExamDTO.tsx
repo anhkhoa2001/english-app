@@ -11,11 +11,25 @@ export class ExamDTO {
     createAt: Date;
     status: boolean;
     parts: ExamPartDTO[];
+    attendences: number;
+    countdown: number;
+    author: UserDTO;
 
     constructor(parts: ExamPartDTO[]) {
         this.parts = parts;    
     }  
 
+}
+
+export class UserDTO {
+    userId: string;
+    createAt: Date;
+    username: string;
+    email: string;
+    fullname: string;
+    avatar: string;
+    type: string;
+    roleCode: string;
 }
 
 export class ExamPartDTO {

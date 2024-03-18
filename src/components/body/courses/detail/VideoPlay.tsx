@@ -6,8 +6,8 @@ import ReviewsTab from './ReviewsTab';
 import QATab from './Q&ATab';
 import { useRef } from 'react';
 
-const VideoPlay: React.FC<{ url_video: string, url_image: string }> =
-  ({ url_video, url_image }) => {
+const VideoPlay: React.FC<{ url_video: string, url_image: string, summary: React.ReactNode }> =
+  ({ url_video, url_image, summary }) => {
 
     const playerRef = useRef();
     const onChange = (key: string) => {
@@ -18,7 +18,7 @@ const VideoPlay: React.FC<{ url_video: string, url_image: string }> =
       {
         key: '1',
         label: 'Summary',
-        children: <SummaryTab></SummaryTab>,
+        children: <SummaryTab summary={summary}></SummaryTab>,
       },
       {
         key: '2',

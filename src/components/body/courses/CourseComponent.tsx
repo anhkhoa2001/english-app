@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import { IoIosStar } from 'react-icons/io';
 import TitleComponent from '../TitleComponent';
 import CourseService, { CourseListResponse } from '../../../service/CourseService';
-import MessageResponse from '../../../entity/response/MessageResponse';
 import { useToken } from '../../../context/TokenProvider';
+import { MessageResponse } from '../../../entity/response/MessageResponse';
 
 const JOIN_COURSE = "JOIN_COURSE";
 const CHECK_LOGIN = "CHECK_LOGIN";

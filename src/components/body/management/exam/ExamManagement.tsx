@@ -5,11 +5,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { TableProps } from "antd/lib";
 import { MultiChoiceProp } from "../../../../entity/props/MultiChoiceProp";
 import PreviewContentQuestion from "./PreviewContentQuestion";
-import MessageResponse from "../../../../entity/response/MessageResponse";
 import CreateQuestionForm from "../form/CreateQuestionForm";
 import { ExamDTO, ExamPartDTO, QuestionDTO } from "../../../../entity/props/ExamDTO";
 import { ExamService } from "../../../../service/ExamService";
 import { ModalCustom } from "../../../exception/SuccessModal";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
 const PART = 'PART';
 const DELETE_PART = 'DELETE_PART';

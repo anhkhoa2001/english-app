@@ -1,4 +1,5 @@
-import { BASE_PATH, BEARER, UserInfo } from '../entity/Contants';
+import { BASE_PATH, BEARER } from '../entity/Contants';
+import { UserDTO } from '../entity/props/ExamDTO';
 import MessageResponse from '../entity/response/MessageResponse';
 import RestService from './RestService';
 
@@ -47,14 +48,14 @@ const LoginService = {
                 console.log(status);
             });
     },
-    getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserInfo> | null) => void) {
-        new RestService<UserInfo>().get(
+    getUsetInfo: function(token: string | null, func: (response: MessageResponse<UserDTO> | null) => void) {
+        new RestService<UserDTO>().get(
             BASE_PATH.PATH_PROXY + '/user/user-info',
             {
                 'Authorization': BEARER + token
             },
             {},
-            (status: number, data: MessageResponse<UserInfo> | null) => {
+            (status: number, data: MessageResponse<UserDTO> | null) => {
                 if(status === 200) {
                     func(data);
                 } else {

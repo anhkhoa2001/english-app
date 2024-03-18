@@ -1,7 +1,7 @@
 import { ModalCustom } from "../components/exception/SuccessModal";
 import { BASE_PATH } from "../entity/Contants";
 import { ExamDTO, QuestionDTO } from "../entity/props/ExamDTO";
-import MessageResponse from "../entity/response/MessageResponse";
+import { DataResponse, MessageResponse } from "../entity/response/MessageResponse";
 import RestService from "./RestService";
 
 const token = localStorage.getItem('access_token');
@@ -82,6 +82,22 @@ export const ExamService = {
             },
             {},
             (status: number, data: MessageResponse<ExamDTO[]> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All exam failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
+    getAllExamByCondition: (request: any, func: (data: MessageResponse<DataResponse<ExamDTO[]>> | null) => void) =>  {
+        new RestService<DataResponse<ExamDTO[]>>().post(
+            BASE_PATH.PATH_PROXY + '/exam/get-all-exam',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<DataResponse<ExamDTO[]>> | null) => {
                 if (status === 200) {
                     func(data);
                 } else {

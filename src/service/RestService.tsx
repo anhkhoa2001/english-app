@@ -1,5 +1,5 @@
 import axios from 'axios';
-import MessageResponse from '../entity/response/MessageResponse';
+import { MessageResponse } from '../entity/response/MessageResponse';
 
 function objectToQueryString(obj: object) {
     const queryString = Object.keys(obj)

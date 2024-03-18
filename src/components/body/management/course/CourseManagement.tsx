@@ -5,13 +5,13 @@ import '../css/CourseManagement.scss'
 import React, { useEffect, useRef, useState } from "react";
 import SectionForm from "../form/SectionForm";
 import LessonForm from "../form/LessonForm";
-import MessageResponse from "../../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../../service/CourseService";
 import { CourseItemDTO } from "../../../../entity/props/CourseItemDTO";
 import { SectionDTO, SectionItemDTO } from "../../../../entity/props/SectionDTO";
 import { LessonDTO } from "../../../../entity/props/LessonDTO";
 import { ModalCustom } from "../../../exception/SuccessModal";
 import moment from "moment";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
 const SECTION: string = "section";
 const EDIT_SECTION: string = "edit_section";

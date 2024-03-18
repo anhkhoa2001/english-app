@@ -106,7 +106,7 @@ const LessonList: React.FC<{course: CourseItemDTO}> = ({course}) => {
     return <>
         {
             isLesson ?  
-            <VideoPlay url_video={url.url_video} url_image={url.url_image}/> 
+            <VideoPlay url_video={url.url_video} url_image={url.url_image} summary={course.description} /> 
             : 
             <div className="minitest">
                 <THPTComponent parts={minitest}/> 

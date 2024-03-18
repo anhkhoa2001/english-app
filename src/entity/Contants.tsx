@@ -1,8 +1,9 @@
 
 export const TypeExam =  {
-    TOEIC: 0,
-    THPT: 1,
-    IELTS: 2
+    TOEIC: 'TOEIC',
+    THPT: 'THPT',
+    IELTS: 'IELTS',
+    Minitest: 'Minitest'
 }
 
 export const TypeQuestion =  {
@@ -15,19 +16,11 @@ export const BASE_PATH =  {
     PATH_USER_SERVICE: 'http://localhost:9001',
     PATH_GATEWAY: 'http://localhost:9000',
     PATH_FE: 'http://localhost:5173',
-    PATH_PROXY: 'http://localhost:9001/api'
+    PATH_PROXY: 'http://localhost:9001'
 }
 
 export const BEARER = "Bearer ";
 
+export const URL_UPLOAD_RESOURCE = `${BASE_PATH.PATH_PROXY}/up-file/upload-to-cloud`;
 
-export interface UserInfo {
-    avatar: string;
-    fullname: string;
-    username: string;
-    email: string;
-}
-
-export const URL_UPLOAD_RESOURCE = "http://localhost:9001/api/up-file/upload-to-cloud";
-
-export const URL_UPLOAD_RESOURCE_CK = "http://localhost:9001/api/up-file/upload-for-ckeditor";
+export const URL_UPLOAD_RESOURCE_CK = `${BASE_PATH.PATH_PROXY}/up-file/upload-for-ckeditor`;

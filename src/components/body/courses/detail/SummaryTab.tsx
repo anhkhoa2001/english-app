@@ -1,8 +1,10 @@
+import React from 'react';
 import './css/SummaryTab.scss'
 
-const SummaryTab: React.FC = () => {
+const SummaryTab: React.FC<{summary: React.ReactNode}> = ({summary}) => {
+    console.log('summary', summary);
     return <div className="summary-tab">
-        <h1>h2llo</h1>
+        <div dangerouslySetInnerHTML={{ __html: summary }} />
     </div>
 }
 

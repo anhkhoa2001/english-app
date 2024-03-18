@@ -11,10 +11,10 @@ const MultiChoice: React.FC<{prop: QuestionDTO}>
         <div id = {`question-${prop.questionId}`}>
             <QuestionNumber index={prop.questionId}/>
         </div>
-        <Tooltip title={prop.questionChilds[0].hint} style={{marginLeft: "36px"}}>
-            <div dangerouslySetInnerHTML={{ __html: prop.content }} />
+        <Tooltip  title={prop.questionChilds[0].hint} style={{marginLeft: "36px"}}>
+            <div className="content" dangerouslySetInnerHTML={{ __html: prop.content }} />
         </Tooltip>
-        <Radio.Group className="answer" style={prop.content !== "" ? {marginLeft: "36px"} : {marginLeft: "0px"}}>  
+        <Radio.Group className="answer" style={prop.content !== "" ? {marginLeft: "54px"} : {marginLeft: "0px"}}>  
             <Space direction="vertical">
                 {
                     prop.questionChilds[0].type.includes('multi_choice') ?
@@ -22,7 +22,7 @@ const MultiChoice: React.FC<{prop: QuestionDTO}>
                         <Radio value={prop.questionChilds[0].answer[i].key} key={i}>{`${prop.questionChilds[0].answer[i].key}. ${prop.questionChilds[0].answer[i].value}`}</Radio>
                     )) 
                     :
-                    <Input placeholder="Typing your idea!!!!" />
+                    <Input width={500} placeholder="Typing your idea!!!!" />
                 }
             </Space>
         </Radio.Group>
