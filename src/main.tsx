@@ -16,6 +16,7 @@ import ManagementComponent from './components/body/management/ManagementComponen
 import TestComponent from './components/body/editor/EditorComponent.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
+    
     <BrowserRouter>
         <Routes>
             <Route path="" element={<App />}>
