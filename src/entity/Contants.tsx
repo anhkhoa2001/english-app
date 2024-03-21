@@ -16,7 +16,8 @@ export const BASE_PATH =  {
     PATH_USER_SERVICE: 'http://localhost:9001',
     PATH_GATEWAY: 'http://localhost:9000',
     PATH_FE: 'http://localhost:5173',
-    PATH_PROXY: 'http://localhost:9001'
+    PATH_PROXY: 'http://localhost:9001',
+    PATH_SOCKET: 'http://localhost:9998'
 }
 
 export const BEARER = "Bearer ";
@@ -24,3 +25,5 @@ export const BEARER = "Bearer ";
 export const URL_UPLOAD_RESOURCE = `${BASE_PATH.PATH_PROXY}/up-file/upload-to-cloud`;
 
 export const URL_UPLOAD_RESOURCE_CK = `${BASE_PATH.PATH_PROXY}/up-file/upload-for-ckeditor`;
+
+export const URL_SOCKET = 'http://localhost:9008';

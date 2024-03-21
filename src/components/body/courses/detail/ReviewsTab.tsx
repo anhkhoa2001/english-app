@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { Avatar, Button, Flex, Form, Input, List, Rate, Tooltip } from 'antd';
 import { Comment } from '@ant-design/compatible';
 import moment from 'moment';
+import { URL_SOCKET } from "../../../../entity/Contants";
+//@ts-ignore
+import { useSocket } from '../../../../socket/socket';
+import './css/ReviewsTab.scss';
+import { useParams } from 'react-router-dom';
+
 
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
-import './css/ReviewsTab.scss';
 
 
 const { TextArea } = Input;
@@ -46,6 +51,10 @@ const Editor: React.FC<EditorProps> = ({ onChange, onSubmit, submitting, value }
 );
 
 const ReviewsTab: React.FC = () => {
+    const {code} = useParams();
+    const socket = useSocket('', code, 'comment', 'khoadt', 0, URL_SOCKET);
+    
+    console.log('socket', socket);
     const data:CommentItem[] = [
         {
             author: 'Han Solo',

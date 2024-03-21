@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import LoginService from '../service/LoginService';
-import MessageResponse from '../entity/response/MessageResponse';
+import { MessageResponse } from '../entity/response/MessageResponse';
 
 class TokenContextProps {
     token: string;

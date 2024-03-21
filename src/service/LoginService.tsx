@@ -1,6 +1,6 @@
 import { BASE_PATH, BEARER } from '../entity/Contants';
 import { UserDTO } from '../entity/props/ExamDTO';
-import MessageResponse from '../entity/response/MessageResponse';
+import { MessageResponse } from '../entity/response/MessageResponse';
 import RestService from './RestService';
 
 type LoginCallback = (response: MessageResponse<string> | null, isLogined: boolean) => void;

@@ -7,19 +7,15 @@ import { useEffect, useState } from "react";
 import CourseService from "../../../../service/CourseService";
 import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
-
 const VideoCourseComponent: React.FC = () => {
     const {code} = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const [item, setItem] = useState<CourseItemDTO>(new CourseItemDTO());
 
     console.log(code);
-
-
     const loadCourse: (data: MessageResponse<CourseItemDTO> | null) => void = (data) => {
         try {
             setItem(data?.data || new CourseItemDTO());
-            console.log('course detail', data);
         } catch (error) {
             console.log('error', error);
         }

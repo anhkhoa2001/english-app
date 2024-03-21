@@ -3,18 +3,24 @@ import './HeaderComponent.scss'
 import ProfileComponent from "./profile/ProfileComponent";
 import { useEffect, useState } from "react";
 import LoginService from "../../service/LoginService";
-import MessageResponse from "../../entity/response/MessageResponse";
 import { useToken } from "../../context/TokenProvider";
 import { UserDTO } from "../../entity/props/ExamDTO";
+import { MessageResponse } from "../../entity/response/MessageResponse";
 
 class UserInfo {
     avatar: string;
     fullname: string;
+    userId: string;
+    username: string;
 
     constructor(avatar: string,
-                fullname: string) {
+                fullname: string,
+                userId: string,
+                username: string) {
         this.avatar = avatar;
         this.fullname = fullname;
+        this.userId = userId;
+        this.username = username;
     }
 }
 
@@ -23,7 +29,7 @@ const HeaderComponent: React.FC = () => {
     const obj = useToken();
     console.log('check in header obj', obj);
     const [isLogin, checkIsLogin] = useState(obj?.isLogined);
-    const [info, setInfo] = useState(new UserInfo('', ''));
+    const [info, setInfo] = useState<UserInfo>(new UserInfo('', '', '', ''));
 
     useEffect(() => {
         checkIsLogin(localStorage.getItem('access_token') != undefined);
@@ -32,8 +38,10 @@ const HeaderComponent: React.FC = () => {
             var info = localStorage.getItem('info') || null;
             if(info == null) {
                 LoginService.getUsetInfo(token, (response: MessageResponse<UserDTO> | null) => {    
-                    localStorage.setItem('info', JSON.stringify(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''))); 
-                    setInfo(new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? ''));
+                    const info = new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? '', response?.data?.userId ?? '', response?.data?.username ?? '');
+                    localStorage.setItem('info', JSON.stringify(info)); 
+                    localStorage.setItem('userId', response?.data?.userId ?? '');
+                    setInfo(info);
                 });
             } else {
                 setInfo(JSON.parse(localStorage.getItem('info') || ""));

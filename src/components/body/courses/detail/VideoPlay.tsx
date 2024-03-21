@@ -22,7 +22,7 @@ const VideoPlay: React.FC<{ url_video: string, url_image: string, summary: React
       },
       {
         key: '2',
-        label: 'Q&A',
+        label: 'Comment',
         children: <QATab />,
       },
       {

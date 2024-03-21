@@ -1,10 +1,10 @@
 import { BASE_PATH } from "../entity/Contants";
-import MessageResponse from "../entity/response/MessageResponse";
 import RestService from "./RestService";
 import { ModalCustom } from "../components/exception/SuccessModal";
 import { CourseItemDTO } from "../entity/props/CourseItemDTO";
 import { LessonDTO } from "../entity/props/LessonDTO";
 import { SectionDTO } from "../entity/props/SectionDTO";
+import { MessageResponse } from "../entity/response/MessageResponse";
 
 export interface CourseDTO {
     code: string,
