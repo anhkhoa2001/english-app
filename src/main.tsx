@@ -14,6 +14,7 @@ import HomeComponent from './components/body/home/HomeComponent.tsx';
 import ProfileDetailComponent from './components/header/profile/ProfileDetailComponent.tsx';
 import ManagementComponent from './components/body/management/ManagementComponent.tsx';
 import TestComponent from './components/body/editor/EditorComponent.tsx';
+import SummaryExam from './components/body/exams/SummaryExam.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     
@@ -47,6 +48,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
             <Route path="/learning/exam/:code" element={
                 <DetailExamComponent />
+            }></Route>
+
+            <Route path="/exam/:code" element={
+                <SummaryExam />
             }></Route>
         </Routes>
         {/* <Footer style={{ textAlign: 'center', position: 'absolute', width: '100%', bottom: '0'}}>

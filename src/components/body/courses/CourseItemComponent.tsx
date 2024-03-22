@@ -4,7 +4,6 @@ import { CourseDTO } from "../../../service/CourseService";
 
 
 const CourseItemComponent: React.FC<{data?: CourseDTO}> = ({data}) => {
-    console.log('data item', data);
     return <div className="course-item" >
         <img src={data?.thumbnail} className="thumnail"/> 
         <div className="detail">

@@ -26,6 +26,9 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           localStorage.setItem("access_token", response.data);
         } else {
           localStorage.removeItem("access_token");
+          localStorage.removeItem("info");
+          localStorage.removeItem("refresh");
+          localStorage.removeItem("userId");
           setSession(new TokenContextProps("", false));
         }
     };

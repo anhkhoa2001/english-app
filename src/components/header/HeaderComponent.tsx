@@ -48,7 +48,7 @@ const HeaderComponent: React.FC = () => {
             }
             console.log('info', info);
         }
-    }, [obj?.isLogined]);
+    }, []);
 
 
 

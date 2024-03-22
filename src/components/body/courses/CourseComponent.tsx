@@ -21,63 +21,6 @@ modal.set(CHECK_LOGIN, false);
 
 const CourseComponent: React.FC = () => {
 
-    // let data: CourseItemDTO[] = [
-    //     {
-    //         title: "Introduction to Programming",
-    //         rating: 4.5,
-    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-    //         code: "CS101",
-    //         instructor: "John Doe",
-    //         total_hours: 20,
-    //         lectures: 10,
-    //         level: "Beginner",
-    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-    //     },
-    //     {
-    //         title: "Introduction to Programming",
-    //         rating: 4.5,
-    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-    //         code: "CS102",
-    //         instructor: "John Doe",
-    //         total_hours: 20,
-    //         lectures: 10,
-    //         level: "Beginner",
-    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-    //     },
-    //     {
-    //         title: "Introduction to Programming",
-    //         rating: 4.5,
-    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-    //         code: "CS103",
-    //         instructor: "John Doe",
-    //         total_hours: 20,
-    //         lectures: 10,
-    //         level: "Beginner",
-    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-    //     },
-    //     {
-    //         title: "Introduction to Programming",
-    //         rating: 4.5,
-    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-    //         code: "CS104",
-    //         instructor: "John Doe",
-    //         total_hours: 20,
-    //         lectures: 10,
-    //         level: "Beginner",
-    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-    //     },
-    //     {
-    //         title: "Introduction to Programming",
-    //         rating: 4.5,
-    //         summary: "Unlock TOEIC Success: Master the fundamentals of the TOEIC Test fast with this course: achieve your target score!",
-    //         code: "CS105",
-    //         instructor: "John Doe",
-    //         total_hours: 20,
-    //         lectures: 10,
-    //         level: "Beginner",
-    //         image: "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-    //     }
-    // ];
     const obj = useToken();
     const navigate = useNavigate();
     const [courses, setCourses] = useState<CourseListResponse>();
@@ -133,15 +76,6 @@ const CourseComponent: React.FC = () => {
         pagination.current.levels = levelsCpy;
         CourseService.getAllCoursePublic(pagination.current, loadCourse);
     };
-
-
-    // const video_durations = [
-    //     <>
-    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>0 - 1 Hours</Checkbox>
-    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>2 - 4 Hours</Checkbox>
-    //         <Checkbox style={{ fontSize: '110%' }} onChange={onChangeVideo}>5 - 8 Hours</Checkbox>
-    //     </>
-    // ];
 
     const levelElements = [
         <>

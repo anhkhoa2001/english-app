@@ -14,6 +14,7 @@ export class ExamDTO {
     attendences: number;
     countdown: number;
     author: UserDTO;
+    totalQuestion: number;
 
     constructor(parts: ExamPartDTO[]) {
         this.parts = parts;    
@@ -62,6 +63,7 @@ export interface QuestionItemDTO {
     solution: string;
     type: string;
     answer: AnswerAttributeDTO[];
+    output: string;
 }
 
 

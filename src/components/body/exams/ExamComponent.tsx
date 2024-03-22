@@ -1,10 +1,10 @@
-import { Avatar, Checkbox, CheckboxProps, Collapse, Pagination } from 'antd';
+import { Avatar, Checkbox, CheckboxProps, Collapse, Modal, Pagination } from 'antd';
 import TitleComponent from '../TitleComponent';
 import './css/ExamComponent.scss'
 import { CollapseProps } from 'antd/lib';
 import { Comment } from '@ant-design/compatible';
 import { ExamItemDTO } from '../../../entity/props/ExamItemDTO';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TypeExam } from '../../../entity/Contants';
 import { useEffect, useRef, useState } from 'react';
 import { ExamDTO } from '../../../entity/props/ExamDTO';
@@ -12,6 +12,7 @@ import { ModalCustom } from '../../exception/SuccessModal';
 import { ExamService } from '../../../service/ExamService';
 import { DataResponse, MessageResponse } from '../../../entity/response/MessageResponse';
 import { typeExams } from '../management/form/ExamForm';
+import { useToken } from '../../../context/TokenProvider';
 
 class ExamRequest {
     page: number;
@@ -25,11 +26,21 @@ class ExamRequest {
     }
 }
 
+
+const CHECK_LOGIN = "CHECK_LOGIN";
+const JOIN_EXAM = "JOIN_EXAM";
+const map = new Map();
+map.set(CHECK_LOGIN, false);
+map.set(JOIN_EXAM, false);
+
 const ExamComponent: React.FC = () => {
 
     const request = useRef<ExamRequest>(new ExamRequest());
     const [exams, setExams] = useState<DataResponse<ExamDTO[]>>();
-
+    const examCode = useRef<string>("");
+    const obj = useToken();
+    const [onModel, setOnModel] = useState(map);
+    const navigate = useNavigate();
 
     const onChangeSkill= (e: any, value: string) => {
         var skills:string[] = request.current.skills || [];
@@ -157,6 +168,36 @@ const ExamComponent: React.FC = () => {
     //     }
     // ];
 
+
+    const openNoti = (code: string) => {
+        examCode.current = code;
+        if(!obj?.isLogined) {
+            map.set(CHECK_LOGIN, true);
+            const newMap = new Map(map);
+            setOnModel(newMap);
+        } else {
+            map.set(JOIN_EXAM, true);
+            const newMap = new Map(map);
+            setOnModel(newMap);
+        }
+    }
+
+    const closeModal = (key: string) => {
+        if(key === JOIN_EXAM) {
+            navigate(`/exam/${examCode.current}`);
+        } else if(key === CHECK_LOGIN) {
+            navigate(`/login`);
+        }
+        map.set(key, false);
+        const newMap = new Map(map);
+        setOnModel(newMap);
+    }
+
+    const handleCancel = (key: string) => {
+        map.set(key, false);
+        const newMap = new Map(map);
+        setOnModel(newMap);
+    }
     
 
     return <>
@@ -169,26 +210,55 @@ const ExamComponent: React.FC = () => {
             </div>
             <div className="right">
                 {Array.from({ length: exams?.data.length || 0 }, (_, i) =>
-                    <Link to={`/learning/exam/${exams?.data[i].examCode}?type=${exams?.data[i].type}`} key={i}>
-                        <div className="exam-item">
-                            <img className="item-image" src={exams?.data[i].thumbnail} alt="" />
-                            <div className='item-detail'>
-                                <h2>{exams?.data[i].examName}</h2>
-                                <p>{exams?.data[i].summary}</p>
-                            </div>
-                            <Comment
-                                author={exams?.data[i].author.fullname}
-                                avatar={
-                                    <Avatar
-                                        src={exams?.data[i].author.avatar}
-                                        alt={exams?.data[i].author.fullname}
-                                    />
-                                }
-                                content={''}
-                            />
+                    <div className="exam-item" onClick={() => openNoti(exams?.data[i].examCode || "")}>
+                        <img className="item-image" src={exams?.data[i].thumbnail} alt="" />
+                        <div className='item-detail'>
+                            <h2>{exams?.data[i].examName}</h2>
+                            <p>{exams?.data[i].summary}</p>
                         </div>
-                    </Link>
+                        <Comment
+                            author={exams?.data[i].author.fullname}
+                            avatar={
+                                <Avatar
+                                    src={exams?.data[i].author.avatar}
+                                    alt={exams?.data[i].author.fullname}
+                                />
+                            }
+                            content={''}
+                        />
+                    </div>
+                    // <Link to={`/learning/exam/${exams?.data[i].examCode}?type=${exams?.data[i].type}`} key={i}>
+                    //     <div className="exam-item">
+                    //         <img className="item-image" src={exams?.data[i].thumbnail} alt="" />
+                    //         <div className='item-detail'>
+                    //             <h2>{exams?.data[i].examName}</h2>
+                    //             <p>{exams?.data[i].summary}</p>
+                    //         </div>
+                    //         <Comment
+                    //             author={exams?.data[i].author.fullname}
+                    //             avatar={
+                    //                 <Avatar
+                    //                     src={exams?.data[i].author.avatar}
+                    //                     alt={exams?.data[i].author.fullname}
+                    //                 />
+                    //             }
+                    //             content={''}
+                    //         />
+                    //     </div>
+                    // </Link>
                 )}
+                <Modal title="Do you want to join this examination?" 
+                    open={map.get(JOIN_EXAM)}
+                    onOk={() => closeModal(JOIN_EXAM)}
+                    onCancel={() => handleCancel(JOIN_EXAM)}>
+                    <p>Hmmmmm.....................................</p>
+                </Modal>
+                <Modal title="Please log in to join the examination?" 
+                    open={map.get(CHECK_LOGIN)}
+                    onOk={() => closeModal(CHECK_LOGIN)}
+                    onCancel={() => handleCancel(CHECK_LOGIN)}>
+                    <p>Hmmmmm.....................................</p>
+                </Modal>
                 <div className='paging'>
                     <Pagination
                         onChange={() => { console.log('123') }}

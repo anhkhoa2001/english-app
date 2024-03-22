@@ -2,11 +2,11 @@ import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from "@ant-de
 import { Button, Image, Modal, Space, Switch, Table, TableProps } from "antd";
 import { useEffect, useRef, useState } from "react";
 import ExamForm from "../form/ExamForm";
-import MessageResponse from "../../../../entity/response/MessageResponse";
 import { ExamService } from "../../../../service/ExamService";
 import { ModalCustom } from "../../../exception/SuccessModal";
 import moment from "moment";
 import { ExamDTO } from "../../../../entity/props/ExamDTO";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
 const ADD_EXAM = 'ADD_EXAM';
 const DELETE_EXAM = 'DELETE_EXAM';

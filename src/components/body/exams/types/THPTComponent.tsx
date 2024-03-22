@@ -29,7 +29,7 @@ const THPTComponent: React.FC<{parts: ExamPartDTO[]}> = ({parts}) => {
                      : 
                      <MultiChoiceGroup   
                      content={item.questions[i].content} 
-                     questionChilds={item.questions || []} 
+                     questionChilds={item.questions[i].questionChilds || []} 
                      key={i} />
                 ))} 
             </>

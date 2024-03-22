@@ -92,7 +92,7 @@ export const ExamService = {
     },
     getAllExamByCondition: (request: any, func: (data: MessageResponse<DataResponse<ExamDTO[]>> | null) => void) =>  {
         new RestService<DataResponse<ExamDTO[]>>().post(
-            BASE_PATH.PATH_PROXY + '/exam/get-all-exam',
+            BASE_PATH.PATH_PROXY + '/exam/get-all-exam-public',
             {
                 'Authorization': localStorage.getItem('access_token')
             },

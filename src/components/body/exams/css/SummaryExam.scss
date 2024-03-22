@@ -1,0 +1,32 @@
+.summary-exam {
+    .main {
+        width: 70vw;
+        margin: 0 auto;
+
+        .info,.comment {
+            flex-basis: 10%;
+            box-shadow: 0 4px 0 0 rgba(143,156,173,.2);
+            border: 1px solid #e0e0e0;
+            border-radius: 0.65rem;
+            background-color: #f8f9fa!important;
+            padding: 16px;
+            margin-top: 12px;
+
+            .tag {
+                background-color: #eee;
+                color: #1e2022;
+                font-weight: 400;
+                padding: 3px 12px;
+                font-size: 12px;
+                border-radius: 15px;
+                text-align: left;
+            }
+
+            .practice {
+                font-size: 18px;
+                margin-top: 20px;
+                font-weight: 800;
+            }
+        }
+    }
+}

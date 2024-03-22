@@ -393,7 +393,10 @@ const ExamManagement: React.FC<{code: string}> = ({code}) => {
 
 
     const addNewPart = () => {
-        item.parts = [...item?.parts, new ExamPartDTO()];
+        const i = new ExamPartDTO();
+        i.partId = item?.parts.length + 1;
+        item.parts = [...item?.parts, i];
+        console.log('new part', item);
         setItem({...item});
     }
 

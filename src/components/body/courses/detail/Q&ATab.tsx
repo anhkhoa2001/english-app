@@ -2,7 +2,6 @@ import './css/Q&ATab.scss'
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Avatar, Button, Form } from 'antd';
 import { Comment } from '@ant-design/compatible';
-import TextArea from 'antd/es/input/TextArea';
 //@ts-ignore
 import { useSocket } from '../../../../socket/socket';
 import { useParams } from 'react-router-dom';
@@ -10,110 +9,7 @@ import { URL_SOCKET } from "../../../../entity/Contants";
 import { MessageResponse } from '../../../../entity/response/MessageResponse';
 import { CommentDTO } from '../../../../entity/props/Socket';
 import CommentService from '../../../../service/CommentService';
-
-interface ExampleCommentProps {
-  children?: ReactNode;
-  content: string;
-  avatar: string;
-  name: string;
-  socket?: any;
-  comment_id: number;
-  handle?: any;
-  info: any;
-}
-
-interface StructuralComment {
-  hasChild: boolean;
-  childrens: React.ReactNode;
-  element: React.ReactNode;
-  content: string;
-  avatar: string;
-  name: string;
-}
-
-const ExampleComment: React.FC<ExampleCommentProps> = ({ children, content, avatar, name, socket, comment_id, handle, info }) => {
-  const [contentCurrent, setContentCurrent] = useState<string>("");
-  const [submitting, setSubmitting] = useState(false);
-  const [reply, setReply] = useState(false);
-
-  const handleChange = (e: any) => {
-    setContentCurrent(e.target.value);
-  }
-
-  const handleSubmit = () => {
-    setSubmitting(true);
-    console.log('message socket', socket);
-    const send = socket[0];
-    send(contentCurrent, comment_id);
-    setTimeout(() => {
-      handle();
-      setSubmitting(false);
-      setReply(false);
-    }, 1000);
-  }
-
-  const onReply = (id: number) => {
-    console.log('id', id);
-    setReply(true);
-  }
-
-  return <>
-    <Comment
-      actions={[<span key="comment-nested-reply-to" onClick={() => onReply(comment_id)}>Reply to</span>]}
-      author={<a>{name}</a>}
-      avatar={
-        <Avatar
-          src={avatar}
-          alt={name}
-        />
-      }
-      content={
-        <p>
-          {content}
-        </p>
-      }
-    >
-      {children}
-    </Comment>
-    {reply ? <Comment
-      style={{ marginLeft: "20px" }}
-      avatar={
-        <Avatar
-          src={info.avatar || ""}
-          alt={info.fullname || ""}
-        />
-      }
-      content={
-        <Editor
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          submitting={submitting}
-          value={contentCurrent}
-        />
-      }
-    /> : <></>}
-  </>;
-};
-
-interface EditorProps {
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: () => void;
-  submitting: boolean;
-  value: string;
-}
-
-const Editor: React.FC<EditorProps> = ({ onChange, onSubmit, submitting, value }) => {
-  return <div className='comment-input'>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} defaultValue={value} />
-    </Form.Item>
-    <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-        Add Comment
-      </Button>
-    </Form.Item>
-  </div>;
-};
+import CommentCustom, { Editor } from '../../comment/CommentCustom';
 
 const TABLE_REF = 'u_course';
 const QATab: React.FC = () => {
@@ -185,25 +81,6 @@ const QATab: React.FC = () => {
     });
   }
 
-  // function insertComment(tree: CommentDTO[], parentId: number, newComment: CommentDTO) {
-  //     for (const node of tree) {
-  //         if(newComment.commentId == node.commentId) {
-  //             return false;
-  //         } else if (node.commentId === parentId) {
-  //             if (!node.childrens) {
-  //                 node.childrens = [];
-  //             }
-  //             if(newComment.commentId != node.commentId) {
-  //               node.childrens.push(newComment);
-  //             }
-  //             return true; // Đã thêm thành công
-  //         } else if (node.childrens && insertComment(node.childrens, parentId, newComment)) {
-  //             return true; // Đã thêm thành công
-  //         }
-  //     }
-  //     return false; // Không tìm thấy parentId trong cây
-  // }
-
     function insertComment(tree: CommentDTO[], parentId: number, newComment: CommentDTO) {
       // Hàm đệ quy để tìm nút cha có parentId tương ứng
       const findParent = (nodes: CommentDTO[]) => {
@@ -238,10 +115,10 @@ const QATab: React.FC = () => {
       for (const comment of comments) {
         const { childrens, content, avatar, name, commentId } = comment;
         let convertedComment: React.ReactNode =
-          <ExampleComment content={content} name={name} avatar={avatar} socket={socket} comment_id={commentId} handle={reRender} info={info}></ExampleComment>;
+          <CommentCustom content={content} name={name} avatar={avatar} socket={socket} comment_id={commentId} handle={reRender} info={info}></CommentCustom>;
         if (childrens && childrens.length > 0) {
           const childElement = convertToExampleCommentProps(childrens);
-          convertedComment = <ExampleComment info={info} content={content} name={name} avatar={avatar} socket={socket} comment_id={commentId} handle={reRender}>{childElement}</ExampleComment>
+          convertedComment = <CommentCustom content={content} name={name} avatar={avatar} socket={socket} comment_id={commentId} handle={reRender}>{childElement}</CommentCustom>
         }
 
         result.push(convertedComment);
