@@ -37,6 +37,7 @@ export class ExamPartDTO {
     id: number;
     partId: number;
     questions: QuestionDTO[];
+    examCode?: string;
 
     constructor() {
         this.questions = [];

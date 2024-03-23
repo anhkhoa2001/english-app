@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import LoginService from '../service/LoginService';
 import { MessageResponse } from '../entity/response/MessageResponse';
+import { UserInfo } from '../components/header/HeaderComponent';
+import { UserDTO } from '../entity/props/ExamDTO';
 
 class TokenContextProps {
     token: string;
@@ -24,6 +26,16 @@ const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       if(response != null) {
           setSession(new TokenContextProps(response.data, i));
           localStorage.setItem("access_token", response.data);
+
+          const token = response.data;
+          var info = localStorage.getItem('info') || null;
+          if(info == null) {
+              LoginService.getUsetInfo(token, (response: MessageResponse<UserDTO> | null) => {    
+                  const info = new UserInfo(response?.data?.avatar ?? '', response?.data?.fullname ?? '', response?.data?.userId ?? '', response?.data?.username ?? '');
+                  localStorage.setItem('info', JSON.stringify(info)); 
+                  localStorage.setItem('userId', response?.data?.userId ?? '');
+              });
+          }
         } else {
           localStorage.removeItem("access_token");
           localStorage.removeItem("info");

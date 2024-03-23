@@ -1,3 +1,4 @@
+import { ExamPartDTO } from "./ExamDTO";
 
 
 export interface LessonDTO {
@@ -9,4 +10,7 @@ export interface LessonDTO {
     thumbnail: string,
     createBy: string,
     createAt: Date,
+    type: string,
+    examModel: ExamPartDTO,
+    section_id: number;
 }

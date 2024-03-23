@@ -4,6 +4,7 @@ import { MultiChoiceProp } from '../../../../entity/props/MultiChoiceProp';
 import MultiChoice from '../questions/MultiChoice';
 import MultiChoiceGroup from '../questions/MultiChoiceGroup';
 import { ExamPartDTO, QuestionDTO } from '../../../../entity/props/ExamDTO';
+import { TypeQuestionItem } from './TOEICComponent';
 
 const TypeQuestion = {
     SINGLE: 'Single',
@@ -17,21 +18,33 @@ const THPTComponent: React.FC<{parts: ExamPartDTO[]}> = ({parts}) => {
     };
 
     console.log('parts tghpr', parts);
-
+    let start = 1;
     const items: TabsProps['items'] = parts.map((item, index) => {
         const result = {
             key: index + 1 + '',
             label: `Part ${index + 1}`,
             children: <>
-                {Array.from({ length: item.questions.length }, (_, i) => (
-                     item.questions[i].type == TypeQuestion.SINGLE ? 
-                     <MultiChoice prop={item.questions[i]} key={i}/> 
-                     : 
-                     <MultiChoiceGroup   
-                     content={item.questions[i].content} 
-                     questionChilds={item.questions[i].questionChilds || []} 
-                     key={i} />
-                ))} 
+                {   item.questions.map(i => {
+                        // item.questions[i].type == TypeQuestion.SINGLE ? 
+                        // <MultiChoice prop={item.questions[i]} key={i} /> 
+                        // : 
+                        // <MultiChoiceGroup 
+                        // content={item.questions[i].content} 
+                        // questionChilds={item.questions[i].questionChilds || []} 
+                        // key={i} />
+
+                        if(i.type == TypeQuestionItem.SINGLE) {
+                            start = start + 1;
+                            return <MultiChoice prop={i} start={start - 1} /> 
+                        } else {
+                            start = start + i.questionChilds.length;
+                            return <MultiChoiceGroup 
+                                    content={i.content} 
+                                    questionChilds={i.questionChilds || []} 
+                                    start = {start - i.questionChilds.length}
+                                    />
+                        }
+                    })} 
             </>
         }  
         return result;

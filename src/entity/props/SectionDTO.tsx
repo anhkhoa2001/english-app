@@ -5,7 +5,7 @@ export class SectionItemDTO {
     description: string;
     status: boolean;
     lessons: LessonDTO[];
-    sectionId: number;
+    section_id: number;
 
     constructor() {
         this.lessons = [];

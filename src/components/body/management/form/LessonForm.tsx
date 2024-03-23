@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import PreViewVideo from "../course/PreviewVideo";
 import { ModalCustom } from "../../../exception/SuccessModal";
 import { LessonDTO } from "../../../../entity/props/LessonDTO";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
+import { ExamDTO } from "../../../../entity/props/ExamDTO";
+import { ExamService } from "../../../../service/ExamService";
 
 const { TextArea } = Input;
 
@@ -22,12 +25,17 @@ const normFile = (e: any) => {
 };
 
 const LessonForm: React.FC<{
-    section_name: string, sectionId: number,
+    section_name: string, 
+    sectionId: number,
     item?: LessonDTO
     onSubmit: (e: any) => void, lessonFormRef: any
 }> =
     ({ onSubmit, section_name, sectionId, lessonFormRef, item }) => {
         const [form] = Form.useForm();
+        const [exams, setExams] = useState<ExamDTO[]>([]);
+        const [itemExam, setItemExam] = useState<ExamDTO>(new ExamDTO([]));
+
+        console.log('item', item);
         form.setFieldsValue({
             sectionId: sectionId,
             sectionName: section_name
@@ -37,29 +45,55 @@ const LessonForm: React.FC<{
         const [image, setImage] = useState<string>();
         const [isLesson, setIsLesson] = useState<boolean>(true);
 
+        const loadExam: (data: MessageResponse<ExamDTO[]> | null) => void = (data) => {
+            setExams(data?.data || []);
+            for(const d of (data?.data || [])) {
+                if(d.examCode == item?.examModel.examCode){
+                    form.setFieldValue('examName', d.examName);
+                    form.setFieldValue('examPartId', item.examModel.id);
+                }
+            }
+        }
+
         useEffect(() => {
-            console.log('checl');
             setVideo(item?.url_video);
             setImage(item?.thumbnail);
 
             if (item?.lesson_id != undefined) {
                 form.setFieldsValue({
+                    lessonId: item.lesson_id,
                     lessonName: item?.lessionName,
                     status: item?.status,
-                    thumbnail: [{
-                        name: image,
-                        response: {
-                            default: image
-                        }
-                    }] || [],
-                    video: [{
-                        name: video,
-                        response: {
-                            default: video
-                        }
-                    }],
-                    des: item?.description
+                    description: item?.description,
+                    type: item.type
                 });
+                console.log('checktype', item.type != 'Minitest');
+                setIsLesson(item.type != 'Minitest');
+                if(item.type == 'Minitest') {
+                    form.setFieldsValue({
+                        status: item?.status,
+                        description: item?.description
+                    });
+                    ExamService.getExamByConditionNoPagination({
+                        types: ['Minitest']
+                    }, loadExam);
+                } else {
+                    form.setFieldsValue({
+                        thumbnail: [{
+                            name: image,
+                            response: {
+                                default: image
+                            }
+                        }] || [],
+                        video: [{
+                            name: video,
+                            response: {
+                                default: video
+                            }
+                        }]
+                    });
+                }
+                
             } else {
                 form.resetFields();
             }
@@ -90,9 +124,23 @@ const LessonForm: React.FC<{
 
         const changeType = (e: string) => {
             console.log('type', e);
+            if(e === 'Minitest') {
+                ExamService.getExamByConditionNoPagination({
+                    types: [e]
+                }, loadExam);
+            }
             setIsLesson(e === 'lesson');
         }
 
+        const onChangeExam = (e: string) => {
+            console.log('change exam', e);
+            for(const ex of exams) {
+                if(ex.examCode === e) {
+                    console.log('ex', ex);
+                    setItemExam(ex);
+                }
+            }
+        }
 
         return <div className="lesson-form" style={{ width: '900px' }}>
             <Form
@@ -105,11 +153,18 @@ const LessonForm: React.FC<{
                 ref={lessonFormRef}
             >
                 <Form.Item
-                    label="Section Id"
-                    name="sectionId"
-                    style={{ display: "none" }}
+                    label="Lesson Id"
+                    name="lessonId"
+                    style={{display: item ? "block" : "none"}}
                 >
-                    <Input defaultValue={sectionId} disabled={true} />
+                    <Input defaultValue={item?.lesson_id || 0} disabled={true} />
+                </Form.Item>
+                <Form.Item
+                    label="Session Id"
+                    name="sectionId"
+                    style={{display:  "none"}}
+                >
+                    <Input defaultValue={item?.lesson_id || 0} disabled={true} />
                 </Form.Item>
                 <Form.Item
                     label="Section Name"
@@ -129,7 +184,7 @@ const LessonForm: React.FC<{
                         onChange={changeType}
                         options={[
                             { value: 'lesson', label: 'Lesson' },
-                            { value: 'minitest', label: 'Mini-test' }
+                            { value: 'Minitest', label: 'Minitest' }
                         ]}
                     />
                 </Form.Item>
@@ -183,22 +238,38 @@ const LessonForm: React.FC<{
                         :
                         <>
                             <Form.Item
-                                label="Exam Name"
+                                label="Exam Minitest Name"
                                 name="examName"
                             >
-                                <Input />
+                                <Select
+                                    defaultValue={itemExam.examCode}
+                                    onChange={onChangeExam}
+                                    options={exams.map(e => {
+                                        return {
+                                            value: e.examCode,
+                                            label: e.examName
+                                        }
+                                    })}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="Part"
-                                valuePropName="checked"
-                                name="part"
+                                name="examPartId"
                             >
-                                <Switch />
+                                <Select
+                                    allowClear
+                                    options={itemExam.parts.map(e => {
+                                        return {
+                                            value: e.id,
+                                            label: e.partId + ' - ' +  itemExam.examName
+                                        }
+                                    })}
+                                />
                             </Form.Item>
                         </>
                 }
                 <Form.Item label="Description"
-                    name="des">
+                    name="description">
                     <TextArea rows={4} />
                 </Form.Item>
             </Form>

@@ -122,6 +122,22 @@ export const ExamService = {
                 }
             });
     },
+    getExamByConditionNoPagination: (request: any, func: (data: MessageResponse<ExamDTO[]> | null) => void) =>  {
+        new RestService<ExamDTO[]>().post(
+            BASE_PATH.PATH_PROXY + '/exam/get-exam-by-condition',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<ExamDTO[]> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All exam no pagination failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
     createQuestion: ( request: any, func: (data: MessageResponse<QuestionDTO> | null) => void) =>  {
         new RestService<QuestionDTO>().post(
             BASE_PATH.PATH_PROXY + '/question/create',

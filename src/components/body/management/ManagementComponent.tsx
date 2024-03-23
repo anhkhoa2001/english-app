@@ -8,10 +8,10 @@ import CourseList from "./course/CourseList";
 import { ExamItemDTO } from "../../../entity/props/ExamItemDTO";
 import ExamManagement from "./exam/ExamManagement";
 import ExamList from "./exam/ExamList";
-import MessageResponse from "../../../entity/response/MessageResponse";
 import CourseService, { CourseDTO } from "../../../service/CourseService";
 import { ExamService } from "../../../service/ExamService";
 import { ExamDTO } from "../../../entity/props/ExamDTO";
+import { MessageResponse } from "../../../entity/response/MessageResponse";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const max = 999999;

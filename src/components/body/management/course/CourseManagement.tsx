@@ -107,7 +107,8 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         tags: React.ReactNode;
         item: LessonDTO,
         createBy: string,
-        createAt: string
+        createAt: string,
+        index: number
     }
 
     const columns: TableProps<DataType>['columns'] = [
@@ -170,10 +171,12 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
         indexSection = index || 0;
         isModalSectionOpen.set(key, true);
         const newMap = new Map(isModalSectionOpen);
+        index && setLessonIndex(index);
         setIsModalSectionOpen(newMap);
     };
 
     const showModalAddLesson = (key: string, index: number) => {
+        console.log('lessin index', sectionCurrent[index]);
         isModalSectionOpen.set(key, true);
         const newMap = new Map(isModalSectionOpen);
         setLessonIndex(index);
@@ -224,7 +227,8 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
                 tags: <PreViewVideo url_image={l.thumbnail} url_video={l.url_video} />,
                 item: l,
                 createAt: l.create_at,
-                createBy: l.create_by || 'admin'
+                createBy: l.create_by || 'admin',
+                index: index
             }
         });
         return {
@@ -232,7 +236,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             label: <div className="header-course">
                 <Form.Item label={`Section ${index + 1}: ${item.sectionName}`} name={'name' + index} >
                     <Button onClick={() => showModalAddLesson(LESSON, index)} className="item-section" name={'edit' + index}>Add Lesson</Button>
-                    <Button onClick={() => showModalAdd(DELETE_SECTION, item.sectionId)} className="item-section" name={'delete' + index}>Delete Section</Button>
+                    <Button onClick={() => showModalAdd(DELETE_SECTION, item.section_id)} className="item-section" name={'delete' + index}>Delete Section</Button>
                 </Form.Item>
             </div>,
             children: <Table columns={columns} dataSource={dataFake} pagination={false} />
@@ -382,7 +386,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             width={900}>
             <LessonForm 
                 section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
-                sectionId={sectionCurrent[lessonIndex]?.sectionId || 0}
+                sectionId={lessonItemEffect?.section_id || -1}
                 item={lessonItemEffect}
                 lessonFormRef={editLessonFormRef}
                 onSubmit={onSubmitEditLesson}
@@ -401,7 +405,7 @@ const CourseManagement: React.FC<{code: string}> = ({code}) => {
             width={900}>
             <LessonForm 
                 section_name={sectionCurrent[lessonIndex]?.sectionName || ""} 
-                sectionId={sectionCurrent[lessonIndex]?.sectionId || 0}
+                sectionId={sectionCurrent[lessonIndex]?.section_id || 0}
                 lessonFormRef={lessonFormRef}
                 onSubmit={onSubmitAddLesson}
             />

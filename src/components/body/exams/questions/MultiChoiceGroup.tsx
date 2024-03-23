@@ -11,7 +11,7 @@ const MultiChoiceGroup: React.FC<{
 }>
     = ({ content, questionChilds, start }) => {
 
-        console.log('childs', questionChilds);
+        console.log('childs', questionChilds[0].answer );
         return <div className="question multi-choice-group">
             <Tooltip title={""}>
                 <span style={{margin: "15px", display: "block", fontWeight: "500", fontSize: "18px"}}>
@@ -39,11 +39,13 @@ const MultiChoiceGroup: React.FC<{
                         </Tooltip>
                     </div>
                     <Radio.Group className="answer" style={questionChilds[i].content !== "" ? {marginLeft: "54px"} : {marginLeft: "0px"}}>  
+                        
                         <Space direction="vertical">
                             {
-                                questionChilds[i].type.includes('multi_choice') ?
-                                Array.from({ length: questionChilds[i].answer.length }, (_, i) => (
-                                    <Radio value={questionChilds[i].answer[i].key} key={i}>{`${questionChilds[i].answer[i].key}. ${questionChilds[i].answer[i].value}`}</Radio>
+                                questionChilds[i].type.includes('multi_choice') 
+                                ?
+                                Array.from({ length: questionChilds[i].answer.length }, (_, j) => (
+                                    <Radio value={questionChilds[i].answer[j].key} key={i}>{`${questionChilds[i].answer[j].key}. ${questionChilds[i].answer[j].value}`}</Radio>
                                 )) 
                                 :
                                 <Input width={500} placeholder="Typing your idea!!!!" />
