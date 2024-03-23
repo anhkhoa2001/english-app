@@ -90,6 +90,22 @@ export const ExamService = {
                 }
             });
     },
+    toExamine: (request: any, func: (data: MessageResponse<string> | null) => void) =>  {
+        new RestService<string>().post(
+            BASE_PATH.PATH_PROXY + '/exam/to-examine',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<string> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Backend to examine failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
     getAllExamByCondition: (request: any, func: (data: MessageResponse<DataResponse<ExamDTO[]>> | null) => void) =>  {
         new RestService<DataResponse<ExamDTO[]>>().post(
             BASE_PATH.PATH_PROXY + '/exam/get-all-exam-public',

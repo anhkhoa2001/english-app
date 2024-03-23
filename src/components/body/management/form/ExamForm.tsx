@@ -6,7 +6,7 @@ import { URL_UPLOAD_RESOURCE } from "../../../../entity/Contants";
 import { useEffect, useState } from "react";
 import { ExamDTO } from "../../../../entity/props/ExamDTO";
 
-export const typeExams = ['TOEIC', 'THPT', 'IELTS'];
+export const typeExams = ['TOEIC', 'THPT', 'IELTS', 'Minitest'];
 const skills = ['Listening', 'Speaking', 'Writing', 'Reading', 'Other...'];
 
 const normFile = (e: any) => {
@@ -34,21 +34,23 @@ const ExamForm: React.FC<{onSubmit: (e:any) => void, examFormRef: any, item?: Ex
 
     form.setFieldsValue({
         skill: skills[0],
-        type: typeExams[0]
+        type: typeExams[0],
+        countdown: timesExam[0]
     });
 
     if(item != undefined) {
-        console.log('exam item', item);
         useEffect(() => {
+            console.log('exam item', item.description);
             setDataEditor(item.description);
         }, []);
+
         form.setFieldsValue({
             examCode: item.examCode,
             examName: item.examName,
             skill: item.skill,
             status: item.status,
             type: item.type,
-            thumbnail: [
+            thumbnail: item.thumbnail && [
                 {
                     name: item.thumbnail,
                     type: 'image/',
@@ -60,6 +62,7 @@ const ExamForm: React.FC<{onSubmit: (e:any) => void, examFormRef: any, item?: Ex
             summary: item.summary,
             description: item.description
         });
+        console.log(form.getFieldsValue());
     }
     return <div className="exam-form" style={{maxWidth: '1200px'}}>
         <Form
@@ -88,7 +91,6 @@ const ExamForm: React.FC<{onSubmit: (e:any) => void, examFormRef: any, item?: Ex
             <Form.Item 
               label="Work Time"
               name="countdown"
-              rules={[{ required: true, message: 'Please input course code' }]}
               required={true}>
                   <Select defaultValue={`${timesExam[0]} minutes`}>
                         {

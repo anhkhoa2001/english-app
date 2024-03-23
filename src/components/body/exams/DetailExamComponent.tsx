@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CommonNav from "../courses/detail/CommonNav";
 import './css/DetailExamComponent.scss'
 import { TypeExam, TypeQuestion } from "../../../entity/Contants";
@@ -20,14 +20,10 @@ const DetailExamComponent: React.FC = () => {
     const [countdown, setCountdown] = useState(1);
     const type: number = Number(searchParams.get('type'));
     const totalQuestion = useRef<number>(0);
+    const [pause, setPause] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     // const deadline = Date.now() + 1000 * 60 * 60 * 2 + 1000 * 30;
-
-    const onFinish: CountdownProps['onFinish'] = () => {
-        setIsModalOpen(true);
-
-
-    };
 
 
       const questions:{
@@ -286,8 +282,6 @@ const DetailExamComponent: React.FC = () => {
         ]
     }
 ];
-
-
     const getCountdown = (c:number) => {
         return Date.now() + 1000 * 60 * c;
     }
@@ -295,7 +289,7 @@ const DetailExamComponent: React.FC = () => {
     const loadAllExam: (data: MessageResponse<ExamDTO> | null) => void = (data) => {
         try {
             setItem(data?.data);
-            setCountdown(getCountdown(1));
+            setCountdown(getCountdown(data?.data.countdown || 0));
             totalQuestion.current = data?.data.totalQuestion || 0;
         } catch (error) {
             console.log('error', error);
@@ -306,27 +300,6 @@ const DetailExamComponent: React.FC = () => {
         ExamService.getExamByCode(code || '', loadAllExam);
     }, []);
 
-    // const structuralQuestion = questions.map((item, index) => {
-    //     var total = 0;
-    //     var listIndexQuestion:Array<Number | undefined> = [] ;
-    //     item.data.forEach(i => {
-    //         if(i.type == 0) {
-    //             total++;
-    //             listIndexQuestion.push(i.index);
-    //         } else {
-    //             total += i.questionChilds?.length || 0;
-    //             var tmp:Array<Number | undefined>  = i.questionChilds?.map(e => {return Number(e.index)}) || [];
-    //             listIndexQuestion = [...listIndexQuestion , ...tmp]
-    //         }
-            
-    //     }); 
-    //     totalQuestion += total;
-    //     return {
-    //         part: index + 1,
-    //         total: total,
-    //         listIndexQuestion: listIndexQuestion
-    //     };
-    // });
     const [indexTab, setIndexTab] = useState('1');
 
     const onChangeQuestion = (index: number) => {
@@ -353,15 +326,38 @@ const DetailExamComponent: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
+    const toExamine: (data: MessageResponse<string> | null) => void = (data) => {
+        try {
+            navigate("/exams");
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
 
     const handleOk = () => {
-        setIsModalOpen(false);
+        const request = {
+            exam: item,
+            executeTime: getExecuteTime(),
+            examCode: code
+        }
+
+        ExamService.toExamine(request, toExamine);
     };
 
     const handleCancel = () => {
+    };
+
+
+    const getExecuteTime = () => {
+        const totalTime = getCountdown(item?.countdown || 0);
+        const remainTime = totalTime - countdown;
+
+        return Math.round(remainTime/1000);
+    }
+
+    const onFinish: CountdownProps['onFinish'] = () => {
+        setIsModalOpen(true);
+        setPause(false);
     };
 
     return <div className="detail-exam">
@@ -384,7 +380,9 @@ const DetailExamComponent: React.FC = () => {
                 }
             </div>
             <div className="overview">
-                <Countdown title="Time remaining: " value={countdown} onFinish={onFinish} />
+                {
+                    pause && <Countdown title="Time remaining: " value={countdown} onFinish={onFinish}/>
+                }
                 <Button className="submit" size="middle" onClick={onFinish}>Submit Form</Button>
                 <p>
                     <i>

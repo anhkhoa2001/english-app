@@ -4,14 +4,17 @@ import './css/SummaryExam.scss';
 import { ClockCircleOutlined, CommentOutlined, PartitionOutlined, TeamOutlined } from "@ant-design/icons";
 import { Comment } from "@ant-design/compatible";
 import CommentCustom, { Editor } from "../comment/CommentCustom";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CommentDTO } from "../../../entity/props/Socket";
 import { TableProps } from "antd/lib";
 import { useNavigate, useParams } from "react-router-dom";
+import { ExamDTO } from "../../../entity/props/ExamDTO";
+import { MessageResponse } from "../../../entity/response/MessageResponse";
+import { ExamService } from "../../../service/ExamService";
 
 const types = ['TOEIC', 'Academy'];
 
-const ExaminationInfomation: React.FC<{ summary: string, description: React.ReactNode }> = ({ summary, description }) => {
+const ExaminationInfomation: React.FC<{ item?: ExamDTO, description: React.ReactNode }> = ({ item, description }) => {
     const [ready, setReady] = useState<boolean>(false);
     const navigate = useNavigate();
     const {code} = useParams();
@@ -35,18 +38,18 @@ const ExaminationInfomation: React.FC<{ summary: string, description: React.Reac
             onCancel={handleCancel}>
             <p>Hmmmmm.....................................</p>
         </Modal>
-        <h3>{summary}</h3>
+        <h3>{item?.summary}</h3>
         {description}
         <span>
-            <TeamOutlined />&nbsp;&nbsp;&nbsp; 100 attendences
+            <TeamOutlined />&nbsp;&nbsp;&nbsp; {item?.attendences} attendences
         </span>
         <br />
         <span>
-            <ClockCircleOutlined />&nbsp;&nbsp;&nbsp; 40 minutes
+            <ClockCircleOutlined />&nbsp;&nbsp;&nbsp; {item?.countdown} minutes
         </span>
         <br />
         <span>
-            <PartitionOutlined />&nbsp;&nbsp;&nbsp; 4 parts
+            <PartitionOutlined />&nbsp;&nbsp;&nbsp; {item?.parts.length} parts
         </span>
         <br />
         <span>
@@ -68,16 +71,32 @@ interface DataTypeTable {
 }
 
 const SummaryExam: React.FC = () => {
+    const {code} = useParams();
     const [info, setInfo] = useState();
     const [elements, setElements] = useState<CommentDTO[]>([]);
     const [contentCurrent, setContentCurrent] = useState<string>("");
     const [submitting, setSubmitting] = useState(false);
+    const [item, setItem] = useState<ExamDTO>();
 
     const handleChange = (e: any) => {
     }
 
     const handleSubmit = () => {
     }
+
+    const loadAllExam: (data: MessageResponse<ExamDTO> | null) => void = (data) => {
+        try {
+            setItem(data?.data);
+
+            console.log('data sumary', data?.data);
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
+    useEffect(() => {
+        ExamService.getExamByCode(code || '', loadAllExam);
+    }, []);
 
     const columns: TableProps<DataTypeTable>['columns'] = [
         {
@@ -145,14 +164,15 @@ const SummaryExam: React.FC = () => {
         }
       ];
 
+    const ReactComponent = (element: string) => {
+        return React.createElement('div', { dangerouslySetInnerHTML: { __html: element } });
+    };
     const items: TabsProps['items'] = [
         {
             key: '1',
             label: 'Examination Information',
-            children: <ExaminationInfomation summary="A practical programming course for office workers, academics, and administrators who want to improve their productivity."
-                description={<>
-                    <p>Bộ đề có cấu trúc sát nhất với bài thi TOEIC thực chiến. Luyện đề TOEIC Hacker 2 để nắm trọn mọi dạng bài. &nbsp;Luyện đề cùng đáp án và giải thích chi tiết.</p><p><strong>&gt;&gt;&gt; Hiện tại, phần giải thích đáp án đang được thầy cô Prep gấp rút hoàn thiện và cập nhật lên hệ thống trong thời gian tới. Prep sẽ tiếp tục cập nhật vào kho đề, các bạn hãy yên tâm chăm chỉ ôn luyện nhé !</strong></p>
-                </>} />,
+            children: <ExaminationInfomation item={item}
+                description={ReactComponent(item?.description || "")} />,
         },
         {
             key: '2',
@@ -169,7 +189,9 @@ const SummaryExam: React.FC = () => {
     ];
 
     const onChange = (key: string) => {
-        console.log(key);
+        if(key == '3') {
+            
+        }
     };
     
 
@@ -177,12 +199,9 @@ const SummaryExam: React.FC = () => {
         <CommonNav title={"1232"} url_back="/exams" />
         <div className="main">
             <div className="info">
-                {
-                    types.map(t => {
-                        return <span className="tag">#{t}</span>;
-                    })
-                }
-                <h2>IELTS Simulation Listening test 1</h2>
+                <span className="tag">#{item?.skill}</span>
+                <span className="tag">#{item?.type}</span>
+                <h2>{item?.examName}</h2>
                 <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
             </div>
             <div className="comment">
