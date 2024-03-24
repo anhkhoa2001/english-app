@@ -12,3 +12,23 @@ export interface BlogItemDTO {
     image: string;
     content: React.ReactNode
 }
+
+
+export interface BlogDTO {
+    title: string;
+    summary: string;
+    blogId: number;
+    image: string;
+    content: string;
+    createAt: Date;
+    createBy: string;
+    thumbnail: string;
+    status: boolean;
+    skill: string;
+    englishBasic: string;
+    englishFor: string;
+    author: {
+        fullname: string;
+        avatar: string;
+    };
+}

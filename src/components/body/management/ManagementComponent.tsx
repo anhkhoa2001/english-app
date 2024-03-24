@@ -12,6 +12,7 @@ import CourseService, { CourseDTO } from "../../../service/CourseService";
 import { ExamService } from "../../../service/ExamService";
 import { ExamDTO } from "../../../entity/props/ExamDTO";
 import { MessageResponse } from "../../../entity/response/MessageResponse";
+import BlogManagement from "./blog/BlogManagement";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const max = 999999;
@@ -57,23 +58,6 @@ const ManagementComponent: React.FC = () => {
         ExamService.getAllExam(loadExam);
     }, []);
 
-    // const exams: ExamItemDTO[] = [
-    //     {
-    //         code: "TOEIC-EXAM2002",
-    //         title: "TOEIC Test 2023 Listening",
-    //         type: 1
-    //     },
-    //     {
-    //         code: "TOEIC-EXAM2003",
-    //         title: "TOEIC Test 2024 Listening",
-    //         type: 2
-    //     },
-    //     {
-    //         code: "TOEIC-EXAM2004",
-    //         title: "TOEIC Test 2025 Listening",
-    //         type: 3
-    //     }
-    // ]
 
     const onChangeCourseCenter = () => {
         setElementDashboard(<CourseList/>);
@@ -92,9 +76,12 @@ const ManagementComponent: React.FC = () => {
         getItem(<p onClick={onChangeExamCenter}>Exams Center</p>, 'sub2', <AppstoreOutlined />, exams.map(e => {
             return getItem(e.examName, e.examCode);
         })),
-        getItem('Group', 'grp', null, [
+        getItem('', 'grp', null, [
             getItem('Blogs Center', '13'),
-            getItem('Documents Center', '14')], 'group'),
+            getItem('Documents Center', '14'),
+            getItem('Exam History', '15'),
+            getItem('Users Center', '16'),
+            getItem('Monitor Course', '17')], 'group'),
     ];
 
     const onClick: MenuProps['onClick'] = (e) => {
@@ -104,6 +91,8 @@ const ManagementComponent: React.FC = () => {
             setElementDashboard(<CourseManagement code={e.key}/>);
         } else if(exams.map(e => e.examCode).includes(e.key)) {
             setElementDashboard(<ExamManagement code={e.key}/>);
+        } else if(e.key == '13') {
+            setElementDashboard(<BlogManagement />);
         }
     };
 

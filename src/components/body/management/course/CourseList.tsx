@@ -4,9 +4,9 @@ import '../css/CourseList.scss';
 import { useEffect, useRef, useState } from "react";
 import CourseForm from "../form/CourseForm";
 import CourseService, { CourseDTO } from "../../../../service/CourseService";
-import MessageResponse from "../../../../entity/response/MessageResponse";
 import moment from "moment";
 import { ModalCustom } from "../../../exception/SuccessModal";
+import { MessageResponse } from "../../../../entity/response/MessageResponse";
 
 
 const default_page = 1;

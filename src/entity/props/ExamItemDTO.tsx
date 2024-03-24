@@ -10,3 +10,14 @@ export interface ExamItemDTO {
     image?: string;
     type?: number;
 }
+
+
+export class ExamHistoryDTO {
+    historyId: number;
+    implementer: string;
+    createTime: Date;
+    executeTime: number;
+    json: string;
+    examCode: string;
+    result: string;
+}

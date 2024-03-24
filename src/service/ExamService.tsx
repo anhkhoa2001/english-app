@@ -1,6 +1,7 @@
 import { ModalCustom } from "../components/exception/SuccessModal";
 import { BASE_PATH } from "../entity/Contants";
 import { ExamDTO, QuestionDTO } from "../entity/props/ExamDTO";
+import { ExamHistoryDTO } from "../entity/props/ExamItemDTO";
 import { DataResponse, MessageResponse } from "../entity/response/MessageResponse";
 import RestService from "./RestService";
 
@@ -135,6 +136,54 @@ export const ExamService = {
                 } else {
                     //func(null, false);
                     ModalCustom.onDisplayError("Get All exam no pagination failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
+    getExamHistoryByExamCode: (request: any, func: (data: MessageResponse<ExamHistoryDTO[]> | null) => void) =>  {
+        new RestService<ExamHistoryDTO[]>().get(
+            BASE_PATH.PATH_PROXY + '/exam-history',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<ExamHistoryDTO[]> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All exam history failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
+    getExamHistoryByCondition: (request: any, func: (data: MessageResponse<ExamHistoryDTO[]> | null) => void) =>  {
+        new RestService<ExamHistoryDTO[]>().post(
+            BASE_PATH.PATH_PROXY + '/exam-history/get-by-condition',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<ExamHistoryDTO[]> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All exam history by condition failed!!", `Defail : ${data?.message || data?.error}`)
+                }
+            });
+    },
+    getExamHistoryById: (request: any, func: (data: MessageResponse<ExamHistoryDTO> | null) => void) =>  {
+        new RestService<ExamHistoryDTO>().get(
+            BASE_PATH.PATH_PROXY + '/exam-history/get-by-id',
+            {
+                'Authorization': localStorage.getItem('access_token')
+            },
+            request,
+            (status: number, data: MessageResponse<ExamHistoryDTO> | null) => {
+                if (status === 200) {
+                    func(data);
+                } else {
+                    //func(null, false);
+                    ModalCustom.onDisplayError("Get All exam history by condition failed!!", `Defail : ${data?.message || data?.error}`)
                 }
             });
     },

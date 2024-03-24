@@ -15,6 +15,7 @@ import ProfileDetailComponent from './components/header/profile/ProfileDetailCom
 import ManagementComponent from './components/body/management/ManagementComponent.tsx';
 import TestComponent from './components/body/editor/EditorComponent.tsx';
 import SummaryExam from './components/body/exams/SummaryExam.tsx';
+import DeReviewExam from './components/body/exams/DeReviewExam.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     
@@ -52,6 +53,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
             <Route path="/exam/:code" element={
                 <SummaryExam />
+            }></Route>
+            <Route path="/review/exam/:code" element={
+                <DeReviewExam />
             }></Route>
         </Routes>
         {/* <Footer style={{ textAlign: 'center', position: 'absolute', width: '100%', bottom: '0'}}>

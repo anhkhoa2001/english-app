@@ -11,6 +11,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ExamDTO } from "../../../entity/props/ExamDTO";
 import { MessageResponse } from "../../../entity/response/MessageResponse";
 import { ExamService } from "../../../service/ExamService";
+import { ExamHistoryDTO } from "../../../entity/props/ExamItemDTO";
+import moment from "moment";
 
 const types = ['TOEIC', 'Academy'];
 
@@ -77,6 +79,7 @@ const SummaryExam: React.FC = () => {
     const [contentCurrent, setContentCurrent] = useState<string>("");
     const [submitting, setSubmitting] = useState(false);
     const [item, setItem] = useState<ExamDTO>();
+    const [examHistories, setExamHistories] = useState<ExamHistoryDTO[]>([]);
 
     const handleChange = (e: any) => {
     }
@@ -94,21 +97,73 @@ const SummaryExam: React.FC = () => {
         }
     }
 
+
+    const loadAllExamHistory: (data: MessageResponse<ExamHistoryDTO[]> | null) => void = (data) => {
+        try {
+            setExamHistories(data?.data || []);
+            console.log('data exam history', data?.data);
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+
     useEffect(() => {
         ExamService.getExamByCode(code || '', loadAllExam);
     }, []);
 
-    const columns: TableProps<DataTypeTable>['columns'] = [
+    function secondsToTime(seconds: number) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = seconds % 60;
+        
+        var timeString = '';
+        
+        if (hours > 0) {
+            timeString += hours + " hour ";
+        }
+        
+        if (minutes > 0) {
+            timeString += minutes + " minute ";
+        }
+        
+        if (remainingSeconds > 0 || timeString === '') {
+            timeString += remainingSeconds + " second";
+        }
+        
+        return timeString;
+    }
+
+    function getTagByResult(result: string) {
+        console.log('get tag', result);
+        const total = Number(result.split('/')[1]);
+        const doit = Number(result.split('/')[0]);
+        var tag;
+        if(doit / total == 1) {
+            tag = <Tag color={'green'}>
+                    {'master'.toUpperCase()}
+                </Tag>;
+        } else if(doit / total == 0) {
+            tag = <Tag color={'red'}>
+                {'bad'.toUpperCase()}
+            </Tag>;
+        } else if(doit / total < 0.5) {
+            tag = <Tag color={'orange'}>
+                {'stable'.toUpperCase()}
+            </Tag>;
+        } else {
+            tag = <Tag color={'yellow'}>
+                {'good'.toUpperCase()}
+            </Tag>;
+        }
+
+        return tag;
+    }
+
+    const columns: TableProps<ExamHistoryDTO>['columns'] = [
         {
-            title: 'ORD',
-            dataIndex: 'key',
-            key: 'key',
-        },
-        {
-          title: 'Point',
-          dataIndex: 'point',
-          key: 'point',
-          render: (text) => <p style={{fontWeight: "800"}}>{text}</p>,
+            title: 'ID',
+            dataIndex: 'historyId',
+            key: 'historyId',
         },
         {
           title: 'Result',
@@ -117,56 +172,38 @@ const SummaryExam: React.FC = () => {
         },
         {
           title: 'Execution Time',
-          dataIndex: 'duration',
-          key: 'duration',
+          dataIndex: 'executeTime',
+          key: 'executeTime',
+          render: (time) => <p>{secondsToTime(time)}</p>
         },
         {
             title: 'Create Time',
             dataIndex: 'createTime',
             key: 'createTime',
+            render: (time) => <p>{moment(time, 'x').format('DD-MM-YYYY HH:mm:ss')}</p>
         },
         {
           title: 'Tag',
-          key: 'tag',
-          dataIndex: 'tag',
-          render: (tag) => (
-              <Tag color={'blue'}>
-                {tag.toUpperCase()}
-              </Tag>
-          ),
+          key: 'result',
+          dataIndex: 'result',
+          render: (tag) => <>{getTagByResult(tag)}</>,
         },
         {
           title: 'Link',
-          dataIndex: 'link',
-          key: 'link',
-          render: (text) => <a>{text}</a>,
-        }
-      ];
-
-    const data: DataTypeTable[] = [
-        {
-            key: '1',
-            point: 100,
-            result: '40/40',
-            createTime: new Date(),
-            duration: 3600,
-            tag: 'nice',
-            link: '/google'
-        },
-        {
-            key: '2',
-            point: 100,
-            result: '40/40',
-            createTime: new Date(),
-            duration: 3600,
-            tag: 'nice',
-            link: '/google'
+          dataIndex: 'historyId',
+          key: 'historyId',
+          render: (text) => <a target="_blank" href={`/review/exam/${text}?type=view-result&examCode=${code}`}>{'View'}</a>,
         }
       ];
 
     const ReactComponent = (element: string) => {
         return React.createElement('div', { dangerouslySetInnerHTML: { __html: element } });
     };
+
+    const openViewAnswer = () => {
+        window.open(`/review/exam/${code}?type=view-answer&examCode=${code}`, '_blank');
+    }
+
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -178,25 +215,27 @@ const SummaryExam: React.FC = () => {
             key: '2',
             label: 'Answer',
             children: <div style={{margin: "0 auto"}}>
-                <Button type="text" size="large" className="practice">VIEW ANSWER</Button>
+                <Button type="text" size="large" className="practice" onClick={openViewAnswer}>VIEW ANSWER</Button>
             </div>,
         },
         {
             key: '3',
             label: 'History',
-            children: <Table columns={columns} dataSource={data} />,
+            children: <Table columns={columns} dataSource={examHistories} />,
         }
     ];
 
     const onChange = (key: string) => {
         if(key == '3') {
-            
+            ExamService.getExamHistoryByExamCode({
+                examCode: code
+            }, loadAllExamHistory);
         }
     };
     
 
     return <div className="summary-exam">
-        <CommonNav title={"1232"} url_back="/exams" />
+        <CommonNav title={item?.examName || ""} url_back="/exams" />
         <div className="main">
             <div className="info">
                 <span className="tag">#{item?.skill}</span>

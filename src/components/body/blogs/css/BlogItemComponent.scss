@@ -18,5 +18,10 @@
 
     .blog-content {
         padding: 12px;
+
+        img {
+            max-width: 800px !important;
+            max-height: 400px !important;
+        }
     }
 }

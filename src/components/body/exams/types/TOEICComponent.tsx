@@ -12,7 +12,7 @@ export const TypeQuestionItem = {
     GROUP: 'Group'
 }
 
-const ToeicComponent: React.FC<{parts: ExamPartDTO[], indexTab: string}> = ({parts, indexTab}) => {
+const ToeicComponent: React.FC<{parts: ExamPartDTO[], indexTab: string, type?: string}> = ({parts, indexTab, type}) => {
     const [index, setIndex] = useState(indexTab);
 
     useEffect(() => {
@@ -27,23 +27,16 @@ const ToeicComponent: React.FC<{parts: ExamPartDTO[], indexTab: string}> = ({par
             children: <>
                 {
                     item.questions.map(i => {
-                        // item.questions[i].type == TypeQuestion.SINGLE ? 
-                        // <MultiChoice prop={item.questions[i]} key={i} /> 
-                        // : 
-                        // <MultiChoiceGroup 
-                        // content={item.questions[i].content} 
-                        // questionChilds={item.questions[i].questionChilds || []} 
-                        // key={i} />
-
                         if(i.type == TypeQuestionItem.SINGLE) {
                             start = start + 1;
-                            return <MultiChoice prop={i} start={start - 1} /> 
+                            return <MultiChoice prop={i} start={start - 1} type={type} /> 
                         } else {
                             start = start + i.questionChilds.length;
                             return <MultiChoiceGroup 
                                     content={i.content} 
                                     questionChilds={i.questionChilds || []} 
                                     start = {start - i.questionChilds.length}
+                                    type={type}
                                     />
                         }
                     })

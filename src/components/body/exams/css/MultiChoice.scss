@@ -2,14 +2,14 @@
 .question.multi-choice {
     display: flex;
     flex-wrap: wrap;
-    span {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+    margin-left: 40px;
+    // span {
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    // }
     .answer {
         flex-basis: 90%;
-        margin-top: 12px;
     }
 
     padding-bottom: 16px;
@@ -19,7 +19,8 @@
         color: black;
     }
 
-    .content {
+    .parent-content {
+        flex-basis: 100%;
         margin-top: 16px;
         figure {
             margin: 0px;

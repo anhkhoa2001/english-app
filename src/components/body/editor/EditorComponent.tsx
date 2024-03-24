@@ -1,15 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import CustomClasssicEditor from './CustomClasssicEditor';
+import './EditorComponent.scss';
 
-const EditorComponent: React.FC<{class_name: string, data?: string | undefined, setContent: (value: string) => void}> 
+const EditorComponent: React.FC<{class_name: string, data?: string, setContent: (value: string) => void}> 
     = ({class_name, data, setContent}) => {
-        console.log('data editor', data);
+        const [dataEditor, setDataEditor] = useState<string>(data || "1");
         return <div className={`${class_name}`} >
             <CKEditor
                 //@ts-ignore
                 editor={CustomClasssicEditor}
-                data={data || 'xyz'}
+                data={dataEditor || 'xyz'}
                 onReady={editor => {
                     console.log('Editor is ready to use!', data);
                 }}
