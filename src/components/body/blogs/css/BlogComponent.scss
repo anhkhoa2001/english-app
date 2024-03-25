@@ -82,6 +82,12 @@
                 &:hover {
                     background-color: #edeff4;
                 }
+
+                .ant-comment-avatar { 
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
             }
 
         }

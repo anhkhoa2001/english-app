@@ -9,25 +9,67 @@ import { DataResponse, MessageResponse } from '../../../entity/response/MessageR
 import BlogService from '../../../service/BlogService';
 import moment from 'moment';
 
+interface Request {
+    page: number;
+    pageSize: number;
+    skill? : string[];
+    englishFor?: string[],
+    englishBasic?: string[]
+}
 
 const BlogComponent: React.FC = () => {
     const [blogs, setBlogs] = useState<BlogDTO[]>([]);
+    const [skill, setSkill] = useState<string[]>([]);
+    const [englishBasicRequest, setEnglishBasicRequest] = useState<string[]>([]);
+    const [englishForRequest, setEnglishForRequest] = useState<string[]>([]);
+
     const totalRecord = useRef<number>(0);
-    const pagination = useRef({
+    const pagination = useRef<Request>({
         page: 1,
         pageSize: 10
     });
 
-    const onChangeSkill: CheckboxProps['onChange'] = (e) => {
-        console.log(`checked = ${e.target.checked}`);
+    const onChangeSkill = (e: any, key: string) => {
+        console.log(`checked = ${e.target.checked}`, key);
+        key = key.toLocaleLowerCase();
+        var cpy = skill;
+        if(e.target.checked) {
+            cpy.push(key);
+        } else {
+            cpy = cpy.filter(item => item !== key);
+        }
+        console.log('cpy', cpy);
+        setSkill(cpy);
+        pagination.current.skill = cpy;
+        BlogService.getByCondition(pagination.current, getByCondition);
     };
 
-    const onChangeEnglishBasic: CheckboxProps['onChange'] = (e) => {
-        console.log(`checked = ${e.target.checked}`);
+    const onChangeEnglishBasic = (e: any, key: string) => {
+        key = key.toLocaleLowerCase();
+        var cpy = englishBasicRequest;
+        if(e.target.checked) {
+            cpy.push(key);
+        } else {
+            cpy = cpy.filter(item => item !== key);
+        }
+        console.log('cpy', cpy);
+        setEnglishBasicRequest(cpy);
+        pagination.current.englishBasic = cpy;
+        BlogService.getByCondition(pagination.current, getByCondition);
     };
 
-    const onChangeEnglishFor: CheckboxProps['onChange'] = (e) => {
-        console.log(`checked = ${e.target.checked}`);
+    const onChangeEnglishFor = (e: any, key:string) => {
+        key = key.toLocaleLowerCase().replace(/ /g, '');
+        var cpy = englishForRequest;
+        if(e.target.checked) {
+            cpy.push(key);
+        } else {
+            cpy = cpy.filter(item => item !== key);
+        }
+        console.log('cpy', cpy);
+        setEnglishForRequest(cpy);
+        pagination.current.englishFor = cpy;
+        BlogService.getByCondition(pagination.current, getByCondition);
     };
 
     const onChangeCollapse = (key: string | string[]) => {
@@ -36,26 +78,26 @@ const BlogComponent: React.FC = () => {
 
     const skills = [
         <>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeSkill}>Listening</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeSkill}>Writing</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeSkill}>Reading</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeSkill}>Speaking</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeSkill(e, 'Listening')}>Listening</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeSkill(e, 'Writing')}>Writing</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeSkill(e, 'Reading')}>Reading</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeSkill(e, 'Speaking')}>Speaking</Checkbox>
         </>
     ];
 
     const englishBasic = [
         <>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishBasic}>Pronunciation</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishBasic}>Grammary</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishBasic}>Vocabulary</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishBasic(e, 'Pronunciation')}>Pronunciation</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishBasic(e, 'Grammary')}>Grammary</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishBasic(e, 'Vocabulary')}>Vocabulary</Checkbox>
         </>
     ];
 
     const englishFor = [
         <>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishFor}>For NewBie</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishFor}>For Oversea Student</Checkbox>
-            <Checkbox style={{ fontSize: '110%' }} onChange={onChangeEnglishFor}>For Working People</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishFor(e, 'For NewBie')}>For NewBie</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishFor(e, 'For Oversea Student')}>For Oversea Student</Checkbox>
+            <Checkbox style={{ fontSize: '110%' }} onChange={(e) => onChangeEnglishFor(e, 'For Working People')}>For Working People</Checkbox>
         </>
     ];
 
@@ -63,6 +105,7 @@ const BlogComponent: React.FC = () => {
         try {
             setBlogs(data?.data.data || []);
             totalRecord.current = data?.data.totalRecord || 0;
+            setDisplayContent(false);
             console.log('data blogs', data?.data);
         } catch (error) {
             console.log('error', error);
@@ -782,10 +825,18 @@ const BlogComponent: React.FC = () => {
     const onChangeClickToItem = (code: number, index: number) => {
         setDisplayContent(true);
         setIndexBlog(index);
+
+
+    }
+
+    const backToHome = () => {
+        setDisplayContent(false);
     }
 
     return <div className="udemy ">
-        <TitleComponent type="All Blogs" count_results={100} display={false} />
+        <div onClick={backToHome} style={{cursor: "pointer"}}>
+            <TitleComponent type="All Blogs" count_results={totalRecord.current} display={true} />
+        </div>
         <div className="blog">
             <div className="left">
                 <Collapse items={items}

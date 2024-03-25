@@ -13,6 +13,7 @@ import { ExamService } from "../../../service/ExamService";
 import { ExamDTO } from "../../../entity/props/ExamDTO";
 import { MessageResponse } from "../../../entity/response/MessageResponse";
 import BlogManagement from "./blog/BlogManagement";
+import DocumentManagement from "./docs/DocumentManagement";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const max = 999999;
@@ -93,6 +94,8 @@ const ManagementComponent: React.FC = () => {
             setElementDashboard(<ExamManagement code={e.key}/>);
         } else if(e.key == '13') {
             setElementDashboard(<BlogManagement />);
+        } else if(e.key == '14') {
+            setElementDashboard(<DocumentManagement />);
         }
     };
 

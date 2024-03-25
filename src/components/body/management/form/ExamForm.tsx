@@ -43,7 +43,7 @@ const ExamForm: React.FC<{ onSubmit: (e: any) => void, examFormRef: any, item?: 
             useEffect(() => {
                 console.log('exam item', item.description);
                 setDataEditor(item.description);
-            }, []);
+            }, [item.description]);
 
             form.setFieldsValue({
                 examCode: item.examCode,

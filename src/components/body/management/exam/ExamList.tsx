@@ -22,7 +22,7 @@ let examCode:string = "";
 const ExamList: React.FC = () => {
     const examFormRef = useRef(null);
     const [exams, setExams] = useState<ExamDTO[]>([]);
-    const [examItem, setExamItem] = useState<ExamDTO>();
+    const examRef = useRef<ExamDTO>();
 
     const loadExam: (data: MessageResponse<ExamDTO[]> | null) => void = (data) => {
         setExams(data?.data || []);
@@ -91,7 +91,7 @@ const ExamList: React.FC = () => {
             render: (_, item) => (
                 <Space size="middle">
                     <Button icon={<EditOutlined onClick={() => {
-                        setExamItem(item);
+                        examRef.current = item;
                         showModalAdd(EDIT_EXAM);
                     }}/>} />
                     {
@@ -209,7 +209,7 @@ const ExamList: React.FC = () => {
             onCancel={() => handleCancel(EDIT_EXAM)} 
             okText='Submit'
             width={1200}>
-            <ExamForm examFormRef={examFormRef} onSubmit={onSubmitEditExam} item={examItem}/>
+            <ExamForm examFormRef={examFormRef} onSubmit={onSubmitEditExam} item={examRef.current}/>
         </Modal>
 
         <Modal title="Are you sure to delete this?"

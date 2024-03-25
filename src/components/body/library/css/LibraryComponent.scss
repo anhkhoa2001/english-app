@@ -53,6 +53,7 @@
 
             .item-image {
                 max-width: 200px;
+                max-height: 100px;
                 width: auto;
                 margin-top: 12px;
                 margin-bottom: 12px;
@@ -93,6 +94,12 @@
 
                 &:hover {
                     background-color: #edeff4;
+                }
+
+                .ant-comment-avatar { 
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
                 }
             }
 

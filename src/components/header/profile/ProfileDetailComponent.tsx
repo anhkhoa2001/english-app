@@ -5,8 +5,8 @@ import TextArea from 'antd/es/input/TextArea';
 import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import LoginService from '../../../service/LoginService';
-import MessageResponse from '../../../entity/response/MessageResponse';
 import { UserDTO } from '../../../entity/props/ExamDTO';
+import { MessageResponse } from '../../../entity/response/MessageResponse';
 
 const ProfileDetailComponent: React.FC = () => {
     const appName = 'Udemy';
