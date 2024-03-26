@@ -29,7 +29,7 @@ const BlogForm: React.FC<{onSubmit: (e:any) => void, blogFormRef: any, item?: Bl
 
     useEffect(() => {
         setDataEditor(item?.content || "?");
-    }, []);
+    }, [item?.content]);
 
     if(item != undefined) {
         form.setFieldsValue({

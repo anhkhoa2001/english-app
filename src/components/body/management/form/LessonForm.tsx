@@ -56,8 +56,8 @@ const LessonForm: React.FC<{
         }
 
         useEffect(() => {
-            setVideo(item?.url_video);
-            setImage(item?.thumbnail);
+            // setVideo(item?.url_video);
+            // setImage(item?.thumbnail);
 
             if (item?.lesson_id != undefined) {
                 form.setFieldsValue({
@@ -65,7 +65,7 @@ const LessonForm: React.FC<{
                     lessonName: item?.lessionName,
                     status: item?.status,
                     description: item?.description,
-                    type: item.type
+                    type: item?.type || 'Lesson'
                 });
                 console.log('checktype', item.type != 'Minitest');
                 setIsLesson(item.type != 'Minitest');
@@ -80,15 +80,15 @@ const LessonForm: React.FC<{
                 } else {
                     form.setFieldsValue({
                         thumbnail: [{
-                            name: image,
+                            name: item.thumbnail,
                             response: {
-                                default: image
+                                default: item.thumbnail
                             }
                         }] || [],
                         video: [{
-                            name: video,
+                            name: item.url_video,
                             response: {
-                                default: video
+                                default: item.url_video
                             }
                         }]
                     });

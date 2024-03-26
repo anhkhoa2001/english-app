@@ -4,11 +4,13 @@ import { Dropdown, MenuProps } from 'antd';
 import { BASE_PATH } from '../../../entity/Contants';
 import { Navigate, useNavigate } from 'react-router-dom';
 import DropdownMenu from '../../event/drop/DropdownMenu';
+import { useToken } from '../../../context/TokenProvider';
 
 const ProfileComponent: React.FC<{ avatar: string, count_noti: number, fullname: string }>
     = ({ avatar, count_noti, fullname }) => {
 
         const navigate = useNavigate();
+        const obj = useToken();
         const logout = () => {
             console.log('checkl');
             var token = localStorage.getItem('access_token');

@@ -46,7 +46,7 @@ const CreateQuestionForm: React.FC<{
                     questionId: id
                 });
                 console.log('checked', form.getFieldsValue());
-                setDataEditorParent(item.content);
+                setDataEditorParent(item?.content || "");
                 setQuestions(item.questionChilds);
                 questionRef.current = item.questionChilds;
                 const questionEle = item.questionChilds.map((q, index) => {

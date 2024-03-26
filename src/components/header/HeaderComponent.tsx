@@ -31,22 +31,22 @@ const HeaderComponent: React.FC = () => {
     const [isLogin, checkIsLogin] = useState(obj?.isLogined);
     const [info, setInfo] = useState<UserInfo>(new UserInfo('', '', '', ''));
 
-   
+    const check = localStorage.getItem('info');
     useEffect(() => {
         function getInfo() {
             const json = localStorage.getItem('info');
-    
+            console.log(json);
             if(json != undefined) {
                 const i = JSON.parse(json);
                 setInfo(new UserInfo(i.avatar, i.fullname, i.userId, i.usernam));
                 checkIsLogin(true);
                 console.log('json', isLogin);
-                clearTimeout(timeout);
+                clearInterval(timeout);
             } 
         };  
 
-        const timeout = setTimeout(getInfo, 3000);
-    }, [obj?.isLogined])
+        const timeout = setInterval(getInfo, 1000);
+    }, [check])
 
     return <nav className="navbar">
         <img src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg" className="logo" />

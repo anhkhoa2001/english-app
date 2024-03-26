@@ -46,7 +46,7 @@ const QuestionItem: React.FC<{ index: number, input: any, getInput: (e: any) => 
                         url: i.content
                     });
                 } else {
-                    setEditorData(i.content);
+                    setEditorData(i?.content || "");
                 }
                 setHaveContent(types);
                 setHint(i.hint);

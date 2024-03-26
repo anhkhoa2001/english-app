@@ -149,7 +149,7 @@ const BlogManagement: React.FC = () => {
             try {
                 handleOk(ADD_BLOG);
                 ModalCustom.onDisplaySuccess('Success', 'Success');
-                //CourseService.getAllCourse(default_page, default_pageSize, loadCourse);
+                BlogService.getAllBlog(getAll);
             } catch (error) {
                 console.log('error', error);
             }

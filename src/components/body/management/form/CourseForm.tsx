@@ -34,9 +34,9 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
 
     if(item != undefined) {
         useEffect(() => {
-            setDataEditor(item.description);
+            setDataEditor(item?.description || "");
             console.log('course item', item);
-        }, []);
+        }, [item.description]);
         form.setFieldsValue({
             level: item.level,
             courseCode: item.code,
@@ -110,7 +110,7 @@ const CourseForm: React.FC<{onSubmit: (e:any) => void, courseFormRef: any, item?
                 />
             </Form.Item>
             <Form.Item label="Description" name="description">
-                <EditorComponent class_name="tall" data={dataEditor} setContent={handleEditor} />
+                <EditorComponent class_name="medium" data={dataEditor} setContent={handleEditor} />
             </Form.Item>
             <Form.Item label="Public" name="public" valuePropName="checked">
                 <Switch />
